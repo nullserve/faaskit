@@ -5,13 +5,18 @@ export type Handler<TEvent = any, TResult = any> = (
   context: Context,
 ) => Promise<TResult>
 
-export type Middleware<TEvent, TResult, TNextEvent = any> = (
-  next: Handler<TNextEvent, TResult>,
-) => Handler<TEvent, TNextEvent>
+export type Middleware<TEvent, TResult, TNextEvent = any, TNextResult = any> = (
+  next: Handler<TNextEvent, TNextResult>,
+) => Handler<TEvent, TResult>
 
-export type ComposeReduceFunc<TEvent = any, TResult = any, TNextEvent = any> = (
-  a: Middleware<TEvent, TNextEvent>,
-  b: Middleware<TNextEvent, TResult>,
+export type ComposeReduceFunc<
+  TEvent = any,
+  TResult = any,
+  TNextEvent = any,
+  TNextResult = any
+> = (
+  a: Middleware<TEvent, TResult>,
+  b: Middleware<TNextEvent, TNextResult>,
 ) => Middleware<TEvent, TResult>
 
 function compose<TEvent, TResult>(

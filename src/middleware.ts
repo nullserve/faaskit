@@ -1,51 +1,52 @@
 import { Handler, Middleware } from './'
 
-export type Mapper<TFrom, TTo> = (input: TFrom) => Promise<TTo>
-export type TimingLogger = (number) => void
-export type Validator<T> = (T) => Promise<void>
+export type MapperFn<TFrom, TTo> = (input: TFrom) => Promise<TTo>
+export type TimingLogFn = (duration: number) => void
+export type ValidateFn<T> = (...params: any) => Promise<void>
 
 export type TimingLogMiddleware<TEvent = any, TResult = any> = (
-  logger: TimingLogger,
+  logFn: TimingLogFn,
 ) => Middleware<TEvent, TResult>
 
-export const TimingLogMiddleware: TimingLogMiddleware = logger => next => async (
+export const TimingLogMiddleware: TimingLogMiddleware = logFn => next => async (
   event,
   context,
 ) => {
   const start = Date.now()
-  await next(event, context)
+  const result = await next(event, context)
   const end = Date.now()
   const duration = end - start
-  logger(duration)
+  logFn(duration)
+  return result
 }
 
 export type ValidationMiddleware<T = any> = (
-  validator: Validator<T>,
+  validateFn: ValidateFn<T>,
 ) => Middleware<T, T>
 
-export const ValidationMiddleware: ValidationMiddleware = validator => next => {
+export const ValidationMiddleware: ValidationMiddleware = validateFn => next => {
   return async (event, context) => {
-    await validator(event)
+    await validateFn(event)
     await next(event, context)
   }
 }
 
 export type MappingMiddleware<TFrom = any, TTo = any> = (
-  mapper: Mapper<TFrom, TTo>,
+  mapFn: MapperFn<TFrom, TTo>,
 ) => Middleware<TFrom, TTo>
 
-export const ResponseMappingMiddleware: MappingMiddleware = mapper => next => async (
+export const ResponseMappingMiddleware: MappingMiddleware = mapFn => next => async (
   event,
   context,
 ) => {
   const response = await next(event, context)
-  return mapper(response)
+  return mapFn(response)
 }
 
-export const RequestMappingMiddleware: MappingMiddleware = mapper => next => async (
+export const RequestMappingMiddleware: MappingMiddleware = mapFn => next => async (
   event,
   context,
 ) => {
-  const mappedRequest = await mapper(event)
+  const mappedRequest = await mapFn(event)
   return next(mappedRequest, context)
 }
