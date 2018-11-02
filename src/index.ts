@@ -19,7 +19,7 @@ export type ComposeReduceFunc<
   b: Middleware<TNextEvent, TNextResult>,
 ) => Middleware<TEvent, TResult>
 
-function compose<TEvent, TResult>(
+export function compose<TEvent, TResult>(
   ...middlewares: Middleware<any, any>[]
 ): Middleware<TEvent, TResult> {
   const callbackFn: ComposeReduceFunc = (a, b) => next => a(b(next))

@@ -1,14 +1,14 @@
-import { Handler, Middleware } from './'
+import { Middleware } from './'
 
 export type MapperFn<TFrom, TTo> = (input: TFrom) => Promise<TTo>
-export type TimingLogFn = (duration: number) => void
+export type TimingLogFn = (duration: number) => Promise<void>
 export type ValidateFn<T> = (...params: any) => Promise<void>
 
 export type TimingLogMiddleware<TEvent = any, TResult = any> = (
   logFn: TimingLogFn,
 ) => Middleware<TEvent, TResult>
 
-export const TimingLogMiddleware: TimingLogMiddleware = logFn => next => async (
+export const timingLogMiddleware: TimingLogMiddleware = logFn => next => async (
   event,
   context,
 ) => {
@@ -16,7 +16,7 @@ export const TimingLogMiddleware: TimingLogMiddleware = logFn => next => async (
   const result = await next(event, context)
   const end = Date.now()
   const duration = end - start
-  logFn(duration)
+  await logFn(duration)
   return result
 }
 
@@ -24,7 +24,7 @@ export type ValidationMiddleware<T = any> = (
   validateFn: ValidateFn<T>,
 ) => Middleware<T, T>
 
-export const ValidationMiddleware: ValidationMiddleware = validateFn => next => {
+export const validationMiddleware: ValidationMiddleware = validateFn => next => {
   return async (event, context) => {
     await validateFn(event)
     await next(event, context)
@@ -35,7 +35,7 @@ export type MappingMiddleware<TFrom = any, TTo = any> = (
   mapFn: MapperFn<TFrom, TTo>,
 ) => Middleware<TFrom, TTo>
 
-export const ResponseMappingMiddleware: MappingMiddleware = mapFn => next => async (
+export const responseMappingMiddleware: MappingMiddleware = mapFn => next => async (
   event,
   context,
 ) => {
@@ -43,7 +43,7 @@ export const ResponseMappingMiddleware: MappingMiddleware = mapFn => next => asy
   return mapFn(response)
 }
 
-export const RequestMappingMiddleware: MappingMiddleware = mapFn => next => async (
+export const requestMappingMiddleware: MappingMiddleware = mapFn => next => async (
   event,
   context,
 ) => {
