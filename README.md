@@ -2,28 +2,44 @@
 
 A lightweight middleware framework for AWS lambda
 
-```typescript
-const fakeType = {}
+## Example
+
+```javascript
+import { compose, mappingMiddleware, timingLogMiddleware, validationMiddleware } from 'serverless-compose'
+
+// A very simple timing log middleware which simply logs the duration to console log
+const TimingLogMiddleware = timingLogMiddleware((duration) => new Promise(resolve => {
+    console.log(duration)
+    resolve()
+  })),
+
+// A very simple validation middleware which allows anything ;)
+const ValidationMiddleware = validationMiddleware((event) => new Promise(resolve => {
+  resolve()
+})),
 
 // Suppose we have some middleware stack provided for us
 const providedMiddleware = compose(
   TimingLogMiddleware,
-  ValidationMiddleware(fakeType),
+  ValidationMiddleware,
 )
 
 // Suppose we have some handler that does a thing
-const someHandler: Handler = async (event, context) => {
-  return new Promise<void>((resolve, reject) => {
+const someHandler: (event, context) => new Promise((resolve, reject) => {
     // Demo. Do nothing
     resolve()
   })
-}
 
-// Suppose we want to just apply one middleware before our handler
-const myHandler = MappingMiddleware(thing => thing)(someHandler)
+// Suppose the provided middleware isn't perfect, so we add a mapping middleware which adds a default value before our handler
+const myHandler = mappingMiddleware(event => new Promise(resolve => {
+  resolve({
+    someKey: 'default value'
+    ...event,
+  })
+}))(someHandler)
 
 // We can wrap a handler with provided middleware
-const finalHandler: Handler = providedMiddleware(myHandler)
+const finalHandler: providedMiddleware(myHandler)
 export finalHandler
 }
 ```
