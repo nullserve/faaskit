@@ -31,15 +31,15 @@ const someHandler: (event, context) => new Promise((resolve, reject) => {
   })
 
 // Suppose the provided middleware isn't perfect, so we add a mapping middleware which adds a default value before our handler
-const myHandler = mappingMiddleware(event => new Promise(resolve => {
+const myWrappedHandler = mappingMiddleware(event => new Promise(resolve => {
   resolve({
     someKey: 'default value'
     ...event,
   })
 }))(someHandler)
 
-// We can wrap a handler with provided middleware
-const finalHandler: providedMiddleware(myHandler)
+// We can wrap our middleware with provided middleware
+const finalHandler = providedMiddleware(myHandler)
 export finalHandler
 }
 ```
