@@ -1,4 +1,4 @@
-import { compose, Middleware } from './'
+import { compose, Middleware } from '.'
 import { Context } from 'aws-lambda'
 
 describe('compose', () => {
