@@ -9,7 +9,7 @@
     "typescript": "^3.1.5"
   },
   "name": "serverless-compose",
-  "version": "0.0.1",
+  "version": "1.0.0",
   "description": "A lightweight framework for AWS Lambda middleware",
   "main": "index.js",
   "repository": "https://github.com/DavidJFelix/serverless-compose",
