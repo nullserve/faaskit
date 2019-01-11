@@ -5,50 +5,105 @@ A lightweight middleware framework for AWS lambda
 ## Goals
 
 The goal of this project is to provide a very thin middleware framework for AWS lambda.
+This library provides a compose function for wrapping middleware around a handler without having deeply nested code.
+It also provides a few middleware patterns that the author(s) believed were valuable to help users get started.
 
-## Example
+## Using serverless-compose to wrap handlers
+
+In your handler code, you can create a normal AWS lambda handler and wrap it with provided middleware using the `compose` function.
 
 ```javascript
-import { compose, mappingMiddleware, timingLogMiddleware, validationMiddleware } from 'serverless-compose'
+import { compose } from 'serverless-compose'
+
+// Suppose you have middleware defined elsewhere in your codebase
+import {
+  RecoveryMiddleware,
+  TimingLogMiddleware,
+  RequestValidationMiddleware,
+} from './middleware'
+
+// Your handler
+async function MyHandler(event, context) {
+  // Do something
+}
+
+// Creating a middleware stack inline and wrapping the handler
+// Use this wrapped handler as your lambda handler
+export const MiddlewareWrappedHandler = compose(
+  RecoveryMiddleware,
+  TimingLogMiddleware,
+  RequestValidationMiddleware,
+)(MyHandler) // Notice! compose returns a function that takes your handler as its only parameter
+```
+
+Optionally, you can create the middleware stack that all of your lambdas will use in one location:
+
+```javascript
+// middleware.js
+import {
+  compose,
+  recoveryMiddleware,
+  timingLogMiddleware,
+  validationMiddleware,
+} from 'serverless-compose'
 
 // A very simple timing log middleware which simply logs the duration to console log
-const TimingLogMiddleware = timingLogMiddleware(
-  duration => new Promise(resolve => {
-    console.log(duration)
-    resolve()
-  })
+export const TimingLogMiddleware = timingLogMiddleware(
+  duration =>
+    new Promise(resolve => {
+      console.log(duration)
+      resolve()
+    }),
 )
 
 // A very simple validation middleware which allows anything ;)
-const ValidationMiddleware = validationMiddleware(
-  event => new Promise(resolve => {
-    resolve()
-  })
+export const RequestValidationMiddleware = validationMiddleware(
+  (event, context) =>
+    new Promise(resolve => {
+      resolve()
+    }),
 )
 
-// Suppose we have some middleware stack provided for us
-const providedMiddleware = compose(
+// A recovery middleware that wraps an error in a known object type
+export const RecoveryMiddleware = recoveryMiddleware(
+  async (error, event, context) => {
+    // perhaps log the error remotely
+    await logError(error, event, context) // not defined, but just an example
+    // Defer to a known error type
+    return {
+      status: '500',
+      message: 'Internal service error',
+      error: string(error),
+    }
+  },
+)
+
+export const MyMiddleware = compose(
+  RecoveryMiddleware,
   TimingLogMiddleware,
-  ValidationMiddleware,
+  RequestValidationMiddleware,
 )
+```
 
-// Suppose we have some handler that does a thing
-const someHandler = (event, context) => new Promise((resolve, reject) => {
-    // Demo. Do nothing
-    resolve()
+Then import it for your handlers to all use:
+
+```javascript
+// handle.js
+import { MyMiddleware } from './middleware'
+
+export const HandleHello = MyMiddleware((event, context) => {
+  return new Promise(resolve => {
+    resolve(`Hello ${event}`)
+  })
 })
 
-// Suppose the provided middleware isn't perfect, so we add a mapping middleware which adds a default value before our handler
-const myWrappedHandler = requestMappingMiddleware(
-  event => new Promise(resolve => {
-    resolve({
-      someKey: 'default value'
-      ...event,
-    })
+export const HandlePing = MyMiddleware((event, context) => {
+  return new Promise((resolve, reject) => {
+    if event === 'Ping' {
+      resolve(pong)
+    } else {
+      reject('Error: expected ping')
+    }
   })
-)(someHandler)
-
-// We can wrap our middleware with provided middleware
-const finalHandler = providedMiddleware(myWrappedHandler)
-export finalHandler
+})
 ```
