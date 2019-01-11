@@ -9,15 +9,23 @@ export type Middleware<TEvent, TResult, TNextEvent = any, TNextResult = any> = (
   next: Handler<TNextEvent, TNextResult>,
 ) => Handler<TEvent, TResult>
 
+export type LogFunctionContext<TEvent, TResult> = {
+  event: TEvent
+  result: TResult
+}
+
 export function timingLogMiddleware<TEvent, TResult>(
-  logFn: (duration: number) => Promise<void>,
+  logFn: (
+    duration: number,
+    context?: LogFunctionContext<TEvent, TResult>,
+  ) => Promise<void>,
 ): Middleware<TEvent, TResult> {
   return next => async (event, context) => {
     const start = Date.now()
     const result = await next(event, context)
     const end = Date.now()
     const duration = end - start
-    await logFn(duration)
+    await logFn(duration, { event, result })
     return result
   }
 }

@@ -77,13 +77,17 @@ describe('timingLogMiddleware', () => {
     const middleware = timingLogMiddleware(mockTimingLogger)
     const wrappedHandler = middleware(async () => {
       MockDate.set(500)
+      return expectedResult
     })
 
     // When
     await wrappedHandler(expectedEvent, expectedContext)
 
     // Then
-    expect(mockTimingLogger).toBeCalledWith(500)
+    expect(mockTimingLogger).toBeCalledWith(500, {
+      event: expectedEvent,
+      result: expectedResult,
+    })
   })
 })
 
