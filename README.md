@@ -2,6 +2,26 @@
 
 A lightweight middleware framework for AWS lambda
 
+## Table of Contents
+
+- [Installation](#installation)
+
+## Installation
+
+To use `serverless-compose` in your nodejs project,
+
+```bash
+yarn add serverless-compose
+```
+
+or
+
+```bash
+npm i serverless-compose
+```
+
+`serverless-compose` has no dependencies itself (peer or otherwise), so that's it!
+
 ## Goals
 
 The goal of this project is to provide a very thin middleware framework for AWS lambda.
