@@ -1,10 +1,14 @@
 # serverless-compose
 
-A lightweight middleware framework for AWS lambda
+_A lightweight functional middleware framework for AWS lambda that stays out of your way and lets you build kick-ass, composable middleware for your lambdas._
+
+Zero dependencies. Functional Interface. Reusable code.
 
 ## Table of Contents
 
 - [Installation](#installation)
+- [Basic Usage](#basic-usage)
+- [Building Middleware](#building-middleware)
 
 ## Installation
 
@@ -27,6 +31,63 @@ npm i serverless-compose
 The goal of this project is to provide a very thin middleware framework for AWS lambda.
 This library provides a compose function for wrapping middleware around a handler without having deeply nested code.
 It also provides a few middleware patterns that the author(s) believed were valuable to help users get started.
+
+## Basic Usage
+
+The most basic use of `serverless-compose` is to add timing and error middleware to your handlers.
+`recoveryMiddleware` adds code for rejected promises (or thrown `async` functions) in your handlers.
+The following example wraps a rejection in a response that AWS API Gateway can handle and pass to clients, rather than sending its own 503 error with no information.
+
+```javascript
+import {
+  compose,
+  recoveryMiddleware,
+  timingLogMiddleware,
+} from 'serverless-compose'
+
+// Suppose this is a client that fetches the weather from some external API
+import { WeatherClient } from 'made-up-weather-library'
+
+async function getWeather(request, context) {
+  // All this does is call this API, but suppose the API is bad and fails a lot,
+  // so this is likely to throw an error, rejecting the promise of this function
+  response = await WeatherClient.askBadAPIForWeather()
+}
+
+async function logDuration(duration) {
+  console.log(`It took: ${duration}ms to return the weather`)
+}
+
+async function sendError(error) {
+  return {
+    statusCode: 500,
+    body: JSON.stringify({
+      error: `${error}`,
+      message: 'The darn weather API failed me again!',
+    }),
+  }
+}
+
+const TimingMiddleware = timingLogMiddleware(logDuration)
+const RecoveryMiddleware = recoveryMiddleware(sendError)
+const MyMiddlewareStack = compose(
+  TimingMiddleware,
+  RecoveryMiddleware,
+)
+
+export const lambdaHandler = MyMiddlewareStack(getWeather)
+```
+
+## Building Middleware
+
+While `compose` is a strong function for assembling middleware, the value it provides is a starting point as a framework for your own unique requirements.
+`serverless-compose` has attempted to provide a few well known patterns for middleware authors as convenience functions, but these are only for convenience, not a restriction or necessity.
+Authors may feel free to create middleware without the convenience functions.
+The only requirement of a middleware is that it accept a `Handler` as its only argument and return a `Handler`.
+
+```javascript
+// TODO
+```
 
 ## Using serverless-compose to wrap handlers
 
