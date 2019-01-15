@@ -5,7 +5,7 @@
 
 _A lightweight functional middleware framework for AWS lambda that stays out of your way and lets you build kick-ass, composable middleware for your lambdas._
 
-Zero dependencies. Functional Interface. Reusable code.
+Zero dependencies. Functional interface. Reusable code.
 
 ## Table of Contents
 
@@ -35,7 +35,7 @@ npm i serverless-compose
 ## Project Purpose
 
 The goal of this project is to provide a very thin middleware framework for AWS lambda.
-Without a well-established middleware pattern, too many bad habits can ossify from one off functions into bad middleware.
+Without a well-established middleware pattern, too many bad habits can stagnate from one-off functions into bad middleware.
 This library provides a `compose` function for wrapping middleware around a handler without having deeply nested code.
 This function wrapping pattern allows explicitly definied, functional and onion-style (a well-established style) middleware.
 `serverless-compose` also builds on the basic compose function, offering a few patterns that the author(s) have seen in the wild for rapid customization.
@@ -107,12 +107,12 @@ import { timingLogMiddleware } from 'serverless-compose'
 `timinglogMiddlware` takes in a logging function of the signature `(duration, {event, result}) => void` and calls this function after the `next` handler has returned.
 
 This middleware is useful for recording the time taken by a lambda in other means than the existing AWS lambda logging.
-The function passed in can log a formatted message to console or remotely as it choses.
+The function passed in can log a formatted message to console or remotely as it chooses.
 
 ## Creating Partial Middleware
 
-One of the best things about `compose` is that it itself is a middleware, so you can create partial middleware chains and reuse code within a project.
-Supposed you had HTTP handlers and non HTTP handlers and the non HTTP handlers didn't require Auth or validation but they did require recovery, timing and input mapping.
+One of the best things about `compose` is that it is itself a middleware, so you can create partial middleware chains and reuse code within a project.
+Suppose you had HTTP handlers and non HTTP handlers and the non HTTP handlers didn't require authorization or validation but did require recovery, timing and input mapping.
 
 You could write multiple middleware stacks like so:
 
@@ -144,7 +144,7 @@ export const RegularMiddleware = compose(
 )
 ```
 
-Now, in my AWS handlers, I can utilize just the middleware I need:
+Now, in your AWS handlers, you can utilize just the middleware you need:
 
 ```javascript
 import { HttpMiddleware, RegularMiddleware } from './middleware'
@@ -163,11 +163,8 @@ export const handleCloudwatchEvents = RegularMiddleware(myRegularHandler)
 
 ## Building New Middleware
 
-While `compose` is a strong function for assembling middleware, the value it provides is a starting point as a framework for your own unique requirements.
-`serverless-compose` has attempted to provide a few well known patterns for middleware authors as convenience functions, but these are only for convenience, not a restriction or necessity.
-Authors may feel free to create middleware without the convenience functions.
-The only requirement of a middleware is that it accept a `Handler` as its only argument and return a `Handler`.
-These types are provided for Typescript authors, but Javascript also works.
+While `compose` is a strong function for assembling middleware, the value it provides is as a starting point as a framework for your own unique requirements. The only requirement of a middleware is that it accept a `Handler` as its only argument and return a `Handler`, which means that as long as you follow this rule, you can easily create custom, composable middleware, or assemble middleware out of well known patterns provided by `serverless-compose` via its convenience functions. 
+
 Below is an example for creating your own side effect middleware:
 
 ```javascript
@@ -187,7 +184,7 @@ export function MyMiddleware(next) {
 }
 ```
 
-And thats it.
+And that's it.
 Now when assembling your middleware stack, `mySideEffect` will be called before the next middleware and before the handler.
 Side effects or translations of the event or response can be called before or after the next handler.
 Using the middleware looks like:
@@ -213,16 +210,16 @@ export lambdaHandler = compose(
 
 Now an error logging recovery middleware will happen outside (before your middleware and after all other middleware have returned).
 Then `SupposeThisExistsMiddleware` will do whatever it does and call your `MyMiddleware` handler before your `MyMiddleware` handler calls `OtherMadeupMiddleware`.
-`OtherMadeupMiddleware`, most likely, will call handler.
+`OtherMadeupMiddleware`, most likely, will call `handler`.
 It's wired to do that, but depending on what it does, it may not.
 As a middleware author, typically, you should call `next` but you don't have to.
 An example of when you might not call `next` would be an authorization middleware or request validation middleware -- they're there to prevent the handler from being called if it doesn't meet certain criteria.
 
 Check `src/middleware.ts` for some examples of translating events and responses or optionally not calling next based on input.
 Note that `middleware.ts` contains middleware generators or functions that produce `Middleware`.
-As an author you can decide to generate it based on user-defined parameters or hard-code a middleware.
+As an author, you can decide to generate it based on user-defined parameters or hard-code a middleware.
 
-Suppose we wanted to convert a ping/pong handler into a pong only handler, we could implement a pattern similar to responseMiddleware from `middleware.ts` but hardcode the mapping function:
+Suppose you want to convert a ping/pong handler into a pong only handler. You could implement a pattern similar to `responseMiddleware` from `middleware.ts` but hardcode the mapping function:
 
 ```javascript
 export function PongOnlyMiddleware(next) {
@@ -239,7 +236,7 @@ export function PongOnlyMiddleware(next) {
 }
 ```
 
-It's prett simple to get started making your own middleware.
+It's pretty simple to get started making your own middleware.
 If you're not sure, open an issue in github and ask!
 
 Happy Coding!
