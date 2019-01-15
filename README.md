@@ -1,6 +1,7 @@
 # serverless-compose
 
 [![npm version](https://img.shields.io/npm/v/serverless-compose.svg?logo=npm&style=popout-square)](https://www.npmjs.com/package/serverless-compose)
+[![codecov coverage](https://img.shields.io/codecov/c/github/davidjfelix/serverless-compose.svg?logo=codecov&style=popout-square)](https://codecov.io/gh/DavidJFelix/serverless-compose)
 
 _A lightweight functional middleware framework for AWS lambda that stays out of your way and lets you build kick-ass, composable middleware for your lambdas._
 
