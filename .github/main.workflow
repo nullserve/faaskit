@@ -1,6 +1,6 @@
 workflow "Build and publish on push" {
   on = "push"
-  resolves = ["Publish"]
+  resolves = ["Publish", "Report coverage"]
 }
 
 action "Install dependencies" {
@@ -20,7 +20,15 @@ action "Test" {
   needs = "Build"
   uses = "docker://node"
   runs = "yarn"
-  args = "test --coverage"
+  args = "test --coverage --coverageDirectory=./coverage"
+}
+
+action "Report coverage" {
+  needs = "Test"
+  uses = "docker://node"
+  runs = "yarn"
+  args = "run codecov"
+  secrets = ["CODECOV_TOKEN"]
 }
 
 action "Publish" {
