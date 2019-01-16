@@ -35,7 +35,7 @@ npm i serverless-compose
 ## Project Purpose
 
 The goal of this project is to provide a very thin middleware framework for AWS lambda.
-Without a well-established middleware pattern, too many bad habits can stagnate from one-off functions into bad middleware.
+Without a well-established middleware pattern, too many bad habits can fossilize from one-off functions into bad middleware.
 This library provides a `compose` function for wrapping middleware around a handler without having deeply nested code.
 This function wrapping pattern allows explicitly definied, functional and onion-style (a well-established style) middleware.
 `serverless-compose` also builds on the basic compose function, offering a few patterns that the author(s) have seen in the wild for rapid customization.
@@ -111,10 +111,10 @@ The function passed in can log a formatted message to console or remotely as it 
 
 ## Creating Partial Middleware
 
-One of the best things about `compose` is that it is itself a middleware, so you can create partial middleware chains and reuse code within a project.
-Suppose you had HTTP handlers and non HTTP handlers and the non HTTP handlers didn't require authorization or validation but did require recovery, timing and input mapping.
+One of the best things about `compose` is that it itself returns a middleware, so you can create partial middleware chains and reuse code within a project by using `compose` on those partial chains.
+Suppose you have HTTP handlers and non HTTP handlers and the non HTTP handlers don't require authentication/authorization or validation but do require recovery, timing and input mapping.
 
-You could write multiple middleware stacks like so:
+Implementing multiple middleware stacks looks like:
 
 ```javascript
 // middleware.js
@@ -144,7 +144,7 @@ export const RegularMiddleware = compose(
 )
 ```
 
-Now, in your AWS handlers, you can utilize just the middleware you need:
+Now, in the AWS handlers, only the middleware that is needed can be used.
 
 ```javascript
 import { HttpMiddleware, RegularMiddleware } from './middleware'
@@ -163,7 +163,8 @@ export const handleCloudwatchEvents = RegularMiddleware(myRegularHandler)
 
 ## Building New Middleware
 
-While `compose` is a strong function for assembling middleware, the value it provides is as a starting point as a framework for your own unique requirements. The only requirement of a middleware is that it accept a `Handler` as its only argument and return a `Handler`, which means that as long as you follow this rule, you can easily create custom, composable middleware, or assemble middleware out of well known patterns provided by `serverless-compose` via its convenience functions. 
+While `compose` is a strong function for assembling middleware, the value it provides is as a starting point as a framework for your own unique requirements.
+The only requirement of a middleware is that it accept a `Handler` as its only argument and return a `Handler`, which means that as long as you follow this rule, you can easily create custom, composable middleware, or assemble middleware out of well known patterns provided by `serverless-compose` via its convenience functions.
 
 Below is an example for creating your own side effect middleware:
 
