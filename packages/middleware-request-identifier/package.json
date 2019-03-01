@@ -4,23 +4,17 @@
   "author": "David J. Felix <felix.davidj@gmail.com>",
   "homepage": "https://github.com/DavidJFelix/serverless-compose#readme",
   "license": "Apache-2.0",
-  "main": "lib/middleware-request-identifier.js",
-  "directories": {
-    "lib": "lib",
-    "test": "__tests__"
-  },
-  "files": [
-    "lib"
-  ],
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
   "publishConfig": {
     "registry": "https://registry.yarnpkg.com"
+  },
+  "scripts": {
+    "build": "tsc"
   },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/DavidJFelix/serverless-compose.git"
-  },
-  "scripts": {
-    "test": "echo \"Error: run tests from root\" && exit 1"
   },
   "bugs": {
     "url": "https://github.com/DavidJFelix/serverless-compose/issues"

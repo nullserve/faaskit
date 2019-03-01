@@ -1,9 +1,4 @@
-import {
-  requestMappingMiddleware,
-  responseMappingMiddleware,
-  Middleware,
-  Handler,
-} from 'serverless-compose'
+import { Middleware, Handler } from 'serverless-compose'
 import {
   APIGatewayProxyEvent,
   APIGatewayProxyResult,
@@ -70,6 +65,15 @@ function convertMaybeHexStringToUuid(hexString: string): string | void {
   ].join('')
 }
 
+function toHeaderCase(header: string): string {
+  return header
+    .split('-')
+    .map(function(text) {
+      return text.charAt(0).toUpperCase() + text.substr(1).toLowerCase()
+    })
+    .join('-')
+}
+
 // I hate this name too. Sorry.
 export const DefaultAPIGatewayProxyRequestIdentifyingMiddleware: Middleware<
   APIGatewayProxyEvent,
@@ -132,5 +136,23 @@ export const DefaultAPIGatewayProxyRequestIdentifyingMiddleware: Middleware<
       convertMaybeUuidToHexString(correlationId) ||
       bytesToHexString(trace),
   }
-  return next(event, { ...context, ...requestIdentifierContext })
+  const resp = await next(event, { ...context, ...requestIdentifierContext })
+  const headers = {
+    [toHeaderCase('correlation-id')]: correlationId,
+    [toHeaderCase('x-correlation-id')]: correlationId,
+    [toHeaderCase('parent-id')]: parentId,
+    [toHeaderCase('x-parent-id')]: parentId,
+    [toHeaderCase('x-b3-parentspanid')]: parentId,
+    [toHeaderCase('request-id')]: requestId,
+    [toHeaderCase('x-request-id')]: requestId,
+    [toHeaderCase('session-id')]: sessionId,
+    [toHeaderCase('x-session-id')]: sessionId,
+    [toHeaderCase('span-id')]: spanId,
+    [toHeaderCase('x-span-id')]: spanId,
+    [toHeaderCase('x-b3-spanid')]: spanId,
+    [toHeaderCase('trace-id')]: traceId,
+    [toHeaderCase('x-trace-id')]: traceId,
+    [toHeaderCase('x-b3-traceid')]: traceId,
+  }
+  return { ...resp, headers: { ...resp.headers, ...headers } }
 }
