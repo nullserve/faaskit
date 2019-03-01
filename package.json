@@ -1,41 +1,10 @@
 {
+  "name": "root",
+  "private": true,
   "devDependencies": {
-    "@types/aws-lambda": "^8.10.14",
-    "@types/jest": "^23.3.9",
-    "@types/mockdate": "^2.0.0",
-    "codecov": "^3.1.0",
-    "jest": "^23.6.0",
-    "mockdate": "^2.0.2",
-    "ts-jest": "^23.10.4",
-    "typescript": "^3.1.5"
+    "lerna": "^3.13.0"
   },
-  "scripts": {
-    "build": "tsc",
-    "test": "jest"
-  },
-  "jest": {
-    "roots": [
-      "<rootDir>/src"
-    ],
-    "transform": {
-      "^.+\\.tsx?$": "ts-jest"
-    },
-    "testRegex": "(/__tests__/.*|(\\.|/)(test|spec))\\.tsx?$",
-    "moduleFileExtensions": [
-      "ts",
-      "tsx",
-      "js",
-      "jsx",
-      "json",
-      "node"
-    ]
-  },
-  "name": "serverless-compose",
-  "version": "1.1.8",
-  "description": "A lightweight framework for AWS Lambda middleware",
-  "main": "dist/index.js",
-  "types": "dist/index.d.ts",
-  "repository": "https://github.com/DavidJFelix/serverless-compose",
-  "author": "David J. Felix <felix.davidj@gmail.com>",
-  "license": "Apache-2.0"
+  "workspaces": [
+    "packages/*"
+  ]
 }

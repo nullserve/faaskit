@@ -1,4 +1,8 @@
-import { Context } from 'aws-lambda'
+import { Context as LambdaContext } from 'aws-lambda'
+
+// Because Compose can create synthetic handler environments,
+// the context typing is loosened to allow for users to add their own
+export type Context = LambdaContext & Object
 
 export type Handler<TEvent = any, TResult = any> = (
   event: TEvent,
