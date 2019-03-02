@@ -1,6 +1,6 @@
 {
   "name": "serverless-compose-request-identifier",
-  "version": "1.2.0",
+  "version": "2.0.1",
   "author": "David J. Felix <felix.davidj@gmail.com>",
   "homepage": "https://github.com/DavidJFelix/serverless-compose#readme",
   "license": "Apache-2.0",
@@ -20,7 +20,7 @@
     "url": "https://github.com/DavidJFelix/serverless-compose/issues"
   },
   "dependencies": {
-    "serverless-compose": "2.0.0",
+    "serverless-compose": "^2.0.1",
     "uuid": "^3.3.2"
   },
   "devDependencies": {
