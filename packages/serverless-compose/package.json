@@ -37,5 +37,6 @@
   "types": "dist/index.d.ts",
   "repository": "https://github.com/DavidJFelix/serverless-compose",
   "author": "David J. Felix <felix.davidj@gmail.com>",
-  "license": "Apache-2.0"
+  "license": "Apache-2.0",
+  "gitHead": "b1a632f49df14bb892d4d15c9e88346a395bddd6"
 }
