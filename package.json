@@ -4,6 +4,11 @@
   "devDependencies": {
     "lerna": "^3.13.0"
   },
+  "scripts": {
+    "build": "lerna run build",
+    "test": "lerna run test",
+    "publish": "lerna run publish"
+  },
   "workspaces": [
     "packages/*"
   ]

@@ -1,5 +1,6 @@
 export { compose } from './compose'
 export {
+  Context,
   Handler,
   Middleware,
   recoveryMiddleware,

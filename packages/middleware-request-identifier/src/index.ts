@@ -1,9 +1,5 @@
-import { Middleware, Handler } from 'serverless-compose'
-import {
-  APIGatewayProxyEvent,
-  APIGatewayProxyResult,
-  Context,
-} from 'aws-lambda'
+import { Context, Middleware, Handler } from 'serverless-compose'
+import { APIGatewayProxyEvent, APIGatewayProxyResult } from 'aws-lambda'
 import uuidv4 from 'uuid/v4'
 
 // A Mixin for Lambda Context.
@@ -78,12 +74,17 @@ function toHeaderCase(header: string): string {
 export const DefaultAPIGatewayProxyRequestIdentifyingMiddleware: Middleware<
   APIGatewayProxyEvent,
   APIGatewayProxyResult,
+  Context,
   APIGatewayProxyEvent,
-  APIGatewayProxyResult
-> = (next: Handler<APIGatewayProxyEvent, APIGatewayProxyResult>) => async (
-  event: APIGatewayProxyEvent,
-  context: Context & Object,
-) => {
+  APIGatewayProxyResult,
+  Context & RequestIdentifierContextMixin
+> = (
+  next: Handler<
+    APIGatewayProxyEvent,
+    APIGatewayProxyResult,
+    Context & RequestIdentifierContextMixin
+  >,
+) => async (event: APIGatewayProxyEvent, context: Context & Object) => {
   const trace = new Array<number>(16)
   uuidv4(null, trace)
 
@@ -136,7 +137,10 @@ export const DefaultAPIGatewayProxyRequestIdentifyingMiddleware: Middleware<
       convertMaybeUuidToHexString(correlationId) ||
       bytesToHexString(trace),
   }
-  const resp = await next(event, { ...context, ...requestIdentifierContext })
+  const resp = await next(event, {
+    ...context,
+    requestIdentity: requestIdentifierContext,
+  })
   const headers = {
     [toHeaderCase('correlation-id')]: correlationId,
     [toHeaderCase('x-correlation-id')]: correlationId,

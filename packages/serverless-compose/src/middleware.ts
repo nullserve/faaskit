@@ -4,14 +4,21 @@ import { Context as LambdaContext } from 'aws-lambda'
 // the context typing is loosened to allow for users to add their own
 export type Context = LambdaContext & Object
 
-export type Handler<TEvent = any, TResult = any> = (
+export type Handler<TEvent = any, TResult = any, TContext = Context> = (
   event: TEvent,
-  context: Context,
+  context: TContext,
 ) => Promise<TResult>
 
-export type Middleware<TEvent, TResult, TNextEvent = any, TNextResult = any> = (
-  next: Handler<TNextEvent, TNextResult>,
-) => Handler<TEvent, TResult>
+export type Middleware<
+  TEvent,
+  TResult,
+  TContext = Context,
+  TNextEvent = any,
+  TNextResult = any,
+  TNextContext = Context
+> = (
+  next: Handler<TNextEvent, TNextResult, TNextContext>,
+) => Handler<TEvent, TResult, TContext>
 
 export type LogFunctionContext<TEvent, TResult> = {
   event: TEvent
@@ -44,20 +51,60 @@ export function validationMiddleware<TEvent, TResult>(
 }
 
 export function responseMappingMiddleware<TFrom, TTo>(
-  mapFn: (input: TFrom) => Promise<TTo>,
-): Middleware<TFrom, TTo> {
-  return next => async (event, context) => {
-    const response = await next(event, context)
-    return mapFn(response)
-  }
+  mapFn: (result: TFrom) => Promise<TTo>,
+): Middleware<any, TTo, Context, TFrom, any, Context> {
+  return mappingMiddleware(
+    async (event, context) => ({ event, context }),
+    async result => mapFn(result),
+  )
 }
 
 export function requestMappingMiddleware<TFrom, TTo>(
-  mapFn: (input: TFrom) => Promise<TTo>,
-): Middleware<TFrom, TTo> {
+  mapFn: (event: TFrom) => Promise<TTo>,
+): Middleware<TFrom, any, Context, TTo, any, Context> {
+  return mappingMiddleware(
+    async (event, context) => {
+      const mappedEvent = await mapFn(event)
+      return {
+        event: mappedEvent,
+        context: context,
+      }
+    },
+    async result => result,
+  )
+}
+
+export type MappedEventContext<TEvent, TContext = Context> = {
+  event: TEvent
+  context: TContext
+}
+
+export function mappingMiddleware<
+  TEventFrom,
+  TResultFrom,
+  TEventTo,
+  TResultTo,
+  TContextFrom = Context,
+  TContextTo = Context
+>(
+  preMapFn: (
+    event: TEventFrom,
+    context: TContextFrom,
+  ) => Promise<MappedEventContext<TEventTo, TContextTo>>,
+  postMapFn: (result: TResultFrom, context: TContextTo) => Promise<TResultTo>,
+): Middleware<
+  TEventFrom,
+  TResultTo,
+  TContextFrom,
+  TEventTo,
+  TResultFrom,
+  TContextTo
+> {
   return next => async (event, context) => {
-    const mappedRequest = await mapFn(event)
-    return next(mappedRequest, context)
+    let mappedEvent = await preMapFn(event, context)
+    let result = await next(mappedEvent.event, mappedEvent.context)
+    let mappedResult = await postMapFn(result, mappedEvent.context)
+    return mappedResult
   }
 }
 
