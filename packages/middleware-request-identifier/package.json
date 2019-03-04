@@ -1,6 +1,6 @@
 {
   "name": "serverless-compose-request-identifier",
-  "version": "2.0.2",
+  "version": "2.1.0",
   "author": "David J. Felix <felix.davidj@gmail.com>",
   "homepage": "https://github.com/DavidJFelix/serverless-compose#readme",
   "license": "Apache-2.0",
@@ -14,14 +14,14 @@
     "url": "https://github.com/DavidJFelix/serverless-compose/issues"
   },
   "dependencies": {
-    "serverless-compose": "^2.0.2",
+    "serverless-compose": "^2.1.0",
     "uuid": "^3.3.2"
   },
   "devDependencies": {
     "@types/aws-lambda": "^8.10.19",
-    "@types/uuid": "^3.4.4",
     "@types/jest": "^23.3.9",
     "@types/mockdate": "^2.0.0",
+    "@types/uuid": "^3.4.4",
     "codecov": "^3.1.0",
     "jest": "^23.6.0",
     "mockdate": "^2.0.2",

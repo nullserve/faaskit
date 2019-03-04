@@ -15,7 +15,7 @@
     "publish": "publish --non-interactive"
   },
   "name": "serverless-compose",
-  "version": "2.0.2",
+  "version": "2.1.0",
   "description": "A lightweight framework for AWS Lambda middleware",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
