@@ -12,15 +12,14 @@
   "scripts": {
     "build": "tsc",
     "test": "jest",
-    "publish": "yarn publish --non-interactive --access public"
+    "publish": "npm publish --access public"
   },
   "name": "serverless-compose",
-  "version": "2.1.7",
+  "version": "2.1.8",
   "description": "A lightweight framework for AWS Lambda middleware",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "repository": "https://github.com/DavidJFelix/serverless-compose",
   "author": "David J. Felix <felix.davidj@gmail.com>",
-  "license": "Apache-2.0",
-  "gitHead": "d3e4a69deb7bda789f254bcb4bece26f5e35a625"
+  "license": "Apache-2.0"
 }
