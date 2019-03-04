@@ -8,7 +8,7 @@
   "scripts": {
     "build": "lerna run build",
     "test": "yarn jest --coverage",
-    "publish": "lerna run publish"
+    "publish": "lerna publish --amend --no-git-reset --conventional-commits --force-publish --github-release --yes"
   },
   "workspaces": [
     "packages/*"
