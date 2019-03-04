@@ -31,7 +31,7 @@
   "scripts": {
     "build": "tsc",
     "test": "jest",
-    "publish": "publish --non-interactive"
+    "publish": "publish --non-interactive --access public"
   },
   "gitHead": "b1a632f49df14bb892d4d15c9e88346a395bddd6"
 }

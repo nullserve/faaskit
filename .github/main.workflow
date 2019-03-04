@@ -33,7 +33,7 @@ action "Report coverage" {
 
 action "Publish" {
   needs = "Test"
-  uses = "actions/npm@master"
-  args = "publish --access public"
+  uses = "nuxt/actions-yarn@master"
+  args = "publish"
   secrets = ["NPM_AUTH_TOKEN"]
 }

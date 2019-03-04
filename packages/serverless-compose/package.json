@@ -12,7 +12,7 @@
   "scripts": {
     "build": "tsc",
     "test": "jest",
-    "publish": "publish --non-interactive"
+    "publish": "publish --non-interactive --access public"
   },
   "name": "serverless-compose",
   "version": "2.1.0",
