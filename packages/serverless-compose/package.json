@@ -11,7 +11,8 @@
   },
   "scripts": {
     "build": "tsc",
-    "test": "jest"
+    "test": "jest",
+    "publish": "publish --non-interactive"
   },
   "name": "serverless-compose",
   "version": "2.0.2",

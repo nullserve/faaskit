@@ -30,24 +30,8 @@
   },
   "scripts": {
     "build": "tsc",
-    "test": "jest"
-  },
-  "jest": {
-    "roots": [
-      "<rootDir>/src"
-    ],
-    "transform": {
-      "^.+\\.tsx?$": "ts-jest"
-    },
-    "testRegex": "(/__tests__/.*|(\\.|/)(test|spec))\\.tsx?$",
-    "moduleFileExtensions": [
-      "ts",
-      "tsx",
-      "js",
-      "jsx",
-      "json",
-      "node"
-    ]
+    "test": "jest",
+    "publish": "publish --non-interactive"
   },
   "gitHead": "b1a632f49df14bb892d4d15c9e88346a395bddd6"
 }
