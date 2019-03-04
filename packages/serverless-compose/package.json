@@ -11,11 +11,10 @@
   },
   "scripts": {
     "build": "tsc",
-    "test": "jest",
-    "publish": "npm publish --access public"
+    "test": "jest"
   },
   "name": "serverless-compose",
-  "version": "2.1.8",
+  "version": "2.1.9",
   "description": "A lightweight framework for AWS Lambda middleware",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",

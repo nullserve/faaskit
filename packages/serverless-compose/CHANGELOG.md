@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.1.9](https://github.com/DavidJFelix/serverless-compose/compare/v2.1.8...v2.1.9) (2019-03-04)
+
+
+### Bug Fixes
+
+* **ci:** all this crap ([1f48e77](https://github.com/DavidJFelix/serverless-compose/commit/1f48e77))
+
+
+
+
+
 ## [2.1.8](https://github.com/DavidJFelix/serverless-compose/compare/v2.1.6...v2.1.8) (2019-03-04)
 
 
