@@ -9,7 +9,7 @@
     "build": "lerna run build",
     "test": "yarn jest --coverage",
     "publish": "lerna publish from-package --force-publish --yes",
-    "version": "lerna version --amend --conventional-commits --github-release --yes"
+    "version": "lerna version --conventional-commits --force-publish --yes"
   },
   "workspaces": [
     "packages/*"
