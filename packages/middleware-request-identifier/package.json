@@ -22,7 +22,6 @@
     "@types/jest": "^23.3.9",
     "@types/mockdate": "^2.0.0",
     "@types/uuid": "^3.4.4",
-    "codecov": "^3.1.0",
     "jest": "^23.6.0",
     "mockdate": "^2.0.2",
     "ts-jest": "^23.10.4",
@@ -31,7 +30,7 @@
   "scripts": {
     "build": "tsc",
     "test": "jest",
-    "publish": "publish --non-interactive --access public"
+    "publish": "yarn publish --non-interactive --access public"
   },
   "gitHead": "b1a632f49df14bb892d4d15c9e88346a395bddd6"
 }
