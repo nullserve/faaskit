@@ -1,4 +1,4 @@
-export { compose } from './compose'
+export {compose} from './compose'
 export {
   Context,
   Handler,

@@ -1,14 +1,14 @@
-import { Context, Middleware, Handler } from 'serverless-compose'
-import { APIGatewayProxyEvent, APIGatewayProxyResult } from 'aws-lambda'
+import {Context, Middleware, Handler} from 'serverless-compose'
+import {APIGatewayProxyEvent, APIGatewayProxyResult} from 'aws-lambda'
 import uuidv4 from 'uuid/v4'
 
 // A Mixin for Lambda Context.
 // Using Typescript Intersection types you can define a handler context as `Context & RequestIdentifierContextMixin`
-type RequestIdentifierContextMixin = {
+export type RequestIdentifierContextMixin = {
   requestIdentity: RequestIdentifierContext
 }
 
-type RequestIdentifierContext = {
+export type RequestIdentifierContext = {
   correlationId: string
   parentId?: string
   requestId: string
@@ -41,12 +41,20 @@ function bytesToHexString(bytes: Array<number>): string {
   return bytes.map(byte => byteToHex[byte]).join('')
 }
 
-function convertMaybeUuidToHexString(uuid: string): string | void {
+function convertMaybeUuidToHexString(uuid?: string): string | void {
+  if (uuid === undefined || uuid === null || uuid === '') {
+    return
+  }
+
   // FIXME: handle case where it's not a UUID
   return uuid.replace('-', '')
 }
 
-function convertMaybeHexStringToUuid(hexString: string): string | void {
+function convertMaybeHexStringToUuid(hexString?: string): string | void {
+  if (hexString === undefined || hexString === null || hexString === '') {
+    return
+  }
+
   // FIXME: handle case where its not a Hex string suitable for a UUID
   return [
     hexString.slice(0, 8),
@@ -59,15 +67,6 @@ function convertMaybeHexStringToUuid(hexString: string): string | void {
     '-',
     hexString.slice(24, 36),
   ].join('')
-}
-
-function toHeaderCase(header: string): string {
-  return header
-    .split('-')
-    .map(function(text) {
-      return text.charAt(0).toUpperCase() + text.substr(1).toLowerCase()
-    })
-    .join('-')
 }
 
 // I hate this name too. Sorry.
@@ -120,7 +119,7 @@ export const DefaultAPIGatewayProxyRequestIdentifyingMiddleware: Middleware<
       correlationId ||
       convertMaybeHexStringToUuid(traceId) ||
       bytesToUuid(trace),
-    parentId,
+    ...(parentId && {parentId}),
     requestId:
       requestId ||
       correlationId ||
@@ -137,26 +136,26 @@ export const DefaultAPIGatewayProxyRequestIdentifyingMiddleware: Middleware<
       convertMaybeUuidToHexString(correlationId) ||
       bytesToHexString(trace),
   }
-  const resp = await next(event, {
+  const result = await next(event, {
     ...context,
     requestIdentity: requestIdentifierContext,
   })
   const headers = {
-    [toHeaderCase('correlation-id')]: correlationId,
-    [toHeaderCase('x-correlation-id')]: correlationId,
-    [toHeaderCase('parent-id')]: parentId,
-    [toHeaderCase('x-parent-id')]: parentId,
-    [toHeaderCase('x-b3-parentspanid')]: parentId,
-    [toHeaderCase('request-id')]: requestId,
-    [toHeaderCase('x-request-id')]: requestId,
-    [toHeaderCase('session-id')]: sessionId,
-    [toHeaderCase('x-session-id')]: sessionId,
-    [toHeaderCase('span-id')]: spanId,
-    [toHeaderCase('x-span-id')]: spanId,
-    [toHeaderCase('x-b3-spanid')]: spanId,
-    [toHeaderCase('trace-id')]: traceId,
-    [toHeaderCase('x-trace-id')]: traceId,
-    [toHeaderCase('x-b3-traceid')]: traceId,
+    'correlation-id': requestIdentifierContext.correlationId,
+    'x-correlation-id': requestIdentifierContext.correlationId,
+    'parent-id': requestIdentifierContext.parentId,
+    'x-parent-id': requestIdentifierContext.parentId,
+    'x-b3-parentspanid': requestIdentifierContext.parentId,
+    'request-id': requestIdentifierContext.requestId,
+    'x-request-id': requestIdentifierContext.requestId,
+    'session-id': requestIdentifierContext.sessionId,
+    'x-session-id': requestIdentifierContext.sessionId,
+    'span-id': requestIdentifierContext.spanId,
+    'x-span-id': requestIdentifierContext.spanId,
+    'x-b3-spanid': requestIdentifierContext.spanId,
+    'trace-id': requestIdentifierContext.traceId,
+    'x-trace-id': requestIdentifierContext.traceId,
+    'x-b3-traceid': requestIdentifierContext.traceId,
   }
-  return { ...resp, headers: { ...resp.headers, ...headers } }
+  return {...result, headers: {...(result.headers || {}), ...headers}}
 }

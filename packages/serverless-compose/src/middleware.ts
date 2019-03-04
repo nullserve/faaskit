@@ -1,4 +1,4 @@
-import { Context as LambdaContext } from 'aws-lambda'
+import {Context as LambdaContext} from 'aws-lambda'
 
 // Because Compose can create synthetic handler environments,
 // the context typing is loosened to allow for users to add their own
@@ -36,7 +36,7 @@ export function timingLogMiddleware<TEvent, TResult>(
     const result = await next(event, context)
     const end = Date.now()
     const duration = end - start
-    await logFn(duration, { event, result })
+    await logFn(duration, {event, result})
     return result
   }
 }
@@ -54,7 +54,7 @@ export function responseMappingMiddleware<TFrom, TTo>(
   mapFn: (result: TFrom) => Promise<TTo>,
 ): Middleware<any, TTo, Context, TFrom, any, Context> {
   return mappingMiddleware(
-    async (event, context) => ({ event, context }),
+    async (event, context) => ({event, context}),
     async result => mapFn(result),
   )
 }

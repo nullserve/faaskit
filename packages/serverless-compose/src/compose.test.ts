@@ -1,5 +1,5 @@
-import { compose, Middleware } from '.'
-import { Context } from 'aws-lambda'
+import {compose, Middleware} from '.'
+import {Context} from 'aws-lambda'
 
 describe('compose', () => {
   const expectedEvent = 'expected event'

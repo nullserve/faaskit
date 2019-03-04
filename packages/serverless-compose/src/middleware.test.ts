@@ -6,7 +6,7 @@ import {
   validationMiddleware,
 } from '.'
 import MockDate from 'mockdate'
-import { Context } from 'aws-lambda'
+import {Context} from 'aws-lambda'
 
 describe('timingLogMiddleware', () => {
   const blackHoleTimingLogger = async () => {}

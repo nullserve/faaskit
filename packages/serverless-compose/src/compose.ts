@@ -1,4 +1,4 @@
-import { Handler, Middleware } from './middleware'
+import {Handler, Middleware} from './middleware'
 
 export function compose<TEvent, TResult>(
   ...middlewares: Middleware<any, any>[]

@@ -6,7 +6,7 @@
   },
   "scripts": {
     "build": "lerna run build",
-    "test": "lerna run test",
+    "test": "yarn jest --coverage",
     "publish": "lerna run publish"
   },
   "workspaces": [

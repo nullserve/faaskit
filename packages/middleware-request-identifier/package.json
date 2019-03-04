@@ -6,9 +6,6 @@
   "license": "Apache-2.0",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
-  "scripts": {
-    "build": "tsc"
-  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/DavidJFelix/serverless-compose.git"
@@ -22,7 +19,35 @@
   },
   "devDependencies": {
     "@types/aws-lambda": "^8.10.19",
-    "@types/uuid": "^3.4.4"
+    "@types/uuid": "^3.4.4",
+    "@types/jest": "^23.3.9",
+    "@types/mockdate": "^2.0.0",
+    "codecov": "^3.1.0",
+    "jest": "^23.6.0",
+    "mockdate": "^2.0.2",
+    "ts-jest": "^23.10.4",
+    "typescript": "^3.1.5"
+  },
+  "scripts": {
+    "build": "tsc",
+    "test": "jest"
+  },
+  "jest": {
+    "roots": [
+      "<rootDir>/src"
+    ],
+    "transform": {
+      "^.+\\.tsx?$": "ts-jest"
+    },
+    "testRegex": "(/__tests__/.*|(\\.|/)(test|spec))\\.tsx?$",
+    "moduleFileExtensions": [
+      "ts",
+      "tsx",
+      "js",
+      "jsx",
+      "json",
+      "node"
+    ]
   },
   "gitHead": "b1a632f49df14bb892d4d15c9e88346a395bddd6"
 }
