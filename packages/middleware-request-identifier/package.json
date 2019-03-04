@@ -1,6 +1,6 @@
 {
   "name": "serverless-compose-request-identifier",
-  "version": "2.1.4",
+  "version": "2.1.5",
   "author": "David J. Felix <felix.davidj@gmail.com>",
   "homepage": "https://github.com/DavidJFelix/serverless-compose#readme",
   "license": "Apache-2.0",
@@ -14,7 +14,7 @@
     "url": "https://github.com/DavidJFelix/serverless-compose/issues"
   },
   "dependencies": {
-    "serverless-compose": "^2.1.4",
+    "serverless-compose": "^2.1.5",
     "uuid": "^3.3.2"
   },
   "devDependencies": {
@@ -29,8 +29,7 @@
   },
   "scripts": {
     "build": "tsc",
-    "test": "jest",
-    "publish": "yarn publish --non-interactive --access public"
+    "test": "jest"
   },
-  "gitHead": "d0682a488d2b0c1da29209e764dbcd9d8eab2942"
+  "gitHead": "7681bfa71f24f5f248419f9f31f250d1058adc66"
 }
