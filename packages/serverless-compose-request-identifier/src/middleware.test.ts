@@ -1,7 +1,7 @@
 import {
   DefaultAPIGatewayProxyRequestIdentifyingMiddleware,
   RequestIdentifierContextMixin,
-} from '.'
+} from './middleware'
 import {Context, Handler} from 'serverless-compose'
 import {
   APIGatewayProxyEvent,

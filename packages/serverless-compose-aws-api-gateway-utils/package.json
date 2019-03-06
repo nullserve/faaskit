@@ -1,0 +1,9 @@
+{
+  "name": "serverless-compose-aws-api-gateway-utils",
+  "version": "2.2.0",
+  "main": "dist/index.js",
+  "license": "Apache-2.0",
+  "dependencies": {
+    "serverless-compose": "^2.2.0"
+  }
+}

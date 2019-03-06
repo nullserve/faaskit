@@ -3,6 +3,7 @@ export {
   Context,
   Handler,
   Middleware,
+  mappingMiddleware,
   recoveryMiddleware,
   requestMappingMiddleware,
   responseMappingMiddleware,
