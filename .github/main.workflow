@@ -4,28 +4,28 @@ workflow "Build and publish on push" {
 }
 
 action "Install dependencies" {
-  uses = "docker://node"
+  uses = "docker://node@11.10"
   runs = "yarn"
   args = "install --frozen-lockfile"
 }
 
 action "Build" {
   needs = "Install dependencies"
-  uses = "docker://node"
+  uses = "docker://node@11.10"
   runs = "yarn"
   args = "build"
 }
 
 action "Test" {
   needs = "Build"
-  uses = "docker://node"
+  uses = "docker://node@11.10"
   runs = "yarn"
   args = "test --coverage --coverageDirectory=./coverage"
 }
 
 action "Report coverage" {
   needs = "Test"
-  uses = "docker://node"
+  uses = "docker://node@11.10"
   runs = "yarn"
   args = "run codecov"
   secrets = ["CODECOV_TOKEN"]
