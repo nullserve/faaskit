@@ -3,6 +3,41 @@ import {mappingMiddleware, Middleware, Context} from 'serverless-compose'
 
 import {toHeaderCase, remapKeys} from './utils'
 
+export {
+  HttpError,
+  BadRequest,
+  Unauthorized,
+  PaymentRequired,
+  Forbidden,
+  NotFound,
+  MethodNotAllowed,
+  NotAcceptable,
+  ProxyAuthenticationRequired,
+  RequestTimeout,
+  Conflict,
+  Gone,
+  LengthRequired,
+  PreconditionFailed,
+  RequestEntityTooLarge,
+  RequestURITooLong,
+  UnsupportedMediaType,
+  RequestedRangeNotSatisfiable,
+  ExpectationFailed,
+  ImATeapot,
+  EnhanceYourCalm,
+  UnprocessableEntity,
+  UpgradeRequired,
+  PreconditionRequired,
+  TooManyRequests,
+  RequestHeaderFieldsTooLarge,
+  UnavailableForLegalReasons,
+  InternalServerError,
+  NotImplemented,
+  BadGateway,
+  ServiceUnavailable,
+  GatewayTimeout,
+} from './http-errors'
+
 export const HeaderNormalizingMiddleware: Middleware<
   APIGatewayProxyEvent,
   APIGatewayProxyResult,
