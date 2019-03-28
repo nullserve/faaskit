@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.3.0](https://github.com/DavidJFelix/serverless-compose/compare/v2.1.10...v2.3.0) (2019-03-28)
+
+
+### Bug Fixes
+
+* bother to actually build ([4070b4a](https://github.com/DavidJFelix/serverless-compose/commit/4070b4a))
+
+
+### Features
+
+* add a new package ([43869be](https://github.com/DavidJFelix/serverless-compose/commit/43869be))
+
+
+
+
+
 ## [2.2.2](https://github.com/DavidJFelix/serverless-compose/compare/v2.2.1...v2.2.2) (2019-03-11)
 
 **Note:** Version bump only for package serverless-compose-request-identifier

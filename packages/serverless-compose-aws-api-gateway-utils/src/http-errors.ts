@@ -1,282 +1,238 @@
 export class HttpError extends Error {
-  statusCode: number
+  public statusCode: number
+  public details?: ErrorDetails
+  public name: string
+
+  constructor(
+    message: string,
+    name: string,
+    statusCode: number,
+    details?: ErrorDetails,
+  ) {
+    super(message)
+    this.name = name
+    this.statusCode = statusCode
+    this.details = details
+  }
+}
+
+export interface ErrorDetails {
+  fields: {[key: string]: string}
 }
 
 // 400
 export class BadRequest extends HttpError {
-  constructor(message: string) {
-    super(message)
-    this.name = 'BadRequest'
-    this.statusCode = 400
+  constructor(message: string, details?: ErrorDetails) {
+    super(message, 'BadRequest', 400, details)
   }
 }
 
 // 401
 export class Unauthorized extends HttpError {
-  constructor(message: string) {
-    super(message)
-    this.name = 'Unauthorized'
-    this.statusCode = 401
+  constructor(message: string, details?: ErrorDetails) {
+    super(message, 'Unauthorized', 401, details)
   }
 }
 
 // 402
 export class PaymentRequired extends HttpError {
-  constructor(message: string) {
-    super(message)
-    this.name = 'PaymentRequired'
-    this.statusCode = 402
+  constructor(message: string, details?: ErrorDetails) {
+    super(message, 'PaymentRequired', 402, details)
   }
 }
 
 // 403
 export class Forbidden extends HttpError {
-  constructor(message: string) {
-    super(message)
-    this.name = 'Forbidden'
-    this.statusCode = 403
+  constructor(message: string, details?: ErrorDetails) {
+    super(message, 'Forbidden', 403, details)
   }
 }
 
 // 404
 export class NotFound extends HttpError {
-  constructor(message: string) {
-    super(message)
-    this.name = 'NotFound'
-    this.statusCode = 404
+  constructor(message: string, details?: ErrorDetails) {
+    super(message, 'NotFound', 404, details)
   }
 }
 
 // 405
 export class MethodNotAllowed extends HttpError {
-  constructor(message: string) {
-    super(message)
-    this.name = 'MethodNotAllowed'
-    this.statusCode = 405
+  constructor(message: string, details?: ErrorDetails) {
+    super(message, 'MethodNotAllowed', 405, details)
   }
 }
 
 // 406
 export class NotAcceptable extends HttpError {
-  constructor(message: string) {
-    super(message)
-    this.name = 'NotAcceptable'
-    this.statusCode = 406
+  constructor(message: string, details?: ErrorDetails) {
+    super(message, 'NotAcceptable', 406, details)
   }
 }
 
 // 407
 export class ProxyAuthenticationRequired extends HttpError {
-  constructor(message: string) {
-    super(message)
-    this.name = 'ProxyAuthenticationRequired'
-    this.statusCode = 407
+  constructor(message: string, details?: ErrorDetails) {
+    super(message, 'ProxyAuthenticationRequired', 407, details)
   }
 }
 
 // 408
 export class RequestTimeout extends HttpError {
-  constructor(message: string) {
-    super(message)
-    this.name = 'RequestTimeout'
-    this.statusCode = 408
+  constructor(message: string, details?: ErrorDetails) {
+    super(message, 'RequestTimeout', 408, details)
   }
 }
 
 // 409
 export class Conflict extends HttpError {
-  constructor(message: string) {
-    super(message)
-    this.name = 'Conflict'
-    this.statusCode = 409
+  constructor(message: string, details?: ErrorDetails) {
+    super(message, 'Conflict', 409, details)
   }
 }
 
 // 410
 export class Gone extends HttpError {
-  constructor(message: string) {
-    super(message)
-    this.name = 'Gone'
-    this.statusCode = 410
+  constructor(message: string, details?: ErrorDetails) {
+    super(message, 'Gone', 410, details)
   }
 }
 
 // 411
 export class LengthRequired extends HttpError {
-  constructor(message: string) {
-    super(message)
-    this.name = 'LengthRequired'
-    this.statusCode = 411
+  constructor(message: string, details?: ErrorDetails) {
+    super(message, 'LengthRequired', 411, details)
   }
 }
 
 // 412
 export class PreconditionFailed extends HttpError {
-  constructor(message: string) {
-    super(message)
-    this.name = 'PreconditionFailed'
-    this.statusCode = 412
+  constructor(message: string, details?: ErrorDetails) {
+    super(message, 'PreconditionFailed', 412, details)
   }
 }
 
 // 413
 export class RequestEntityTooLarge extends HttpError {
-  constructor(message: string) {
-    super(message)
-    this.name = 'RequestEntityTooLarge'
-    this.statusCode = 413
+  constructor(message: string, details?: ErrorDetails) {
+    super(message, 'RequestEntityTooLarge', 413, details)
   }
 }
 
 // 414
 export class RequestURITooLong extends HttpError {
-  constructor(message: string) {
-    super(message)
-    this.name = 'RequestURITooLong'
-    this.statusCode = 414
+  constructor(message: string, details?: ErrorDetails) {
+    super(message, 'RequestURITooLong', 414, details)
   }
 }
 
 // 415
 export class UnsupportedMediaType extends HttpError {
-  constructor(message: string) {
-    super(message)
-    this.name = 'UnsupportedMediaType'
-    this.statusCode = 415
+  constructor(message: string, details?: ErrorDetails) {
+    super(message, 'UnsupportedMediaType', 415, details)
   }
 }
 
 // 416
 export class RequestedRangeNotSatisfiable extends HttpError {
-  constructor(message: string) {
-    super(message)
-    this.name = 'BadRequest'
-    this.statusCode = 416
+  constructor(message: string, details?: ErrorDetails) {
+    super(message, 'BadRequest', 416, details)
   }
 }
 
 // 417
 export class ExpectationFailed extends HttpError {
-  constructor(message: string) {
-    super(message)
-    this.name = 'ExpectationFailed'
-    this.statusCode = 417
+  constructor(message: string, details?: ErrorDetails) {
+    super(message, 'ExpectationFailed', 417, details)
   }
 }
 
 // 418
 export class ImATeapot extends HttpError {
-  constructor(message: string) {
-    super(message)
-    this.name = 'ImATeapot'
-    this.statusCode = 418
+  constructor(message: string, details?: ErrorDetails) {
+    super(message, 'ImATeapot', 418, details)
   }
 }
 
 // 420
 export class EnhanceYourCalm extends HttpError {
-  constructor(message: string) {
-    super(message)
-    this.name = 'EnhanceYourCalm'
-    this.statusCode = 420
+  constructor(message: string, details?: ErrorDetails) {
+    super(message, 'EnhanceYourCalm', 420, details)
   }
 }
 
 // 422
 export class UnprocessableEntity extends HttpError {
-  constructor(message: string) {
-    super(message)
-    this.name = 'UnprocessableEntity'
-    this.statusCode = 422
+  constructor(message: string, details?: ErrorDetails) {
+    super(message, 'UnprocessableEntity', 422, details)
   }
 }
 
 // 426
 export class UpgradeRequired extends HttpError {
-  constructor(message: string) {
-    super(message)
-    this.name = 'UpgradeRequired'
-    this.statusCode = 426
+  constructor(message: string, details?: ErrorDetails) {
+    super(message, 'UpgradeRequired', 426, details)
   }
 }
 
 // 428
 export class PreconditionRequired extends HttpError {
-  constructor(message: string) {
-    super(message)
-    this.name = 'PreconditionRequired'
-    this.statusCode = 428
+  constructor(message: string, details?: ErrorDetails) {
+    super(message, 'PreconditionRequired', 428, details)
   }
 }
 
 // 429
 export class TooManyRequests extends HttpError {
-  constructor(message: string) {
-    super(message)
-    this.name = 'TooManyRequests'
-    this.statusCode = 429
+  constructor(message: string, details?: ErrorDetails) {
+    super(message, 'TooManyRequests', 429, details)
   }
 }
 
 // 431
 export class RequestHeaderFieldsTooLarge extends HttpError {
-  constructor(message: string) {
-    super(message)
-    this.name = 'RequestHeaderFieldsTooLarge'
-    this.statusCode = 431
+  constructor(message: string, details?: ErrorDetails) {
+    super(message, 'RequestHeaderFieldsTooLarge', 431, details)
   }
 }
 
 // 451
 export class UnavailableForLegalReasons extends HttpError {
-  constructor(message: string) {
-    super(message)
-    this.name = 'UnavailableForLegalReasons'
-    this.statusCode = 451
+  constructor(message: string, details?: ErrorDetails) {
+    super(message, 'UnavailableForLegalReasons', 451, details)
   }
 }
 
 // 500
 export class InternalServerError extends HttpError {
-  constructor(message: string) {
-    super(message)
-    this.name = 'InternalServerError'
-    this.statusCode = 500
+  constructor(message: string, details?: ErrorDetails) {
+    super(message, 'InternalServerError', 500, details)
   }
 }
 
 // 501
 export class NotImplemented extends HttpError {
-  constructor(message: string) {
-    super(message)
-    this.name = 'NotImplemented'
-    this.statusCode = 501
+  constructor(message: string, details?: ErrorDetails) {
+    super(message, 'NotImplemented', 501, details)
   }
 }
 
 // 502
 export class BadGateway extends HttpError {
-  constructor(message: string) {
-    super(message)
-    this.name = 'BadGateway'
-    this.statusCode = 502
+  constructor(message: string, details?: ErrorDetails) {
+    super(message, 'BadGateway', 502, details)
   }
 }
 
 // 503
 export class ServiceUnavailable extends HttpError {
-  constructor(message: string) {
-    super(message)
-    this.name = 'ServiceUnavailable'
-    this.statusCode = 503
+  constructor(message: string, details?: ErrorDetails) {
+    super(message, 'ServiceUnavailable', 503, details)
   }
 }
 
 // 504
 export class GatewayTimeout extends HttpError {
-  constructor(message: string) {
-    super(message)
-    this.name = 'GatewayTimeout'
-    this.statusCode = 504
+  constructor(message: string, details?: ErrorDetails) {
+    super(message, 'GatewayTimeout', 504, details)
   }
 }

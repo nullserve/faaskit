@@ -1,10 +1,10 @@
 {
   "name": "serverless-compose-aws-api-gateway-utils",
-  "version": "2.2.2",
+  "version": "2.3.0",
   "main": "dist/index.js",
   "license": "Apache-2.0",
   "dependencies": {
-    "serverless-compose": "^2.2.2"
+    "serverless-compose": "^2.3.0"
   },
   "devDependencies": {
     "@types/aws-lambda": "^8.10.19",
