@@ -1,5 +1,5 @@
 {
-  "name": "serverless-compose-aws-api-gateway-utils",
+  "name": "serverless-compose-winston-logger",
   "version": "2.4.0",
   "author": "David J. Felix <felix.davidj@gmail.com>",
   "homepage": "https://github.com/DavidJFelix/serverless-compose#readme",
@@ -16,7 +16,7 @@
   "dependencies": {
     "serverless-compose": "^2.4.0",
     "serverless-compose-logger": "^2.4.0",
-    "serverless-compose-request-identifier": "^2.4.0"
+    "winston": "^3.2.1"
   },
   "devDependencies": {
     "@types/aws-lambda": "^8.10.19",

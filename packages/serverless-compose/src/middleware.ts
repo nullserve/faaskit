@@ -25,7 +25,9 @@ export type LogFunctionContext<TEvent, TResult> = {
   result: TResult
 }
 
-export function timingLogMiddleware<TEvent, TResult>(
+// DEPRECATED: map the old name to the new name
+export const timingLogMiddleware = createTimingLogMiddleware
+export function createTimingLogMiddleware<TEvent, TResult>(
   logFn: (
     duration: number,
     context?: LogFunctionContext<TEvent, TResult>,
@@ -41,7 +43,11 @@ export function timingLogMiddleware<TEvent, TResult>(
   }
 }
 
-export function validationMiddleware<TEvent, TResult>(
+// DEPRECATED: map the old name to the new name
+export const validationMiddleware = createValidationMiddleware
+// Alias this with another name
+export const createSideEffectMiddleware = createValidationMiddleware
+export function createValidationMiddleware<TEvent, TResult>(
   validateFn: (event: TEvent) => Promise<void>,
 ): Middleware<TEvent, TResult> {
   return next => async (event, context) => {
@@ -50,19 +56,23 @@ export function validationMiddleware<TEvent, TResult>(
   }
 }
 
-export function responseMappingMiddleware<TFrom, TTo>(
+// DEPRECATED: map the old name to the new name
+export const responseMappingMiddleware = createResponseMappingMiddleware
+export function createResponseMappingMiddleware<TFrom, TTo>(
   mapFn: (result: TFrom) => Promise<TTo>,
 ): Middleware<any, TTo, Context, TFrom, any, Context> {
-  return mappingMiddleware(
+  return createMappingMiddleware(
     async (event, context) => ({event, context}),
     async result => mapFn(result),
   )
 }
 
-export function requestMappingMiddleware<TFrom, TTo>(
+// DEPRECATED: map the old name to the new name
+export const requestMappingMiddleware = createRequestMappingMiddleware
+export function createRequestMappingMiddleware<TFrom, TTo>(
   mapFn: (event: TFrom) => Promise<TTo>,
 ): Middleware<TFrom, any, Context, TTo, any, Context> {
-  return mappingMiddleware(
+  return createMappingMiddleware(
     async (event, context) => {
       const mappedEvent = await mapFn(event)
       return {
@@ -79,7 +89,9 @@ export type MappedEventContext<TEvent, TContext = Context> = {
   context: TContext
 }
 
-export function mappingMiddleware<
+// DEPRECATED: map the old name to the new name
+export const mappingMiddleware = createMappingMiddleware
+export function createMappingMiddleware<
   TEventFrom,
   TResultFrom,
   TEventTo,
@@ -108,7 +120,9 @@ export function mappingMiddleware<
   }
 }
 
-export function recoveryMiddleware<TEvent, TResult>(
+// DEPRECATED: map the old name to the new name
+export const recoveryMiddleware = createRecoveryMiddleware
+export function createRecoveryMiddleware<TEvent, TResult>(
   recoveryFn: (error: any, event: TEvent, context: Context) => Promise<TResult>,
 ): Middleware<TEvent, TResult> {
   return next => async (event, context) => {

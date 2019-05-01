@@ -23,22 +23,26 @@ for (var i = 0; i < 256; ++i) {
 }
 
 export function bytesToUuid(bytes: Array<number>): string {
-  const hex = bytesToHexString(bytes)
-  return [
-    hex.slice(0, 8),
-    '-',
-    hex.slice(8, 12),
-    '-',
-    hex.slice(12, 16),
-    '-',
-    hex.slice(16, 24),
-    '-',
-    hex.slice(24, 36),
-  ].join('')
+  const hexString = bytesToHexString(bytes)
+  return formatHexAsUUID(hexString)
 }
 
 export function bytesToHexString(bytes: Array<number>): string {
   return bytes.map(byte => byteToHex[byte]).join('')
+}
+
+export function formatHexAsUUID(hexString: string): string {
+  return [
+    hexString.slice(0, 8),
+    '-',
+    hexString.slice(8, 12),
+    '-',
+    hexString.slice(12, 16),
+    '-',
+    hexString.slice(16, 24),
+    '-',
+    hexString.slice(24, 36),
+  ].join('')
 }
 
 export function convertMaybeUuidToHexString(uuid?: string): string | void {
@@ -56,17 +60,7 @@ export function convertMaybeHexStringToUuid(hexString?: string): string | void {
   }
 
   // FIXME: handle case where its not a Hex string suitable for a UUID
-  return [
-    hexString.slice(0, 8),
-    '-',
-    hexString.slice(8, 12),
-    '-',
-    hexString.slice(12, 16),
-    '-',
-    hexString.slice(16, 24),
-    '-',
-    hexString.slice(24, 36),
-  ].join('')
+  return formatHexAsUUID(hexString)
 }
 
 // I hate this name too. Sorry.

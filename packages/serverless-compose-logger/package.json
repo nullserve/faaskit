@@ -13,11 +13,10 @@
     "build": "tsc",
     "test": "jest"
   },
-  "name": "serverless-compose",
-  "version": "2.4.0",
-  "description": "A lightweight framework for AWS Lambda middleware",
+  "name": "serverless-compose-logger",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
+  "version": "2.4.0",
   "repository": "https://github.com/DavidJFelix/serverless-compose",
   "author": "David J. Felix <felix.davidj@gmail.com>",
   "license": "Apache-2.0"
