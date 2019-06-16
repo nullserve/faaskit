@@ -1,41 +1,19 @@
-import {Context as LambdaContext} from 'aws-lambda'
-
-// Because Compose can create synthetic handler environments,
-// the context typing is loosened to allow for users to add their own
-export type Context = LambdaContext & Object
-
-export type Handler<TEvent = any, TResult = any, TContext = Context> = (
-  event: TEvent,
-  context: TContext,
-) => Promise<TResult>
-
-export type Middleware<
-  TEvent,
-  TResult,
-  TContext = Context,
-  TNextEvent = any,
-  TNextResult = any,
-  TNextContext = Context
-> = (
-  next: Handler<TNextEvent, TNextResult, TNextContext>,
-) => Handler<TEvent, TResult, TContext>
+import {Middleware} from './types'
 
 export type LogFunctionContext<TEvent, TResult> = {
   event: TEvent
   result: TResult
 }
 
-// DEPRECATED: map the old name to the new name
-export const timingLogMiddleware = createTimingLogMiddleware
 export function createTimingLogMiddleware<TEvent, TResult>(
   logFn: (
     duration: number,
     context?: LogFunctionContext<TEvent, TResult>,
   ) => Promise<void>,
 ): Middleware<TEvent, TResult> {
-  return next => async (event, context) => {
+  return next => async event => {
     const start = Date.now()
-    const result = await next(event, context)
+    const result = await next(event)
     const end = Date.now()
     const duration = end - start
     await logFn(duration, {event, result})
@@ -43,94 +21,61 @@ export function createTimingLogMiddleware<TEvent, TResult>(
   }
 }
 
-// DEPRECATED: map the old name to the new name
-export const validationMiddleware = createValidationMiddleware
 // Alias this with another name
-export const createSideEffectMiddleware = createValidationMiddleware
+export const creatEffectMiddleware = createValidationMiddleware
 export function createValidationMiddleware<TEvent, TResult>(
   validateFn: (event: TEvent) => Promise<void>,
 ): Middleware<TEvent, TResult> {
-  return next => async (event, context) => {
+  return next => async event => {
     await validateFn(event)
-    return await next(event, context)
+    return await next(event)
   }
 }
 
-// DEPRECATED: map the old name to the new name
-export const responseMappingMiddleware = createResponseMappingMiddleware
 export function createResponseMappingMiddleware<TFrom, TTo>(
   mapFn: (result: TFrom) => Promise<TTo>,
-): Middleware<any, TTo, Context, TFrom, any, Context> {
+): Middleware<any, TTo, TFrom, any> {
   return createMappingMiddleware(
-    async (event, context) => ({event, context}),
+    async event => event,
     async result => mapFn(result),
   )
 }
 
-// DEPRECATED: map the old name to the new name
-export const requestMappingMiddleware = createRequestMappingMiddleware
 export function createRequestMappingMiddleware<TFrom, TTo>(
   mapFn: (event: TFrom) => Promise<TTo>,
-): Middleware<TFrom, any, Context, TTo, any, Context> {
+): Middleware<TFrom, any, TTo, any> {
   return createMappingMiddleware(
-    async (event, context) => {
-      const mappedEvent = await mapFn(event)
-      return {
-        event: mappedEvent,
-        context: context,
-      }
-    },
+    async event => mapFn(event),
     async result => result,
   )
 }
 
-export type MappedEventContext<TEvent, TContext = Context> = {
-  event: TEvent
-  context: TContext
-}
-
-// DEPRECATED: map the old name to the new name
-export const mappingMiddleware = createMappingMiddleware
 export function createMappingMiddleware<
   TEventFrom,
   TResultFrom,
   TEventTo,
-  TResultTo,
-  TContextFrom = Context,
-  TContextTo = Context
+  TResultTo
 >(
-  preMapFn: (
-    event: TEventFrom,
-    context: TContextFrom,
-  ) => Promise<MappedEventContext<TEventTo, TContextTo>>,
-  postMapFn: (result: TResultFrom, context: TContextTo) => Promise<TResultTo>,
-): Middleware<
-  TEventFrom,
-  TResultTo,
-  TContextFrom,
-  TEventTo,
-  TResultFrom,
-  TContextTo
-> {
-  return next => async (event, context) => {
-    let mappedEvent = await preMapFn(event, context)
-    let result = await next(mappedEvent.event, mappedEvent.context)
-    let mappedResult = await postMapFn(result, mappedEvent.context)
+  preMapFn: (event: TEventFrom) => Promise<TEventTo>,
+  postMapFn: (result: TResultFrom) => Promise<TResultTo>,
+): Middleware<TEventFrom, TResultTo, TEventTo, TResultFrom> {
+  return next => async event => {
+    let mappedEvent = await preMapFn(event)
+    let result = await next(mappedEvent)
+    let mappedResult = await postMapFn(result)
     return mappedResult
   }
 }
 
-// DEPRECATED: map the old name to the new name
-export const recoveryMiddleware = createRecoveryMiddleware
 export function createRecoveryMiddleware<TEvent, TResult>(
-  recoveryFn: (error: any, event: TEvent, context: Context) => Promise<TResult>,
+  recoveryFn: (error: any, event: TEvent) => Promise<TResult>,
 ): Middleware<TEvent, TResult> {
-  return next => async (event, context) => {
+  return next => async event => {
     let response
     try {
-      response = await next(event, context)
+      response = await next(event)
     } catch (error) {
-      response = await recoveryFn(error, event, context)
+      response = await recoveryFn(error, event)
     }
     return response
   }

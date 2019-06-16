@@ -13,12 +13,12 @@
     "build": "tsc",
     "test": "jest"
   },
-  "name": "serverless-compose",
-  "version": "2.4.0",
-  "description": "A lightweight framework for AWS Lambda middleware",
+  "name": "@nullserve/compose",
+  "version": "1.0.0",
+  "description": "A lightweight framework for functions as a service",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
-  "repository": "https://github.com/DavidJFelix/serverless-compose",
+  "repository": "https://github.com/nullserve/compose",
   "author": "David J. Felix <felix.davidj@gmail.com>",
   "license": "Apache-2.0"
 }

@@ -1,8 +1,8 @@
-import {Handler, Middleware} from './middleware'
+import {MiddlewareStack, Middleware, Handler} from './types'
 
 export function compose<TEvent, TResult>(
   ...middlewares: Middleware<any, any>[]
-): Middleware<TEvent, TResult> {
+): MiddlewareStack<TEvent, TResult, any, any> {
   return middlewares.reduce(
     (a: Middleware<TEvent, TResult>, b) => next => a(b(next)),
     (next: Handler<TEvent, TResult>) => next,
