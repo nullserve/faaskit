@@ -1,6 +1,5 @@
 {
   "devDependencies": {
-    "@types/aws-lambda": "^8.10.14",
     "@types/jest": "^23.3.9",
     "@types/mockdate": "^2.0.0",
     "codecov": "^3.1.0",
@@ -9,16 +8,19 @@
     "ts-jest": "^23.10.4",
     "typescript": "^3.1.5"
   },
+  "engines": {
+    "node": ">=8.0.0"
+  },
   "scripts": {
     "build": "tsc",
     "test": "jest"
   },
-  "name": "@nullserve/compose",
+  "name": "@nullserve/faaskit-context",
   "version": "1.0.0",
-  "description": "A lightweight framework for functions as a service",
+  "description": "A lightweight context design for faaskit using node's async_hooks api",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
-  "repository": "https://github.com/nullserve/compose",
+  "repository": "https://github.com/nullserve/faaskit",
   "author": "David J. Felix <felix.davidj@gmail.com>",
   "license": "Apache-2.0"
 }

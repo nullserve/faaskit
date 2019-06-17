@@ -1,0 +1,26 @@
+{
+  "devDependencies": {
+    "@types/jest": "^23.3.9",
+    "@types/mockdate": "^2.0.0",
+    "codecov": "^3.1.0",
+    "jest": "^23.6.0",
+    "mockdate": "^2.0.2",
+    "ts-jest": "^23.10.4",
+    "typescript": "^3.1.5"
+  },
+  "engines": {
+    "node": ">=8.0.0"
+  },
+  "scripts": {
+    "build": "tsc",
+    "test": "jest"
+  },
+  "name": "@nullserve/faaskit-core",
+  "version": "1.0.0",
+  "description": "A lightweight middleware design for faaskit",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "repository": "https://github.com/nullserve/faaskit",
+  "author": "David J. Felix <felix.davidj@gmail.com>",
+  "license": "Apache-2.0"
+}

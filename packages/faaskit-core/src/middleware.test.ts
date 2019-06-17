@@ -4,7 +4,7 @@ import {
   requestMappingMiddleware,
   responseMappingMiddleware,
   validationMiddleware,
-} from '.'
+} from '../src'
 import MockDate from 'mockdate'
 import {Context} from 'aws-lambda'
 
