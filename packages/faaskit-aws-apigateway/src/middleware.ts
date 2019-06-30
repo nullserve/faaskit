@@ -1,18 +1,12 @@
 import {APIGatewayProxyEvent, APIGatewayProxyResult} from 'aws-lambda'
 import {mappingMiddleware, Middleware, Context} from 'serverless-compose'
-import {
-  LoggerContextMixin,
-  ExtendedElasticCommonSchema,
-} from 'serverless-compose-logger'
-import {RequestIdentifierContextMixin} from 'serverless-compose-request-identifier'
-
 import {toHeaderCase, remapKeys} from './utils'
 import {NotAcceptable} from './http-errors'
 
 export const APIGatewayProxyLogMiddleware: Middleware<
   APIGatewayProxyEvent,
   APIGatewayProxyResult,
-  Context & LoggerContextMixin & RequestIdentifierContextMixin,
+  Context,
   APIGatewayProxyEvent,
   APIGatewayProxyResult
 > = next => {
@@ -21,81 +15,10 @@ export const APIGatewayProxyLogMiddleware: Middleware<
     try {
       const response = await next(event, context)
       const t1 = new Date()
-      const log: ExtendedElasticCommonSchema = {
-        correlation: {
-          id: context.requestIdentity.correlationId,
-        },
-        client: {
-          ip: event.requestContext.identity.sourceIp,
-        },
-        cloud: {
-          account: {
-            id: event.requestContext.accountId,
-          },
-        },
-        http: {
-          request: {
-            method: event.httpMethod,
-            // headers
-          },
-          response: {
-            // Everything here
-            status_code: response.statusCode,
-          },
-        },
-        lambda: {
-          request: {
-            id: event.requestContext.requestId,
-          },
-          arn: context.invokedFunctionArn,
-        },
-        log: {
-          level: 'INFO',
-        },
-        parent: {
-          id: context.requestIdentity.parentId,
-        },
-        trace: {
-          id: context.requestIdentity.traceId,
-        },
-        transaction: {
-          id: context.requestIdentity.spanId,
-          sampled: true,
-          type: 'APIGatewayProxyMiddleware event',
-        },
-        message: 'APIGatewayProxyMiddleware completed',
-        url: {
-          path: event.path,
-          // query
-        },
-      }
-      context.logger.info(log)
+
       return response
     } catch (e) {
       const t1 = new Date()
-      const log: ExtendedElasticCommonSchema = {
-        client: {
-          ip: event.requestContext.identity.sourceIp,
-        },
-        cloud: {
-          account: {
-            id: event.requestContext.accountId,
-          },
-        },
-        error: {
-          message: e.message,
-        },
-        http: {
-          request: {
-            method: event.httpMethod,
-          },
-        },
-        log: {
-          level: 'CRTICAL',
-        },
-        message:
-          'APIGatewayProxyMiddleware recieved an exception when awaiting next handler',
-      }
       throw e
     }
   }

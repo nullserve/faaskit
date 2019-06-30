@@ -1,23 +1,7 @@
 import {compose, Middleware} from '../src'
-import {Context} from 'aws-lambda'
 
 describe('compose', () => {
   const expectedEvent = 'expected event'
-  const expectedContext: Context = {
-    callbackWaitsForEmptyEventLoop: true,
-    functionName: 'functionName',
-    functionVersion: 'functionVersion',
-    invokedFunctionArn: 'invokedFunctionArn',
-    memoryLimitInMB: 1,
-    awsRequestId: 'awsRequestId',
-    logGroupName: 'logGroupName',
-    logStreamName: 'logStreamName',
-    getRemainingTimeInMillis: () => 1,
-    done: () => {},
-    fail: () => {},
-    succeed: () => {},
-  }
-
   const expectedResult = 'expected result'
 
   const mockHandler = jest.fn().mockResolvedValue(expectedResult)
@@ -56,18 +40,15 @@ describe('compose', () => {
 
   test('wraps middleware in order', async () => {
     // Given
-    const firstMiddleware: Middleware<string, string> = next => async (
-      event,
-      context,
-    ) => {
-      const result = await next(event, context)
+    const firstMiddleware: Middleware<string, string> = next => async event => {
+      const result = await next(event)
       return 'first ' + result
     }
-    const secondMiddleware: Middleware<string, string> = next => async (
-      event,
-      context,
-    ) => {
-      const result = await next(event, context)
+    const secondMiddleware: Middleware<
+      string,
+      string
+    > = next => async event => {
+      const result = await next(event)
       return 'second ' + result
     }
     const middlewares = compose(
@@ -82,7 +63,7 @@ describe('compose', () => {
     )
 
     // When
-    const result = await wrappedHandler(expectedEvent, expectedContext)
+    const result = await wrappedHandler(expectedEvent)
 
     // Then
     expect(result).toBe('first second expected')

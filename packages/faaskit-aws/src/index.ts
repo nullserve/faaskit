@@ -37,7 +37,7 @@ export function convertHandler<TEvent, TResult>(
     event,
     context,
   ) => {
-    Context.Provider(context)
+    Context.provide(context)
     return handler(event)
   }
   return wrappedHandler

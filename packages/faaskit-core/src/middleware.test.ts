@@ -1,30 +1,15 @@
 import {
-  timingLogMiddleware,
-  recoveryMiddleware,
-  requestMappingMiddleware,
-  responseMappingMiddleware,
-  validationMiddleware,
+  createTimingLogMiddleware,
+  createRecoveryMiddleware,
+  createRequestMappingMiddleware,
+  createResponseMappingMiddleware,
+  createValidationMiddleware,
 } from '../src'
 import MockDate from 'mockdate'
-import {Context} from 'aws-lambda'
 
 describe('timingLogMiddleware', () => {
   const blackHoleTimingLogger = async () => {}
   const expectedEvent = 'expected event'
-  const expectedContext: Context = {
-    callbackWaitsForEmptyEventLoop: true,
-    functionName: 'functionName',
-    functionVersion: 'functionVersion',
-    invokedFunctionArn: 'invokedFunctionArn',
-    memoryLimitInMB: 1,
-    awsRequestId: 'awsRequestId',
-    logGroupName: 'logGroupName',
-    logStreamName: 'logStreamName',
-    getRemainingTimeInMillis: () => 1,
-    done: () => {},
-    fail: () => {},
-    succeed: () => {},
-  }
   const expectedResult = 'expected result'
 
   const mockHandler = jest.fn().mockResolvedValue(expectedResult)
@@ -42,7 +27,7 @@ describe('timingLogMiddleware', () => {
 
   test('returns a middleware function', () => {
     // When
-    const middleware = timingLogMiddleware(blackHoleTimingLogger)
+    const middleware = createTimingLogMiddleware(blackHoleTimingLogger)
 
     // Then
     expect(middleware).toBeInstanceOf(Function)
@@ -50,23 +35,23 @@ describe('timingLogMiddleware', () => {
 
   test('calls handler function with same parameters it is passed', async () => {
     // Given
-    const middleware = timingLogMiddleware(blackHoleTimingLogger)
+    const middleware = createTimingLogMiddleware(blackHoleTimingLogger)
     const wrappedHandler = middleware(mockHandler)
 
     // When
-    await wrappedHandler(expectedEvent, expectedContext)
+    await wrappedHandler(expectedEvent)
 
     //Then
-    expect(mockHandler).toBeCalledWith(expectedEvent, expectedContext)
+    expect(mockHandler).toBeCalledWith(expectedEvent)
   })
 
   test('returns value that handler returns', async () => {
     // Given
-    const middleware = timingLogMiddleware(blackHoleTimingLogger)
+    const middleware = createTimingLogMiddleware(blackHoleTimingLogger)
     const wrappedHandler = middleware(mockHandler)
 
     // When
-    const result = await wrappedHandler(expectedEvent, expectedContext)
+    const result = await wrappedHandler(expectedEvent)
 
     //Then
     expect(result).toBe(expectedResult)
@@ -74,14 +59,14 @@ describe('timingLogMiddleware', () => {
 
   test('calls timing log function with duration of call', async () => {
     // Given
-    const middleware = timingLogMiddleware(mockTimingLogger)
+    const middleware = createTimingLogMiddleware(mockTimingLogger)
     const wrappedHandler = middleware(async () => {
       MockDate.set(500)
       return expectedResult
     })
 
     // When
-    await wrappedHandler(expectedEvent, expectedContext)
+    await wrappedHandler(expectedEvent)
 
     // Then
     expect(mockTimingLogger).toBeCalledWith(500, {
@@ -93,20 +78,6 @@ describe('timingLogMiddleware', () => {
 
 describe('validationMiddleware', () => {
   const inputEvent = 'input event'
-  const inputContext: Context = {
-    callbackWaitsForEmptyEventLoop: true,
-    functionName: 'functionName',
-    functionVersion: 'functionVersion',
-    invokedFunctionArn: 'invokedFunctionArn',
-    memoryLimitInMB: 1,
-    awsRequestId: 'awsRequestId',
-    logGroupName: 'logGroupName',
-    logStreamName: 'logStreamName',
-    getRemainingTimeInMillis: () => 1,
-    done: () => {},
-    fail: () => {},
-    succeed: () => {},
-  }
   const expectedResult = 'expected result'
   const expectedError = 'expected error'
   const mockHandler = jest.fn().mockResolvedValue(expectedResult)
@@ -131,7 +102,7 @@ describe('validationMiddleware', () => {
 
   test('returns a middleware function', () => {
     // When
-    const middleware = validationMiddleware(mockPassesValidationFn)
+    const middleware = createValidationMiddleware(mockPassesValidationFn)
 
     // Then
     expect(middleware).toBeInstanceOf(Function)
@@ -139,11 +110,11 @@ describe('validationMiddleware', () => {
 
   test('calls validator function with input event', async () => {
     // Given
-    const middleware = validationMiddleware(mockPassesValidationFn)
+    const middleware = createValidationMiddleware(mockPassesValidationFn)
     const wrappedHandler = middleware(mockHandler)
 
     // When
-    await wrappedHandler(inputEvent, inputContext)
+    await wrappedHandler(inputEvent)
 
     // Then
     expect(mockPassesValidationFn).toBeCalledWith(inputEvent)
@@ -151,45 +122,29 @@ describe('validationMiddleware', () => {
 
   test('calls handler function with input event', async () => {
     // Given
-    const middleware = validationMiddleware(mockPassesValidationFn)
+    const middleware = createValidationMiddleware(mockPassesValidationFn)
     const wrappedHandler = middleware(mockHandler)
 
     // When
-    await wrappedHandler(inputEvent, inputContext)
+    await wrappedHandler(inputEvent)
 
     // Then
-    expect(mockHandler).toBeCalledWith(inputEvent, inputContext)
+    expect(mockHandler).toBeCalledWith(inputEvent)
   })
 
   test('throws expected exception when validation fails', async () => {
     // Given
-    const middleware = validationMiddleware(mockFailsValidationFn)
+    const middleware = createValidationMiddleware(mockFailsValidationFn)
     const wrappedHandler = middleware(mockHandler)
 
     // Then
-    await expect(wrappedHandler(inputEvent, inputContext)).rejects.toBe(
-      expectedError,
-    )
+    await expect(wrappedHandler(inputEvent)).rejects.toBe(expectedError)
     expect(mockHandler).not.toBeCalled()
   })
 })
 
 describe('responseMappingMiddleware', () => {
   const inputEvent = 'input event'
-  const inputContext: Context = {
-    callbackWaitsForEmptyEventLoop: true,
-    functionName: 'functionName',
-    functionVersion: 'functionVersion',
-    invokedFunctionArn: 'invokedFunctionArn',
-    memoryLimitInMB: 1,
-    awsRequestId: 'awsRequestId',
-    logGroupName: 'logGroupName',
-    logStreamName: 'logStreamName',
-    getRemainingTimeInMillis: () => 1,
-    done: () => {},
-    fail: () => {},
-    succeed: () => {},
-  }
   const expectedResult = 'expected result'
   const mockHandler = jest.fn().mockResolvedValue(expectedResult)
   const mockMappingFn = jest.fn(
@@ -206,7 +161,7 @@ describe('responseMappingMiddleware', () => {
 
   test('returns middleware function', () => {
     // When
-    const middleware = responseMappingMiddleware(mockMappingFn)
+    const middleware = createResponseMappingMiddleware(mockMappingFn)
 
     // Then
     expect(middleware).toBeInstanceOf(Function)
@@ -214,11 +169,11 @@ describe('responseMappingMiddleware', () => {
 
   test('calls mapper function with handler response', async () => {
     // Given
-    const middleware = responseMappingMiddleware(mockMappingFn)
+    const middleware = createResponseMappingMiddleware(mockMappingFn)
     const wrappedHandler = middleware(mockHandler)
 
     // When
-    await wrappedHandler(inputEvent, inputContext)
+    await wrappedHandler(inputEvent)
 
     // Then
     expect(mockMappingFn).toBeCalledWith(expectedResult)
@@ -226,23 +181,23 @@ describe('responseMappingMiddleware', () => {
 
   test('calls handler function with input event', async () => {
     // Given
-    const middleware = responseMappingMiddleware(mockMappingFn)
+    const middleware = createResponseMappingMiddleware(mockMappingFn)
     const wrappedHandler = middleware(mockHandler)
 
     // When
-    await wrappedHandler(inputEvent, inputContext)
+    await wrappedHandler(inputEvent)
 
     // Then
-    expect(mockHandler).toBeCalledWith(inputEvent, inputContext)
+    expect(mockHandler).toBeCalledWith(inputEvent)
   })
 
   test('returns mapped handler response', async () => {
     // Given
-    const middleware = responseMappingMiddleware(mockMappingFn)
+    const middleware = createResponseMappingMiddleware(mockMappingFn)
     const wrappedHandler = middleware(mockHandler)
 
     // When
-    const result = await wrappedHandler(inputEvent, inputContext)
+    const result = await wrappedHandler(inputEvent)
 
     // Then
     expect(result).toBe(`mapped ${expectedResult}`)
@@ -251,20 +206,6 @@ describe('responseMappingMiddleware', () => {
 
 describe('requestMappingMiddleware', () => {
   const inputEvent = 'input event'
-  const inputContext: Context = {
-    callbackWaitsForEmptyEventLoop: true,
-    functionName: 'functionName',
-    functionVersion: 'functionVersion',
-    invokedFunctionArn: 'invokedFunctionArn',
-    memoryLimitInMB: 1,
-    awsRequestId: 'awsRequestId',
-    logGroupName: 'logGroupName',
-    logStreamName: 'logStreamName',
-    getRemainingTimeInMillis: () => 1,
-    done: () => {},
-    fail: () => {},
-    succeed: () => {},
-  }
   const expectedResult = 'expected result'
   const mockHandler = jest.fn().mockResolvedValue(expectedResult)
   const mockMappingFn = jest.fn(
@@ -281,7 +222,7 @@ describe('requestMappingMiddleware', () => {
 
   test('returns middleware function', () => {
     // When
-    const middleware = requestMappingMiddleware(mockMappingFn)
+    const middleware = createRequestMappingMiddleware(mockMappingFn)
 
     // Then
     expect(middleware).toBeInstanceOf(Function)
@@ -289,23 +230,23 @@ describe('requestMappingMiddleware', () => {
 
   test('calls handler function with mapped event', async () => {
     // Given
-    const middleware = requestMappingMiddleware(mockMappingFn)
+    const middleware = createRequestMappingMiddleware(mockMappingFn)
     const wrappedHandler = middleware(mockHandler)
 
     // When
-    await wrappedHandler(inputEvent, inputContext)
+    await wrappedHandler(inputEvent)
 
     // Then
-    expect(mockHandler).toBeCalledWith(`mapped ${inputEvent}`, inputContext)
+    expect(mockHandler).toBeCalledWith(`mapped ${inputEvent}`)
   })
 
   test('calls mapper function with input event', async () => {
     // Given
-    const middleware = requestMappingMiddleware(mockMappingFn)
+    const middleware = createRequestMappingMiddleware(mockMappingFn)
     const wrappedHandler = middleware(mockHandler)
 
     // When
-    await wrappedHandler(inputEvent, inputContext)
+    await wrappedHandler(inputEvent)
 
     // Then
     expect(mockMappingFn).toBeCalledWith(inputEvent)
@@ -313,11 +254,11 @@ describe('requestMappingMiddleware', () => {
 
   test('returns value that handler returns', async () => {
     // Given
-    const middleware = requestMappingMiddleware(mockMappingFn)
+    const middleware = createRequestMappingMiddleware(mockMappingFn)
     const wrappedHandler = middleware(mockHandler)
 
     // When
-    const result = await wrappedHandler(inputEvent, inputContext)
+    const result = await wrappedHandler(inputEvent)
 
     // Then
     expect(result).toBe(expectedResult)
@@ -326,27 +267,12 @@ describe('requestMappingMiddleware', () => {
 
 describe('recoveryHandler', () => {
   const inputEvent = 'input event'
-  const inputContext: Context = {
-    callbackWaitsForEmptyEventLoop: true,
-    functionName: 'functionName',
-    functionVersion: 'functionVersion',
-    invokedFunctionArn: 'invokedFunctionArn',
-    memoryLimitInMB: 1,
-    awsRequestId: 'awsRequestId',
-    logGroupName: 'logGroupName',
-    logStreamName: 'logStreamName',
-    getRemainingTimeInMillis: () => 1,
-    done: () => {},
-    fail: () => {},
-    succeed: () => {},
-  }
-
   const expectedResolve = 'expected resolve'
   const expectedReject = 'expected reject'
   const resolveHandler = jest.fn().mockResolvedValue(expectedResolve)
   const rejectHandler = jest.fn().mockRejectedValue(expectedReject)
 
-  const recoveryFn = (error: any, event: any, context: Context) =>
+  const recoveryFn = (error: any, event: any) =>
     new Promise(resolve => {
       resolve(error)
     })
@@ -361,7 +287,7 @@ describe('recoveryHandler', () => {
 
   test('returns a middleware function', () => {
     // When
-    const middleware = recoveryMiddleware(recoveryFn)
+    const middleware = createRecoveryMiddleware(recoveryFn)
 
     // Then
     expect(middleware).toBeInstanceOf(Function)
@@ -369,11 +295,11 @@ describe('recoveryHandler', () => {
 
   test('recovers from failing handler', async () => {
     // Given
-    const middleware = recoveryMiddleware(recoveryFn)
+    const middleware = createRecoveryMiddleware(recoveryFn)
     const wrappedHandler = middleware(rejectHandler)
 
     // When
-    const result = await wrappedHandler(inputEvent, inputContext)
+    const result = await wrappedHandler(inputEvent)
 
     // Then
     expect(result).toBe(expectedReject)
@@ -381,11 +307,11 @@ describe('recoveryHandler', () => {
 
   test('returns value from successful handler', async () => {
     // Given
-    const middleware = recoveryMiddleware(mockRecoveryFn)
+    const middleware = createRecoveryMiddleware(mockRecoveryFn)
     const wrappedHandler = middleware(resolveHandler)
 
     // When
-    const result = await wrappedHandler(inputEvent, inputContext)
+    const result = await wrappedHandler(inputEvent)
 
     // Then
     expect(mockRecoveryFn).not.toHaveBeenCalled()
