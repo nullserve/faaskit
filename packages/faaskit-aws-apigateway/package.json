@@ -1,22 +1,20 @@
 {
-  "name": "serverless-compose-aws-api-gateway-utils",
-  "version": "2.4.0",
+  "name": "@nullserve/faaskit-aws-apigateway",
+  "version": "1.0.0",
   "author": "David J. Felix <felix.davidj@gmail.com>",
-  "homepage": "https://github.com/DavidJFelix/serverless-compose#readme",
+  "homepage": "https://github.com/nullserve/faaskit",
   "license": "Apache-2.0",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/DavidJFelix/serverless-compose.git"
+    "url": "git+https://github.com/nullserve/faaskit.git"
   },
   "bugs": {
-    "url": "https://github.com/DavidJFelix/serverless-compose/issues"
+    "url": "https://github.com/nullserve/faaskit/issues"
   },
   "dependencies": {
-    "serverless-compose": "^2.4.0",
-    "serverless-compose-logger": "^2.4.0",
-    "serverless-compose-request-identifier": "^2.4.0"
+    "@nullserve/faaskit-core": "^1.0.0"
   },
   "devDependencies": {
     "@types/aws-lambda": "^8.10.19",
