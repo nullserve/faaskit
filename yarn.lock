@@ -2,6 +2,11 @@
 # yarn lockfile v1
 
 
+"@azure/functions@^1.0.3":
+  version "1.0.3"
+  resolved "https://registry.yarnpkg.com/@azure/functions/-/functions-1.0.3.tgz#1b51d58f188903f59f39bd093fe6f7b8d88deb11"
+  integrity sha512-/D+sz6LgWT+A6RRW2zhwlwhKqqDSxL6HCF1Q1lN0iXolD2FfNFZpzrOxGyGYEEXp/5Dtjp12bcRTBhMH1cBi2Q==
+
 "@babel/code-frame@^7.0.0-beta.35":
   version "7.0.0"
   resolved "https://registry.yarnpkg.com/@babel/code-frame/-/code-frame-7.0.0.tgz#06e2ab19bdb535385559aabb5ba59729482800f8"
@@ -697,6 +702,11 @@
   version "8.10.22"
   resolved "https://registry.yarnpkg.com/@types/aws-lambda/-/aws-lambda-8.10.22.tgz#5feecbee29436606edf771a9ee330871b224091c"
   integrity sha512-FzGmRH253fQDxH0YRfDDwQqKF3IBAiBEVT2cvJR0pI3O+W4L0PktZOxpp5MMNHp1rlHWmHb7VN9X0NAX8IgDKA==
+
+"@types/aws-lambda@^8.10.27":
+  version "8.10.27"
+  resolved "https://registry.yarnpkg.com/@types/aws-lambda/-/aws-lambda-8.10.27.tgz#33366bb26d8fb116f414e7c1855df5a0b6aa1d3d"
+  integrity sha512-9QjcjORRtgG5KPVHWqGZ0F2Uo/ALUWQ5D7qfJEco0fEjoSbA908w05RXql7YPS72jQ1w6I+pr+8pQPqBPlYnSw==
 
 "@types/jest@^23.3.9":
   version "23.3.14"
