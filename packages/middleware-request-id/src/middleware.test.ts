@@ -2,11 +2,12 @@ import {
   DefaultAPIGatewayProxyRequestIdentifyingMiddleware,
   RequestIdentifierContextMixin,
 } from './middleware'
-import {Context, Handler} from 'serverless-compose'
+import {Handler} from '@faaskit/core'
+import {Context} from '@faaskit/context'
 import {
   APIGatewayProxyEvent,
   APIGatewayProxyResult,
-  APIGatewayProxyHandler,
+  Context as AWSContext,
 } from 'aws-lambda'
 import * as uuid from 'uuid/v4'
 
@@ -53,19 +54,22 @@ describe('DefaultAPIGatewayProxyRequestIdentifyingMiddleware', () => {
       },
     },
   }
-  const mockContext: Context = {
-    callbackWaitsForEmptyEventLoop: true,
-    functionName: 'functionName',
-    functionVersion: 'functionVersion',
-    invokedFunctionArn: 'invokedFunctionArn',
-    memoryLimitInMB: 1,
-    awsRequestId: 'awsRequestId',
-    logGroupName: 'logGroupName',
-    logStreamName: 'logStreamName',
-    getRemainingTimeInMillis: () => 1,
-    done: () => {},
-    fail: () => {},
-    succeed: () => {},
+  const mockContext: Context<AWSContext> = {
+    provide: () => {},
+    consume: () => ({
+      callbackWaitsForEmptyEventLoop: true,
+      functionName: 'functionName',
+      functionVersion: 'functionVersion',
+      invokedFunctionArn: 'invokedFunctionArn',
+      memoryLimitInMB: 1,
+      awsRequestId: 'awsRequestId',
+      logGroupName: 'logGroupName',
+      logStreamName: 'logStreamName',
+      getRemainingTimeInMillis: () => 1,
+      done: () => {},
+      fail: () => {},
+      succeed: () => {},
+    }),
   }
 
   const mockRequestIdentifierContextMixin: RequestIdentifierContextMixin = {
@@ -121,7 +125,7 @@ describe('DefaultAPIGatewayProxyRequestIdentifyingMiddleware', () => {
     )
 
     // When
-    await wrappedHandler(mockEmptyEvent, mockContext)
+    await wrappedHandler(mockEmptyEvent)
 
     // Then
     expect(mockHandler).toBeCalled()
@@ -133,7 +137,7 @@ describe('DefaultAPIGatewayProxyRequestIdentifyingMiddleware', () => {
     )
 
     // When
-    await wrappedHandler(mockEmptyEvent, mockContext)
+    await wrappedHandler(mockEmptyEvent)
 
     // Then
     expect(mockUuid).toBeCalled()
@@ -149,7 +153,7 @@ describe('DefaultAPIGatewayProxyRequestIdentifyingMiddleware', () => {
     )
 
     // When
-    const result = await wrappedHandler(mockEmptyEvent, mockContext)
+    const result = await wrappedHandler(mockEmptyEvent)
 
     // Then
     expect(result.headers).toEqual({
@@ -180,7 +184,7 @@ describe('DefaultAPIGatewayProxyRequestIdentifyingMiddleware', () => {
     )
 
     // When
-    const result = await wrappedHandler(mockEmptyEvent, mockContext)
+    const result = await wrappedHandler(mockEmptyEvent)
 
     // Then
     expect(result.headers).toHaveProperty('test-header', 'test')

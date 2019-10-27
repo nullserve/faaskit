@@ -68,17 +68,11 @@ export function convertMaybeHexStringToUuid(hexString?: string): string | void {
 export const DefaultAPIGatewayProxyRequestIdentifyingMiddleware: Middleware<
   APIGatewayProxyEvent,
   APIGatewayProxyResult,
-  Context,
   APIGatewayProxyEvent,
-  APIGatewayProxyResult,
-  Context & RequestIdentifierContextMixin
+  APIGatewayProxyResult
 > = (
-  next: Handler<
-    APIGatewayProxyEvent,
-    APIGatewayProxyResult,
-    Context & RequestIdentifierContextMixin
-  >,
-) => async (event: APIGatewayProxyEvent, context: Context & Object) => {
+  next: Handler<APIGatewayProxyEvent, APIGatewayProxyResult>,
+) => async event => {
   const trace = new Array<number>(16)
   uuidv4(null, trace)
 
@@ -131,10 +125,7 @@ export const DefaultAPIGatewayProxyRequestIdentifyingMiddleware: Middleware<
       convertMaybeUuidToHexString(correlationId) ||
       bytesToHexString(trace),
   }
-  const result = await next(event, {
-    ...context,
-    requestIdentity: requestIdentifierContext,
-  })
+  const result = await next(event)
   const headers = {
     'correlation-id': requestIdentifierContext.correlationId,
     'x-correlation-id': requestIdentifierContext.correlationId,

@@ -1,19 +1,18 @@
 import {APIGatewayProxyEvent, APIGatewayProxyResult} from 'aws-lambda'
-import {mappingMiddleware, Middleware, Context} from '@faaskit/core'
+import {createMappingMiddleware, Middleware} from '@faaskit/core'
 import {toHeaderCase, remapKeys} from './utils'
 import {NotAcceptable} from './http-errors'
 
 export const APIGatewayProxyLogMiddleware: Middleware<
   APIGatewayProxyEvent,
   APIGatewayProxyResult,
-  Context,
   APIGatewayProxyEvent,
   APIGatewayProxyResult
 > = next => {
-  return async (event, context) => {
+  return async event => {
     const t0 = new Date()
     try {
-      const response = await next(event, context)
+      const response = await next(event)
       const t1 = new Date()
 
       return response
@@ -27,25 +26,21 @@ export const APIGatewayProxyLogMiddleware: Middleware<
 export const HeaderNormalizingMiddleware: Middleware<
   APIGatewayProxyEvent,
   APIGatewayProxyResult,
-  Context,
   APIGatewayProxyEvent,
   APIGatewayProxyResult
-> = mappingMiddleware<
+> = createMappingMiddleware<
   APIGatewayProxyEvent,
   APIGatewayProxyResult,
   APIGatewayProxyEvent,
   APIGatewayProxyResult
 >(
-  async (event, context) => {
+  async event => {
     return {
-      event: {
-        ...event,
-        headers: remapKeys(event.headers, key => key.toLowerCase()),
-        multiValueHeaders: remapKeys(event.multiValueHeaders, key =>
-          key.toLowerCase(),
-        ),
-      },
-      context,
+      ...event,
+      headers: remapKeys(event.headers, key => key.toLowerCase()),
+      multiValueHeaders: remapKeys(event.multiValueHeaders, key =>
+        key.toLowerCase(),
+      ),
     }
   },
   async result => {
@@ -90,8 +85,8 @@ export interface JSONResponseMiddlewareOptions {
 
 export function createJSONResponseMiddleware(
   options?: JSONResponseMiddlewareOptions,
-): Middleware<APIGatewayProxyEvent, APIGatewayProxyResult, Context> {
-  return next => async (event, context) => {
+): Middleware<APIGatewayProxyEvent, APIGatewayProxyResult> {
+  return next => async event => {
     const contentTypes =
       options && options.contentTypes
         ? options.contentTypes
@@ -111,7 +106,7 @@ export function createJSONResponseMiddleware(
         },
       )
     }
-    const result = await next(event, context)
+    const result = await next(event)
     return {
       statusCode: 200,
       ...result,
