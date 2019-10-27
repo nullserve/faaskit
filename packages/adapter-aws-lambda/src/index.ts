@@ -1,7 +1,7 @@
 import {Context as LambdaContext, Handler as LambdaHandler} from 'aws-lambda'
 
-import {Handler as FaasHandler} from '@nullserve/faaskit-core'
-import {createContext} from '@nullserve/faaskit-context'
+import {Handler as FaasHandler} from '@faaskit/core'
+import {createContext} from '@faaskit/context'
 
 export type AWSMiddleware<
   TEvent,

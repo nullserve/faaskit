@@ -1,6 +1,6 @@
 {
-  "name": "@nullserve/faaskit-aws",
-  "version": "1.0.0",
+  "name": "@faaskit/adapter-aws-lambda",
+  "version": "0.0.0",
   "main": "index.js",
   "license": "Apache-2.0",
   "devDependencies": {
