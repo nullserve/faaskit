@@ -189,5 +189,5 @@ describe('DefaultAPIGatewayProxyRequestIdentifyingMiddleware', () => {
     // Then
     expect(result.headers).toHaveProperty('test-header', 'test')
   })
-  test('handles permulatations of headers', () => {})
+  test('handles permutations of headers', () => {})
 })
