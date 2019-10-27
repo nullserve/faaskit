@@ -15,9 +15,9 @@
     "build": "tsc",
     "test": "jest"
   },
-  "name": "@nullserve/faaskit-core",
-  "version": "1.0.0",
-  "description": "A lightweight middleware design for faaskit",
+  "name": "@faaslkit/context",
+  "version": "0.0.0",
+  "description": "A lightweight context design for faaskit using node's async_hooks api",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "repository": "https://github.com/nullserve/faaskit",

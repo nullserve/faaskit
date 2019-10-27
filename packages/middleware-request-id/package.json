@@ -1,20 +1,17 @@
 {
-  "name": "@nullserve/faaskit-aws-apigateway",
-  "version": "1.0.0",
+  "name": "@faaskit/middleware-request-id",
+  "version": "0.0.0",
   "author": "David J. Felix <felix.davidj@gmail.com>",
-  "homepage": "https://github.com/nullserve/faaskit",
+  "homepage": "https://github.com/NullServe/faaskit#readme",
   "license": "Apache-2.0",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/nullserve/faaskit.git"
+    "url": "git+https://github.com/NullServe/faaskit.git"
   },
   "bugs": {
-    "url": "https://github.com/nullserve/faaskit/issues"
-  },
-  "dependencies": {
-    "@nullserve/faaskit-core": "^1.0.0"
+    "url": "https://github.com/NullServe/faaskit/issues"
   },
   "devDependencies": {
     "@types/aws-lambda": "^8.10.19",

@@ -1,4 +1,5 @@
-import {Context, Middleware, Handler} from 'serverless-compose'
+import {Middleware, Handler} from '@faaskit/core'
+import {Context} from '@faaskit/context'
 import {APIGatewayProxyEvent, APIGatewayProxyResult} from 'aws-lambda'
 import uuidv4 from 'uuid/v4'
 

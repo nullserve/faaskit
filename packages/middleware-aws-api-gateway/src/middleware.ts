@@ -1,5 +1,5 @@
 import {APIGatewayProxyEvent, APIGatewayProxyResult} from 'aws-lambda'
-import {mappingMiddleware, Middleware, Context} from 'serverless-compose'
+import {mappingMiddleware, Middleware, Context} from '@faaskit/core'
 import {toHeaderCase, remapKeys} from './utils'
 import {NotAcceptable} from './http-errors'
 

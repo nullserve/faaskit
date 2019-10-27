@@ -1,21 +1,17 @@
 {
-  "name": "serverless-compose-request-identifier",
-  "version": "2.4.0",
+  "name": "@faaskit/middleware-aws-api-gateway",
+  "version": "1.0.0",
   "author": "David J. Felix <felix.davidj@gmail.com>",
-  "homepage": "https://github.com/DavidJFelix/serverless-compose#readme",
+  "homepage": "https://github.com/nullserve/faaskit",
   "license": "Apache-2.0",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/DavidJFelix/serverless-compose.git"
+    "url": "git+https://github.com/nullserve/faaskit.git"
   },
   "bugs": {
-    "url": "https://github.com/DavidJFelix/serverless-compose/issues"
-  },
-  "dependencies": {
-    "serverless-compose": "^2.4.0",
-    "uuid": "^3.3.2"
+    "url": "https://github.com/nullserve/faaskit/issues"
   },
   "devDependencies": {
     "@types/aws-lambda": "^8.10.19",
