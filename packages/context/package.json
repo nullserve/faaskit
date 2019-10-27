@@ -15,7 +15,7 @@
     "build": "tsc",
     "test": "jest"
   },
-  "name": "@faaslkit/context",
+  "name": "@faaskit/context",
   "version": "0.0.0",
   "description": "A lightweight context design for faaskit using node's async_hooks api",
   "main": "dist/index.js",

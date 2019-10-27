@@ -1,0 +1,14 @@
+{
+  "compilerOptions": {
+    "module": "commonjs",
+    "outDir": "../adapter-azure-functions/dist",
+    "target": "es2017",
+    "esModuleInterop": true,
+    "noImplicitAny": true,
+    "declaration": true,
+    "sourceMap": true,
+    "lib": ["es2017", "dom", "esnext"]
+  },
+  "include": ["../adapter-azure-functions/src/*.ts"],
+  "exclude": ["../adapter-azure-functions/node_modules"]
+}

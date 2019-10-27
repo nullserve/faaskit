@@ -4,6 +4,9 @@
   "main": "index.js",
   "license": "Apache-2.0",
   "devDependencies": {
-    "@types/aws-lambda": "^8.10.27"
+    "@types/aws-lambda": "^8.10.34"
+  },
+  "dependencies": {
+    "codecov": "^3.1.0"
   }
 }
