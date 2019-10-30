@@ -1,6 +1,6 @@
 {
   "devDependencies": {
-    "@types/jest": "^23.3.9",
+    "@types/jest": "^24.0.21",
     "@types/mockdate": "^2.0.0",
     "codecov": "^3.1.0",
     "jest": "^23.6.0",
