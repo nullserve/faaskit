@@ -15,7 +15,7 @@
   },
   "devDependencies": {
     "@types/aws-lambda": "^8.10.19",
-    "@types/jest": "^23.3.9",
+    "@types/jest": "^24.0.22",
     "@types/mockdate": "^2.0.0",
     "@types/uuid": "^3.4.4",
     "jest": "^23.6.0",
