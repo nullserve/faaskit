@@ -1,68 +1,59 @@
 import {Middleware} from './types'
 
-export type LogFunctionContext<TEvent, TResult> = {
+export interface PostEffectFnParams<TEvent, TResult> {
   event: TEvent
   result: TResult
 }
-
-export function createTimingLogMiddleware<TEvent, TResult>(
-  logFn: (
-    duration: number,
-    context?: LogFunctionContext<TEvent, TResult>,
-  ) => Promise<void>,
-): Middleware<TEvent, TResult> {
+export interface CreateEffectMiddlewareParams<TEvent, TResult> {
+  pre?: (event: TEvent) => Promise<void>
+  post?: (params: PostEffectFnParams<TEvent, TResult>) => Promise<void>
+}
+export function createEffectMiddleware<TEvent, TResult>({
+  pre = async () => {},
+  post = async () => {},
+}: CreateEffectMiddlewareParams<TEvent, TResult>): Middleware<TEvent, TResult> {
   return next => async event => {
-    const start = Date.now()
+    await pre(event)
     const result = await next(event)
-    const end = Date.now()
-    const duration = end - start
-    await logFn(duration, {event, result})
+    await post({event, result})
     return result
   }
 }
 
-// Alias this with another name
-export const creatEffectMiddleware = createValidationMiddleware
-export function createValidationMiddleware<TEvent, TResult>(
-  validateFn: (event: TEvent) => Promise<void>,
-): Middleware<TEvent, TResult> {
-  return next => async event => {
-    await validateFn(event)
-    return await next(event)
-  }
+export interface PostMappingFnParams<TEventFrom, TResultFrom, TEventTo> {
+  event: TEventFrom
+  mappedEvent: TEventTo
+  result: TResultFrom
 }
-
-export function createResponseMappingMiddleware<TFrom, TTo>(
-  mapFn: (result: TFrom) => Promise<TTo>,
-): Middleware<any, TTo, TFrom, any> {
-  return createMappingMiddleware(
-    async event => event,
-    async result => mapFn(result),
-  )
+export interface CreateMappingMiddlewareParams<
+  TEventFrom,
+  TResultFrom,
+  TEventTo,
+  TResultTo
+> {
+  pre: (event: TEventFrom) => Promise<TEventTo>
+  post: (
+    params: PostMappingFnParams<TEventFrom, TResultFrom, TEventTo>,
+  ) => Promise<TResultTo>
 }
-
-export function createRequestMappingMiddleware<TFrom, TTo>(
-  mapFn: (event: TFrom) => Promise<TTo>,
-): Middleware<TFrom, any, TTo, any> {
-  return createMappingMiddleware(
-    async event => mapFn(event),
-    async result => result,
-  )
-}
-
 export function createMappingMiddleware<
   TEventFrom,
   TResultFrom,
   TEventTo,
   TResultTo
->(
-  preMapFn: (event: TEventFrom) => Promise<TEventTo>,
-  postMapFn: (result: TResultFrom) => Promise<TResultTo>,
-): Middleware<TEventFrom, TResultTo, TEventTo, TResultFrom> {
+>({
+  pre,
+  post,
+}: CreateMappingMiddlewareParams<
+  TEventFrom,
+  TResultFrom,
+  TEventTo,
+  TResultTo
+>): Middleware<TEventFrom, TResultTo, TEventTo, TResultFrom> {
   return next => async event => {
-    let mappedEvent = await preMapFn(event)
-    let result = await next(mappedEvent)
-    let mappedResult = await postMapFn(result)
+    const mappedEvent = await pre(event)
+    const result = await next(mappedEvent)
+    const mappedResult = await post({event, mappedEvent, result})
     return mappedResult
   }
 }
@@ -78,5 +69,36 @@ export function createRecoveryMiddleware<TEvent, TResult>(
       response = await recoveryFn(error, event)
     }
     return response
+  }
+}
+
+export interface PreStateFnParams<TEvent, TState> {
+  event: TEvent
+  initialState?: TState
+}
+export interface PostStateFnParams<TEvent, TResult, TState> {
+  event: TEvent
+  result: TResult
+  initialState?: TState
+  state: TState
+}
+export interface CreateStateMiddlewareParams<TEvent, TResult, TState> {
+  initialState?: TState | null
+  pre: (params: PreStateFnParams<TEvent, TState>) => Promise<TState>
+  post?: (params: PostStateFnParams<TEvent, TResult, TState>) => Promise<void>
+}
+export function createStateMiddleware<TEvent, TResult, TState = any>({
+  initialState = null,
+  pre,
+  post = async () => {},
+}: CreateStateMiddlewareParams<TEvent, TResult, TState>): Middleware<
+  TEvent,
+  TResult
+> {
+  return next => async event => {
+    const state = await pre({event, initialState})
+    const result = await next(event)
+    await post({event, result, initialState, state})
+    return result
   }
 }
