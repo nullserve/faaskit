@@ -18,7 +18,7 @@ export function compose<TEvent, TResult>(): <TEvent, TResult>(
  * function can take multiple arguments as it provides the signature for the
  * resulting composite function.
  *
- * @param middleware The outermost middleware to compose.
+ * @param middleware - The outermost middleware to compose.
  * @returns A middleware obtained by composing the argument middlewares from right
  *   to left. For example, `compose(f, g, h)(handler)` is identical to doing
  *   `(...args) => f(g(h(...args)))(handler)`.

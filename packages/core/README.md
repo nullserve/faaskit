@@ -82,10 +82,7 @@ async function sendError(error) {
 
 const TimingMiddleware = timingLogMiddleware(logDuration)
 const RecoveryMiddleware = recoveryMiddleware(sendError)
-const MyMiddlewareStack = compose(
-  TimingMiddleware,
-  RecoveryMiddleware,
-)
+const MyMiddlewareStack = compose(TimingMiddleware, RecoveryMiddleware)
 
 export const lambdaHandler = MyMiddlewareStack(getWeather)
 ```
@@ -120,10 +117,7 @@ import {compose} from 'serverless-compose'
 
 // ... OMITTED MIDDLEWARE IMPLEMENTATIONS ...
 
-const OuterMiddleware = compose(
-  MyRecoveryMiddleware,
-  MyTimingMiddleware,
-)
+const OuterMiddleware = compose(MyRecoveryMiddleware, MyTimingMiddleware)
 
 const ValidationMiddleware = compose(
   MyAuthMiddleware,

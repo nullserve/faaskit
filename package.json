@@ -2,9 +2,11 @@
   "name": "root",
   "private": true,
   "devDependencies": {
-    "codecov": "^3.6.1",
-    "lerna": "^3.13.0"
+    "@nullserve/prettierrc": "^1.1.2",
+    "lerna": "^3.13.0",
+    "prettier": "^1.19.1"
   },
+  "prettier": "@nullserve/prettierrc",
   "scripts": {
     "build": "lerna run build",
     "test": "lerna run test",
