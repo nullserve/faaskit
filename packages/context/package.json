@@ -12,8 +12,7 @@
     "node": ">=8.0.0"
   },
   "scripts": {
-    "build": "tsc",
-    "test": "jest"
+    "build": "tsc"
   },
   "name": "@faaskit/context",
   "version": "0.0.0",

@@ -15,6 +15,9 @@
     "build": "tsc",
     "test": "jest"
   },
+  "jest": {
+    "preset": "ts-jest"
+  },
   "name": "@faaskit/core",
   "version": "0.0.0",
   "description": "A lightweight middleware design for faaskit",

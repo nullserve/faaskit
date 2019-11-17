@@ -9,10 +9,9 @@ import {
   APIGatewayProxyResult,
   Context as AWSContext,
 } from 'aws-lambda'
-import * as uuid from 'uuid/v4'
 
+import mockUuid from 'uuid/v4'
 jest.mock('uuid/v4')
-const mockUuid = <jest.Mock>(<unknown>uuid.default)
 
 describe('DefaultAPIGatewayProxyRequestIdentifyingMiddleware', () => {
   const mockEmptyEvent: APIGatewayProxyEvent = {
@@ -47,6 +46,7 @@ describe('DefaultAPIGatewayProxyRequestIdentifyingMiddleware', () => {
         cognitoAuthenticationType: '',
         cognitoIdentityId: '',
         cognitoIdentityPoolId: '',
+        principalOrgId: '',
         userAgent: '',
         userArn: '',
         sourceIp: '',
@@ -88,6 +88,7 @@ describe('DefaultAPIGatewayProxyRequestIdentifyingMiddleware', () => {
 
   const mockHandler = jest.fn().mockResolvedValue(mockEmptyResult)
 
+  // @ts-ignore
   mockUuid.mockImplementation((_, arr: Array<number>) => {
     const fixedUuid = [
       0x12,
@@ -114,6 +115,7 @@ describe('DefaultAPIGatewayProxyRequestIdentifyingMiddleware', () => {
   })
 
   beforeEach(() => {
+    // @ts-ignore
     mockUuid.mockClear()
     mockHandler.mockClear()
   })

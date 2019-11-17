@@ -7,7 +7,7 @@
   },
   "scripts": {
     "build": "lerna run build",
-    "test": "lerna run jest --coverage",
+    "test": "lerna run test",
     "publish": "lerna publish from-package --force-publish --yes",
     "version": "lerna version --amend --conventional-commits --force-publish --yes"
   },
