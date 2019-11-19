@@ -1,7 +1,9 @@
 {
   "devDependencies": {
+    "@nullserve/prettierrc": "^1.1.2",
     "@types/jest": "^24.0.23",
     "jest": "^24.9.0",
+    "prettier": "^1.19.1",
     "ts-jest": "^24.1.0",
     "typescript": "^3.1.5"
   },
@@ -15,6 +17,7 @@
   "jest": {
     "preset": "ts-jest"
   },
+  "prettier": "@nullserve/prettierrc",
   "name": "@faaskit/core",
   "version": "0.0.0",
   "description": "A lightweight middleware design for faaskit",

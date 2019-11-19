@@ -244,7 +244,7 @@ describe('recoveryHandler', () => {
     new Promise(resolve => {
       resolve(error)
     })
-  const mockRecoveryResolve = 'mock reolve'
+  const mockRecoveryResolve = 'mock resolve'
   const mockRecoveryFn = jest.fn().mockResolvedValue(mockRecoveryResolve)
 
   beforeEach(() => {
