@@ -57,7 +57,14 @@ export function createEffectMiddleware<TEvent, TResult>({
 }
 
 /**
+ * An interface for the parameter of a post mapping function as defined in
+ * the interface
+ * {@link CreateMappingMiddlewareParams | CreateMappingMiddlewareParams}
  *
+ * @member event - the event that was passed to the mapping middleware
+ * @member mappedEvent - the event after mapping
+ * @member result - the result of the handler called after the mapping
+ * middleware
  */
 export interface PostMappingFnParams<TEventFrom, TResultFrom, TEventTo> {
   event: TEventFrom
@@ -66,7 +73,15 @@ export interface PostMappingFnParams<TEventFrom, TResultFrom, TEventTo> {
 }
 
 /**
+ * An interface for the lone parameter of the
+ * {@link createMappingMiddleware | createMappingMiddleware} middleware helper
+ * function.
  *
+ * @member pre - An async lambda function which takes a `TEventFrom` as its lone
+ * parameter and Promises to map that value into `TEventTo`
+ * @member post - An async lambda function which takes
+ * `PostMappingFnParams<TEventFrom, TResultFrom, TEventTo>` {@link PostMappingFnParams}
+ * as its lone parameter and Promises to map the value into `TResultTo`
  */
 export interface CreateMappingMiddlewareParams<
   TEventFrom,
@@ -81,8 +96,15 @@ export interface CreateMappingMiddlewareParams<
 }
 
 /**
- *
- * @param param0
+ * A helper function for creating middlewares that map input and output.
+ * The helper takes pre and post functions to perform around the next handler
+ * and can be used to perform mappings to and from the next handler.
+ * @param params - parameters of type
+ * `CreateMappingMiddlewareParams<TEventFrom, TResultFrom, TEventTo, TResultTo>`
+ * {@link CreateMappingMiddlewareParams} which define the pre and post handler
+ * mapping to perform. The members of params are required, but can be bypassed by
+ * setting the from to the same type as the to and using `(from) => from` as a
+ * mapping function.
  */
 export function createMappingMiddleware<
   TEventFrom,
@@ -107,8 +129,13 @@ export function createMappingMiddleware<
 }
 
 /**
- *
- * @param recoveryFn
+ * A helper function for creating middlewares that recover from thrown errors.
+ * The helper takes a recovery function which can also optionally re-throw.
+ * If the recovery Promise resolves, the previous handler will receive its
+ * output.
+ * @param recoveryFn - The function which takes an error of any type and
+ * Promises to resolve to `TResult`. It can throw again if it is unable to
+ * handle the error.
  */
 export function createRecoveryMiddleware<TEvent, TResult>(
   recoveryFn: (error: any, event: TEvent) => Promise<TResult>,
@@ -125,7 +152,13 @@ export function createRecoveryMiddleware<TEvent, TResult>(
 }
 
 /**
+ * An interface for the parameter of a pre state function as defined in
+ * the interface
+ * {@link CreateStateMiddlewareParams | CreateStateMiddlewareParams}
  *
+ * @member event - the event that was passed to the state middleware
+ * @member initialState - the state before it is set to be used by the
+ * middleware
  */
 export interface PreStateFnParams<TEvent, TState> {
   event: TEvent
@@ -143,7 +176,15 @@ export interface PostStateFnParams<TEvent, TResult, TState> {
 }
 
 /**
+ * An interface for the lone parameter of the
+ * {@link createStateMiddleware | createStateMiddleware} middleware helper
+ * function.
  *
+ * @member pre - An async lambda function which takes a `PreStateFnParams`
+ * as its lone parameter and Promises an a state of type `TState`
+ * @member post - An async lambda function which takes
+ * `PostStateFnParams` {@link PostStateFnParams} as its lone parameter
+ * and Promises to have some effect based on that state and result
  */
 export interface CreateStateMiddlewareParams<TEvent, TResult, TState> {
   initialState?: TState | null
@@ -152,8 +193,13 @@ export interface CreateStateMiddlewareParams<TEvent, TResult, TState> {
 }
 
 /**
- *
- * @param param0
+ * A helper function for creating middlewares that store and react to state.
+ * The helper takes pre and post functions to perform around the next handler
+ * and can be used to perform state storage and side effects.
+ * @param params - parameters of type `CreateStateMiddlewareParams`
+ * {@link CreateStateMiddlewareParams} which define the pre and post handler
+ * state effects to perform. `pre` is required but `post` is not and defaults
+ * to an empty promise that does nothing with the state.
  */
 export function createStateMiddleware<TEvent, TResult, TState = any>({
   initialState = null,
