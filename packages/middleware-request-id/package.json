@@ -30,7 +30,5 @@
   "jest": {
     "preset": "ts-jest"
   },
-  "scripts": {
-    "build": "tsc"
-  }
+  "scripts": {}
 }

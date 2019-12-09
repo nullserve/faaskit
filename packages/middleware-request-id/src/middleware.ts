@@ -1,21 +1,16 @@
-import {Middleware, Handler} from '@faaskit/core'
-import {Context} from '@faaskit/context'
-import {APIGatewayProxyEvent, APIGatewayProxyResult} from 'aws-lambda'
 import uuidv4 from 'uuid/v4'
 
 // A Mixin for Lambda Context.
 // Using Typescript Intersection types you can define a handler context as `Context & RequestIdentifierContextMixin`
-export type RequestIdentifierContextMixin = {
-  requestIdentity: RequestIdentifierContext
-}
-
 export type RequestIdentifierContext = {
-  correlationId: string
-  parentId?: string
-  requestId: string
-  sessionId: string
-  spanId: string
-  traceId: string
+  requestIdentity: {
+    correlationId: string
+    parentId?: string
+    requestId: string
+    sessionId: string
+    spanId: string
+    traceId: string
+  }
 }
 
 const byteToHex: string[] = []
@@ -65,14 +60,9 @@ export function convertMaybeHexStringToUuid(hexString?: string): string | void {
 }
 
 // I hate this name too. Sorry.
-export const DefaultAPIGatewayProxyRequestIdentifyingMiddleware: Middleware<
-  APIGatewayProxyEvent,
-  APIGatewayProxyResult,
-  APIGatewayProxyEvent,
-  APIGatewayProxyResult
-> = (
-  next: Handler<APIGatewayProxyEvent, APIGatewayProxyResult>,
-) => async event => {
+const _DefaultAPIGatewayProxyRequestIdentifyingMiddleware = (
+  next: any,
+) => async (event: any) => {
   const trace = new Array<number>(16)
   uuidv4(null, trace)
 

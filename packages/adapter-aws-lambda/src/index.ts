@@ -1,44 +1,32 @@
 import {Context as LambdaContext, Handler as LambdaHandler} from 'aws-lambda'
 
-import {Handler as FaasHandler} from '@faaskit/core'
-import {createContext} from '@faaskit/context'
+import {Handler as FaasKitHandler} from '@faaskit/core'
 
-export type AWSMiddleware<
-  TEvent,
-  TResult,
-  TNextEvent = any,
-  TNextResult = any
-> = (
-  next: LambdaHandler<TNextEvent, TNextResult>,
-) => LambdaHandler<TEvent, TResult>
+export interface AWSLambdaContext {
+  AWSLambda: LambdaContext
+}
 
-export type AWSMiddlewareStack<
-  TEvent,
-  TResult,
-  TNextEvent = any,
-  TNextResult = any
-> = AWSMiddleware<TEvent, TResult, TNextEvent, TNextResult>
-
-export type AWSFaasMiddlewareAdapter<
-  TEvent,
-  TResult,
-  TNextEvent = any,
-  TNextResult = any
-> = (
-  next: FaasHandler<TNextEvent, TNextResult>,
-) => LambdaHandler<TEvent, TResult>
-
-export const Context = createContext<LambdaContext>(null)
-
-export function convertHandler<TEvent, TResult>(
-  handler: FaasHandler<TEvent, TResult>,
+export function adaptFaasKitHandlerForLambda<TEvent, TResult>(
+  handler: FaasKitHandler<TEvent, AWSLambdaContext, TResult>,
 ): LambdaHandler<TEvent, TResult> {
-  const wrappedHandler: LambdaHandler<TEvent, TResult> = async (
-    event,
-    context,
-  ) => {
-    Context.provide(context)
-    return handler(event)
-  }
-  return wrappedHandler
+  return async (event, context) => handler(event, {AWSLambda: context})
+}
+
+export function adaptLambdaHandlerForFaasKit<
+  TEvent,
+  TContext extends AWSLambdaContext,
+  TResult
+>(
+  handler: LambdaHandler<TEvent, TResult>,
+): FaasKitHandler<TEvent, TContext, TResult> {
+  return async (event, context) =>
+    new Promise((resolve, reject) => {
+      handler(event, context.AWSLambda, (error, result) => {
+        if (!error) {
+          resolve(result)
+        } else {
+          reject(error)
+        }
+      })
+    })
 }

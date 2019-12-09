@@ -1,5 +1,1 @@
-export {
-  DefaultAPIGatewayProxyRequestIdentifyingMiddleware,
-  RequestIdentifierContext,
-  RequestIdentifierContextMixin,
-} from './middleware'
+export {RequestIdentifierContext} from './middleware'
