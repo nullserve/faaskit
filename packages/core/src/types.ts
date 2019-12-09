@@ -3,11 +3,16 @@
  * This is the base building block for FaaS -- All invoked functions must be `Handler`s.
  *
  * @typeParam TEvent - the event type passed as an input to the handler function
+ * @typeParam TContext - the context type passed as an input to the handler function
  * @typeParam TResult - the result type promised to be returned by the handler function
  * @param event - the event for the handler function
+ * @param context - the context of the event
  * @returns a `Promise<TResult>` which reflects the success of the handler transaction
  */
-export type Handler<TEvent, TResult> = (event: TEvent) => Promise<TResult>
+export type Handler<TEvent, TContext, TResult> = (
+  event: TEvent,
+  context: TContext,
+) => Promise<TResult>
 
 /**
  * A Middleware is a function which wraps a handler for the purpose of extracting shared functionality from any number of handlers.
@@ -16,9 +21,12 @@ export type Handler<TEvent, TResult> = (event: TEvent) => Promise<TResult>
  * This function typing is designed to be "chained", so that individual shared functionalities can be performed in whatever order desired so long as their types match.
  *
  * @typeParam TEvent - the event type to be passed as an input to the **resulting** handler function returned by the middleware
+ * @typeParam TContext - the context type to be passed as an input to the **resulting** handler function returned by the middleware
  * @typeParam TResult - the result type to be promised returned by the **resulting** handler function returned by the middleware
  * @typeParam TNextEvent = `TEvent` - the event type expected by the `Handler` **to be wrapped** by the middleware.
- * This defaults to TEvent for the case that the middleware logic does not change the event type
+ * This defaults to TEvent for the case that the middleware logic does not change the event type.
+ * @typeParam TNextContext = `TContext` - the context type expected by the `Handler` **to be wrapped** by the middleware.
+ * This defaults to TContext for the case that the middleware logic does not change the context type.
  * @typeParam TNextResult = `TResult` - the result type promised to be returned by the `Handler` **to be wrapped** by the middleware.
  * This defaults to TResult for the case that the middleware logic does not change the result type.
  * @param next - the `Handler` to be wrapped by the middleware.
@@ -27,10 +35,14 @@ export type Handler<TEvent, TResult> = (event: TEvent) => Promise<TResult>
  */
 export type Middleware<
   TEvent,
+  TContext,
   TResult,
   TNextEvent = TEvent,
+  TNextContext = TContext,
   TNextResult = TResult
-> = (next: Handler<TNextEvent, TNextResult>) => Handler<TEvent, TResult>
+> = (
+  next: Handler<TNextEvent, TNextContext, TNextResult>,
+) => Handler<TEvent, TContext, TResult>
 
 /**
  * A type alias for {@link Middleware | Middleware}
@@ -38,7 +50,9 @@ export type Middleware<
  */
 export type MiddlewareStack<
   TEvent,
+  TContext,
   TResult,
   TNextEvent = TEvent,
+  TNextContext = TContext,
   TNextResult = TResult
-> = Middleware<TEvent, TResult, TNextEvent, TNextResult>
+> = Middleware<TEvent, TContext, TResult, TNextEvent, TNextContext, TNextResult>

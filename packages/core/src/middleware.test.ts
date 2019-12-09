@@ -2,15 +2,17 @@ import {
   createEffectMiddleware,
   createMappingMiddleware,
   createRecoveryMiddleware,
-} from '../src'
+  PreMappingFnResult,
+} from './middleware'
 
 describe('validationMiddleware', () => {
   const inputEvent = 'input event'
+  const inputContext = 'input context'
   const expectedResult = 'expected result'
   const expectedError = 'expected error'
   const mockHandler = jest.fn().mockResolvedValue(expectedResult)
   const mockPassesValidationFn = jest.fn(
-    (event: any) =>
+    (event: any, context: any) =>
       new Promise<void>(resolve => {
         resolve()
       }),
@@ -42,7 +44,7 @@ describe('validationMiddleware', () => {
     const wrappedHandler = middleware(mockHandler)
 
     // When
-    await wrappedHandler(inputEvent)
+    await wrappedHandler(inputEvent, inputContext)
 
     // Then
     expect(mockPassesValidationFn).toBeCalledWith(inputEvent)
@@ -54,7 +56,7 @@ describe('validationMiddleware', () => {
     const wrappedHandler = middleware(mockHandler)
 
     // When
-    await wrappedHandler(inputEvent)
+    await wrappedHandler(inputEvent, inputContext)
 
     // Then
     expect(mockHandler).toBeCalledWith(inputEvent)
@@ -66,13 +68,16 @@ describe('validationMiddleware', () => {
     const wrappedHandler = middleware(mockHandler)
 
     // Then
-    await expect(wrappedHandler(inputEvent)).rejects.toBe(expectedError)
+    await expect(wrappedHandler(inputEvent, inputContext)).rejects.toBe(
+      expectedError,
+    )
     expect(mockHandler).not.toBeCalled()
   })
 })
 
 describe('responseMappingMiddleware', () => {
   const inputEvent = 'input event'
+  const inputContext = 'input context'
   const expectedResult = 'expected result'
   const mockHandler = jest.fn().mockResolvedValue(expectedResult)
   const mockMappingFn = jest.fn(
@@ -111,7 +116,7 @@ describe('responseMappingMiddleware', () => {
     const wrappedHandler = middleware(mockHandler)
 
     // When
-    await wrappedHandler(inputEvent)
+    await wrappedHandler(inputEvent, inputContext)
 
     // Then
     expect(mockMappingFn).toBeCalledWith(expectedResult)
@@ -128,7 +133,7 @@ describe('responseMappingMiddleware', () => {
     const wrappedHandler = middleware(mockHandler)
 
     // When
-    await wrappedHandler(inputEvent)
+    await wrappedHandler(inputEvent, inputContext)
 
     // Then
     expect(mockHandler).toBeCalledWith(inputEvent)
@@ -145,7 +150,7 @@ describe('responseMappingMiddleware', () => {
     const wrappedHandler = middleware(mockHandler)
 
     // When
-    const result = await wrappedHandler(inputEvent)
+    const result = await wrappedHandler(inputEvent, inputContext)
 
     // Then
     expect(result).toBe(`mapped ${expectedResult}`)
@@ -154,12 +159,13 @@ describe('responseMappingMiddleware', () => {
 
 describe('requestMappingMiddleware', () => {
   const inputEvent = 'input event'
+  const inputContext = 'input context'
   const expectedResult = 'expected result'
   const mockHandler = jest.fn().mockResolvedValue(expectedResult)
   const mockMappingFn = jest.fn(
-    (input: any) =>
-      new Promise(resolve => {
-        resolve(`mapped ${input}`)
+    (event: string, context: string) =>
+      new Promise<PreMappingFnResult<string, string>>(resolve => {
+        resolve({event: `mapped ${event}`, context: `mapped ${context}`})
       }),
   )
 
@@ -192,7 +198,7 @@ describe('requestMappingMiddleware', () => {
     const wrappedHandler = middleware(mockHandler)
 
     // When
-    await wrappedHandler(inputEvent)
+    await wrappedHandler(inputEvent, inputContext)
 
     // Then
     expect(mockHandler).toBeCalledWith(`mapped ${inputEvent}`)
@@ -209,7 +215,7 @@ describe('requestMappingMiddleware', () => {
     const wrappedHandler = middleware(mockHandler)
 
     // When
-    await wrappedHandler(inputEvent)
+    await wrappedHandler(inputEvent, inputContext)
 
     // Then
     expect(mockMappingFn).toBeCalledWith(inputEvent)
@@ -226,7 +232,7 @@ describe('requestMappingMiddleware', () => {
     const wrappedHandler = middleware(mockHandler)
 
     // When
-    const result = await wrappedHandler(inputEvent)
+    const result = await wrappedHandler(inputEvent, inputContext)
 
     // Then
     expect(result).toBe(expectedResult)
@@ -235,6 +241,7 @@ describe('requestMappingMiddleware', () => {
 
 describe('recoveryHandler', () => {
   const inputEvent = 'input event'
+  const inputContext = 'input context'
   const expectedResolve = 'expected resolve'
   const expectedReject = 'expected reject'
   const resolveHandler = jest.fn().mockResolvedValue(expectedResolve)
@@ -267,7 +274,7 @@ describe('recoveryHandler', () => {
     const wrappedHandler = middleware(rejectHandler)
 
     // When
-    const result = await wrappedHandler(inputEvent)
+    const result = await wrappedHandler(inputEvent, inputContext)
 
     // Then
     expect(result).toBe(expectedReject)
@@ -279,7 +286,7 @@ describe('recoveryHandler', () => {
     const wrappedHandler = middleware(resolveHandler)
 
     // When
-    const result = await wrappedHandler(inputEvent)
+    const result = await wrappedHandler(inputEvent, inputContext)
 
     // Then
     expect(mockRecoveryFn).not.toHaveBeenCalled()

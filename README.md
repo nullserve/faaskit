@@ -1,4 +1,4 @@
-# serverless-compose
+# FaaSKit
 
 [![npm version](https://img.shields.io/npm/v/serverless-compose.svg?logo=npm&style=popout-square)](https://www.npmjs.com/package/serverless-compose)
 [![codecov coverage](https://img.shields.io/codecov/c/github/davidjfelix/serverless-compose.svg?logo=codecov&style=popout-square)](https://codecov.io/gh/DavidJFelix/serverless-compose)
@@ -57,7 +57,7 @@ import {
 } from 'serverless-compose'
 
 // Suppose this is a client that fetches the weather from some external API
-import { WeatherClient } from 'made-up-weather-library'
+import {WeatherClient} from 'made-up-weather-library'
 
 // Your actual handler code
 async function getWeather(request, context) {
@@ -84,10 +84,7 @@ async function sendError(error) {
 
 const TimingMiddleware = timingLogMiddleware(logDuration)
 const RecoveryMiddleware = recoveryMiddleware(sendError)
-const MyMiddlewareStack = compose(
-  TimingMiddleware,
-  RecoveryMiddleware,
-)
+const MyMiddlewareStack = compose(TimingMiddleware, RecoveryMiddleware)
 
 export const lambdaHandler = MyMiddlewareStack(getWeather)
 ```
@@ -101,7 +98,7 @@ The current API contains the following middleware options:
 ### timingLogMiddleware
 
 ```javascript
-import { timingLogMiddleware } from 'serverless-compose'
+import {timingLogMiddleware} from 'serverless-compose'
 ```
 
 `timinglogMiddlware` takes in a logging function of the signature `(duration, {event, result}) => void` and calls this function after the `next` handler has returned.
@@ -118,14 +115,11 @@ Implementing multiple middleware stacks looks like:
 
 ```javascript
 // middleware.js
-import { compose } from 'serverless-compose'
+import {compose} from 'serverless-compose'
 
 // ... OMITTED MIDDLEWARE IMPLEMENTATIONS ...
 
-const OuterMiddleware = compose(
-  MyRecoveryMiddleware,
-  MyTimingMiddleware,
-)
+const OuterMiddleware = compose(MyRecoveryMiddleware, MyTimingMiddleware)
 
 const ValidationMiddleware = compose(
   MyAuthMiddleware,
@@ -147,7 +141,7 @@ export const RegularMiddleware = compose(
 Now, in the AWS handlers, only the middleware that is needed can be used.
 
 ```javascript
-import { HttpMiddleware, RegularMiddleware } from './middleware'
+import {HttpMiddleware, RegularMiddleware} from './middleware'
 
 function myHttpHandler(event, context) {
   // DO SOMETHING...
@@ -170,7 +164,7 @@ Below is an example for creating your own side effect middleware:
 
 ```javascript
 // middleware.js
-import { mySideEffect } from './my-library'
+import {mySideEffect} from './my-library'
 
 // we use the convention next to indicate the next handler in the middleware chain
 // since each middleware returns a handler, we pass that inner-defined handler into the outer middleware when we invoke it

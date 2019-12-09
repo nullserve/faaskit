@@ -2,6 +2,7 @@ import {compose, Middleware} from '../src'
 
 describe('compose', () => {
   const expectedEvent = 'expected event'
+  const expectedContext = 'expected context'
   const expectedResult = 'expected result'
 
   const mockHandler = jest.fn().mockResolvedValue(expectedResult)
@@ -40,21 +41,21 @@ describe('compose', () => {
 
   test('wraps middleware in order', async () => {
     // Given
-    const firstMiddleware: Middleware<string, string> = next => async event => {
-      const result = await next(event)
+    const firstMiddleware: Middleware<string, string, string> = next => async (
+      event,
+      context,
+    ) => {
+      const result = await next(event, context)
       return 'first ' + result
     }
-    const secondMiddleware: Middleware<
-      string,
-      string
-    > = next => async event => {
-      const result = await next(event)
+    const secondMiddleware: Middleware<string, string, string> = next => async (
+      event,
+      context,
+    ) => {
+      const result = await next(event, context)
       return 'second ' + result
     }
-    const middlewares = compose(
-      firstMiddleware,
-      secondMiddleware,
-    )
+    const middlewares = compose(firstMiddleware, secondMiddleware)
     const wrappedHandler = middlewares(
       () =>
         new Promise(resolve => {
@@ -63,7 +64,7 @@ describe('compose', () => {
     )
 
     // When
-    const result = await wrappedHandler(expectedEvent)
+    const result = await wrappedHandler(expectedEvent, expectedContext)
 
     // Then
     expect(result).toBe('first second expected')

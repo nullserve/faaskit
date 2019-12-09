@@ -6,11 +6,13 @@ import {Middleware} from './types'
  * {@link CreateEffectMiddlewareParams | CreateEffectMiddlewareParams}
  *
  * @member event - the event that was passed to the effect middleware
+ * @member context - the context that was passed to the effect middleware
  * @member result - the result of the handler called after the effect
  * middleware
  */
-export interface PostEffectFnParams<TEvent, TResult> {
+export interface PostEffectFnParams<TEvent, TContext, TResult> {
   event: TEvent
+  context: TContext
   result: TResult
 }
 
@@ -23,14 +25,16 @@ export interface PostEffectFnParams<TEvent, TResult> {
  * parameter and Promises it does something as a side effect with no return
  * before the next handler in the middleware chain is called.
  * @member post - An async lambda function which takes
- * `PostEffectFnParams<TEvent, TResult>` {@link PostEffectFnParams} as its
- * lone parameter and Promises it does something as a side effect with no
- * return after the next handler in the middleware chain has been called but
- * before this middleware has returned.
+ * `PostEffectFnParams<TEvent, TContext, TResult>` {@link PostEffectFnParams}
+ * as its lone parameter and Promises it does something as a side effect with
+ * no return after the next handler in the middleware chain has been called
+ * but before this middleware has returned.
  */
-export interface CreateEffectMiddlewareParams<TEvent, TResult> {
-  pre?: (event: TEvent) => Promise<void>
-  post?: (params: PostEffectFnParams<TEvent, TResult>) => Promise<void>
+export interface CreateEffectMiddlewareParams<TEvent, TContext, TResult> {
+  pre?: (event: TEvent, context: TContext) => Promise<void>
+  post?: (
+    params: PostEffectFnParams<TEvent, TContext, TResult>,
+  ) => Promise<void>
 }
 
 /**
@@ -44,16 +48,28 @@ export interface CreateEffectMiddlewareParams<TEvent, TResult> {
  * effects to perform. The members of params are not required and if they are
  * undefined, they each default to `async () => {}`
  */
-export function createEffectMiddleware<TEvent, TResult>({
+export function createEffectMiddleware<TEvent, TContext, TResult>({
   pre = async () => {},
   post = async () => {},
-}: CreateEffectMiddlewareParams<TEvent, TResult>): Middleware<TEvent, TResult> {
-  return next => async event => {
-    await pre(event)
-    const result = await next(event)
-    await post({event, result})
+}: CreateEffectMiddlewareParams<TEvent, TContext, TResult>): Middleware<
+  TEvent,
+  TContext,
+  TResult
+> {
+  return next => async (event, context) => {
+    await pre(event, context)
+    const result = await next(event, context)
+    await post({event, context, result})
     return result
   }
+}
+
+/**
+ *
+ */
+export interface PreMappingFnResult<TEvent, TContext> {
+  event: TEvent
+  context: TContext
 }
 
 /**
@@ -66,9 +82,17 @@ export function createEffectMiddleware<TEvent, TResult>({
  * @member result - the result of the handler called after the mapping
  * middleware
  */
-export interface PostMappingFnParams<TEventFrom, TResultFrom, TEventTo> {
+export interface PostMappingFnParams<
+  TEventFrom,
+  TContextFrom,
+  TResultFrom,
+  TEventTo,
+  TContextTo
+> {
   event: TEventFrom
   mappedEvent: TEventTo
+  context: TContextFrom
+  mappedContext: TContextTo
   result: TResultFrom
 }
 
@@ -85,13 +109,24 @@ export interface PostMappingFnParams<TEventFrom, TResultFrom, TEventTo> {
  */
 export interface CreateMappingMiddlewareParams<
   TEventFrom,
+  TContextFrom,
   TResultFrom,
   TEventTo,
+  TContextTo,
   TResultTo
 > {
-  pre: (event: TEventFrom) => Promise<TEventTo>
+  pre: (
+    event: TEventFrom,
+    context: TContextFrom,
+  ) => Promise<PreMappingFnResult<TEventTo, TContextTo>>
   post: (
-    params: PostMappingFnParams<TEventFrom, TResultFrom, TEventTo>,
+    params: PostMappingFnParams<
+      TEventFrom,
+      TContextFrom,
+      TResultFrom,
+      TEventTo,
+      TContextTo
+    >,
   ) => Promise<TResultTo>
 }
 
@@ -108,22 +143,42 @@ export interface CreateMappingMiddlewareParams<
  */
 export function createMappingMiddleware<
   TEventFrom,
+  TContextFrom,
   TResultFrom,
   TEventTo,
+  TContextTo,
   TResultTo
 >({
   pre,
   post,
 }: CreateMappingMiddlewareParams<
   TEventFrom,
+  TContextFrom,
   TResultFrom,
   TEventTo,
+  TContextTo,
   TResultTo
->): Middleware<TEventFrom, TResultTo, TEventTo, TResultFrom> {
-  return next => async event => {
-    const mappedEvent = await pre(event)
-    const result = await next(mappedEvent)
-    const mappedResult = await post({event, mappedEvent, result})
+>): Middleware<
+  TEventFrom,
+  TContextFrom,
+  TResultTo,
+  TEventTo,
+  TContextTo,
+  TResultFrom
+> {
+  return next => async (event, context) => {
+    const {event: mappedEvent, context: mappedContext} = await pre(
+      event,
+      context,
+    )
+    const result = await next(mappedEvent, mappedContext)
+    const mappedResult = await post({
+      event,
+      mappedEvent,
+      context,
+      mappedContext,
+      result,
+    })
     return mappedResult
   }
 }
@@ -137,82 +192,20 @@ export function createMappingMiddleware<
  * Promises to resolve to `TResult`. It can throw again if it is unable to
  * handle the error.
  */
-export function createRecoveryMiddleware<TEvent, TResult>(
-  recoveryFn: (error: any, event: TEvent) => Promise<TResult>,
-): Middleware<TEvent, TResult> {
-  return next => async event => {
+export function createRecoveryMiddleware<TEvent, TContext, TResult>(
+  recoveryFn: (
+    error: any,
+    event: TEvent,
+    context: TContext,
+  ) => Promise<TResult>,
+): Middleware<TEvent, TContext, TResult> {
+  return next => async (event, context) => {
     let response
     try {
-      response = await next(event)
+      response = await next(event, context)
     } catch (error) {
-      response = await recoveryFn(error, event)
+      response = await recoveryFn(error, event, context)
     }
     return response
-  }
-}
-
-/**
- * An interface for the parameter of a pre state function as defined in
- * the interface
- * {@link CreateStateMiddlewareParams | CreateStateMiddlewareParams}
- *
- * @member event - the event that was passed to the state middleware
- * @member initialState - the state before it is set to be used by the
- * middleware
- */
-export interface PreStateFnParams<TEvent, TState> {
-  event: TEvent
-  initialState?: TState
-}
-
-/**
- *
- */
-export interface PostStateFnParams<TEvent, TResult, TState> {
-  event: TEvent
-  result: TResult
-  initialState?: TState
-  state: TState
-}
-
-/**
- * An interface for the lone parameter of the
- * {@link createStateMiddleware | createStateMiddleware} middleware helper
- * function.
- *
- * @member pre - An async lambda function which takes a `PreStateFnParams`
- * as its lone parameter and Promises an a state of type `TState`
- * @member post - An async lambda function which takes
- * `PostStateFnParams` {@link PostStateFnParams} as its lone parameter
- * and Promises to have some effect based on that state and result
- */
-export interface CreateStateMiddlewareParams<TEvent, TResult, TState> {
-  initialState?: TState | null
-  pre: (params: PreStateFnParams<TEvent, TState>) => Promise<TState>
-  post?: (params: PostStateFnParams<TEvent, TResult, TState>) => Promise<void>
-}
-
-/**
- * A helper function for creating middlewares that store and react to state.
- * The helper takes pre and post functions to perform around the next handler
- * and can be used to perform state storage and side effects.
- * @param params - parameters of type `CreateStateMiddlewareParams`
- * {@link CreateStateMiddlewareParams} which define the pre and post handler
- * state effects to perform. `pre` is required but `post` is not and defaults
- * to an empty promise that does nothing with the state.
- */
-export function createStateMiddleware<TEvent, TResult, TState = any>({
-  initialState = null,
-  pre,
-  post = async () => {},
-}: CreateStateMiddlewareParams<TEvent, TResult, TState>): Middleware<
-  TEvent,
-  TResult
-> {
-  return next => async event => {
-    const state = await pre({event, initialState})
-    const result = await next(event)
-    await post({event, result, initialState, state})
-    return result
   }
 }
