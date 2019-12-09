@@ -14,8 +14,7 @@
     "url": "https://github.com/NullServe/faaskit/issues"
   },
   "dependencies": {
-    "@faaskit/core": "^0.0.0",
-    "@faaskit/context": "^0.0.0"
+    "@faaskit/core": "^0.0.0"
   },
   "devDependencies": {
     "@types/aws-lambda": "^8.10.19",
