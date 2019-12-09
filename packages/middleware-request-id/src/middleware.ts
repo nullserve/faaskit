@@ -94,44 +94,46 @@ const _DefaultAPIGatewayProxyRequestIdentifyingMiddleware = (
     event.headers['x-b3-traceid']
 
   const requestIdentifierContext: RequestIdentifierContext = {
-    correlationId:
-      correlationId ||
-      convertMaybeHexStringToUuid(traceId) ||
-      bytesToUuid(trace),
-    ...(parentId && {parentId}),
-    requestId:
-      requestId ||
-      correlationId ||
-      convertMaybeHexStringToUuid(traceId) ||
-      bytesToUuid(trace),
-    sessionId:
-      sessionId ||
-      correlationId ||
-      convertMaybeHexStringToUuid(traceId) ||
-      bytesToUuid(trace),
-    spanId: spanId || bytesToHexString(span.slice(0, 8)),
-    traceId:
-      traceId ||
-      convertMaybeUuidToHexString(correlationId) ||
-      bytesToHexString(trace),
+    requestIdentity: {
+      correlationId:
+        correlationId ||
+        convertMaybeHexStringToUuid(traceId) ||
+        bytesToUuid(trace),
+      ...(parentId && {parentId}),
+      requestId:
+        requestId ||
+        correlationId ||
+        convertMaybeHexStringToUuid(traceId) ||
+        bytesToUuid(trace),
+      sessionId:
+        sessionId ||
+        correlationId ||
+        convertMaybeHexStringToUuid(traceId) ||
+        bytesToUuid(trace),
+      spanId: spanId || bytesToHexString(span.slice(0, 8)),
+      traceId:
+        traceId ||
+        convertMaybeUuidToHexString(correlationId) ||
+        bytesToHexString(trace),
+    },
   }
   const result = await next(event)
   const headers = {
-    'correlation-id': requestIdentifierContext.correlationId,
-    'x-correlation-id': requestIdentifierContext.correlationId,
-    'parent-id': requestIdentifierContext.parentId,
-    'x-parent-id': requestIdentifierContext.parentId,
-    'x-b3-parentspanid': requestIdentifierContext.parentId,
-    'request-id': requestIdentifierContext.requestId,
-    'x-request-id': requestIdentifierContext.requestId,
-    'session-id': requestIdentifierContext.sessionId,
-    'x-session-id': requestIdentifierContext.sessionId,
-    'span-id': requestIdentifierContext.spanId,
-    'x-span-id': requestIdentifierContext.spanId,
-    'x-b3-spanid': requestIdentifierContext.spanId,
-    'trace-id': requestIdentifierContext.traceId,
-    'x-trace-id': requestIdentifierContext.traceId,
-    'x-b3-traceid': requestIdentifierContext.traceId,
+    'correlation-id': requestIdentifierContext.requestIdentity.correlationId,
+    'x-correlation-id': requestIdentifierContext.requestIdentity.correlationId,
+    'parent-id': requestIdentifierContext.requestIdentity.parentId,
+    'x-parent-id': requestIdentifierContext.requestIdentity.parentId,
+    'x-b3-parentspanid': requestIdentifierContext.requestIdentity.parentId,
+    'request-id': requestIdentifierContext.requestIdentity.requestId,
+    'x-request-id': requestIdentifierContext.requestIdentity.requestId,
+    'session-id': requestIdentifierContext.requestIdentity.sessionId,
+    'x-session-id': requestIdentifierContext.requestIdentity.sessionId,
+    'span-id': requestIdentifierContext.requestIdentity.spanId,
+    'x-span-id': requestIdentifierContext.requestIdentity.spanId,
+    'x-b3-spanid': requestIdentifierContext.requestIdentity.spanId,
+    'trace-id': requestIdentifierContext.requestIdentity.traceId,
+    'x-trace-id': requestIdentifierContext.requestIdentity.traceId,
+    'x-b3-traceid': requestIdentifierContext.requestIdentity.traceId,
   }
   return {...result, headers: {...(result.headers || {}), ...headers}}
 }
