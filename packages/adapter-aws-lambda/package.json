@@ -39,6 +39,9 @@
   "license": "Apache-2.0",
   "main": "dist/index.js",
   "name": "@faaskit/adapter-aws-lambda",
+  "publishConfig": {
+    "access": "public"
+  },
   "repository": {
     "type": "git",
     "url": "https://github.com/nullserve/faaskit.git",

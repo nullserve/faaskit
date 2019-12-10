@@ -46,6 +46,9 @@
   "main": "dist/index.js",
   "name": "@faaskit/http",
   "prettier": "@nullserve/prettierrc",
+  "publishConfig": {
+    "access": "public"
+  },
   "repository": {
     "type": "git",
     "url": "https://github.com/nullserve/faaskit.git",

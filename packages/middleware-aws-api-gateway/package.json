@@ -57,6 +57,9 @@
   "main": "dist/index.js",
   "name": "@faaskit/middleware-aws-api-gateway",
   "prettier": "@nullserve/prettierrc",
+  "publishConfig": {
+    "access": "public"
+  },
   "repository": {
     "type": "git",
     "url": "https://github.com/nullserve/faaskit.git",
