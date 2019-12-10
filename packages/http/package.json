@@ -14,7 +14,6 @@
       "url": "https://github.com/DavidJFelix"
     }
   ],
-  "dependencies": {},
   "description": "Utilities for FaaSKit focused on HTTP interaction",
   "devDependencies": {
     "@nullserve/prettierrc": "^1.1.2",
@@ -57,5 +56,5 @@
     "test": "jest"
   },
   "types": "dist/index.d.ts",
-  "version": "0.0.0"
+  "version": "0.1.0"
 }

@@ -15,7 +15,7 @@
     }
   ],
   "dependencies": {
-    "@faaskit/core": "^0.0.0"
+    "@faaskit/core": "^0.1.0"
   },
   "description": "An adapter for FaaSKit that allows easy use with AWS Lambda for compute",
   "devDependencies": {
@@ -44,7 +44,9 @@
     "url": "https://github.com/nullserve/faaskit.git",
     "directory": "packages/adapter-aws-lambda"
   },
-  "scripts": {},
+  "scripts": {
+    "build": "tsc"
+  },
   "types": "dist/index.d.ts",
-  "version": "0.0.0"
+  "version": "0.1.0"
 }

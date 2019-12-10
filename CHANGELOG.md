@@ -3,6 +3,37 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [0.1.0](https://github.com/nullserve/faaskit/compare/v2.1.10...v0.1.0) (2019-12-10)
+
+
+### Bug Fixes
+
+* bother to actually build ([4070b4a](https://github.com/nullserve/faaskit/commit/4070b4ae6e31e706165b3df9b1b5641170c9c447))
+* make the build work again ([7c32af6](https://github.com/nullserve/faaskit/commit/7c32af62853fbe66df16e21ee67f769ff15e12ce))
+* obvious bugs ([8164514](https://github.com/nullserve/faaskit/commit/8164514129d1ed0f90cd6d9676380a7ce8ce76f0))
+* package version ([239db01](https://github.com/nullserve/faaskit/commit/239db01a1371f5ba81d943ad2b3c807ee0bcc3b8))
+* remove dep ([73faf36](https://github.com/nullserve/faaskit/commit/73faf36a55901b8961b7e8be3ca2f6a0eab5ddc4))
+
+
+### Features
+
+* add a default context passing style ([7da30ad](https://github.com/nullserve/faaskit/commit/7da30ad569d19d65607a6a86430b05ab18739952))
+* add a new package ([43869be](https://github.com/nullserve/faaskit/commit/43869be5fb0639102351b49c6e0ca3e0feca0373))
+* add build to adapter ([f1f89e5](https://github.com/nullserve/faaskit/commit/f1f89e561598949945282a4dbfe7ad601b90ccc5))
+* add contxt back in and delete a lot of nonsense ([0289331](https://github.com/nullserve/faaskit/commit/0289331a23ce6ad003ca476412a18829a20364fe))
+* add logger piecesi ([4fe2044](https://github.com/nullserve/faaskit/commit/4fe2044d89bc32ccb7143426447d6b0b38744220))
+* add some major typing to compose ([2cfad0b](https://github.com/nullserve/faaskit/commit/2cfad0be288260cd6526aa0aa596ce9a7ceb49a1))
+* make the project build ([e1b02d1](https://github.com/nullserve/faaskit/commit/e1b02d1b49a14ed5c85b1347ed5811d0727f7103))
+* new github actions ([0160899](https://github.com/nullserve/faaskit/commit/01608992918278c3d8268a97d30f9ef2880c7a27))
+* remove and add core middlewares ([3a19c63](https://github.com/nullserve/faaskit/commit/3a19c63f13d1de6040a5e8ebc132b44e1b59edda))
+* scaffold out packages ([6f62254](https://github.com/nullserve/faaskit/commit/6f62254917ecf4394c1ae94527325e15dc38df32))
+* start the dramatic task of renaming ([1675107](https://github.com/nullserve/faaskit/commit/1675107adb1e11edadc411494c3c540ab170c24c))
+* update error types and spec out some middleware ([476c615](https://github.com/nullserve/faaskit/commit/476c615e0da8c85f3d2afd0fff92885f0d6a2811))
+
+
+
+
+
 # [2.4.0](https://github.com/davidjfelix/serverless-compose/compare/v2.1.10...v2.4.0) (2019-05-01)
 
 
