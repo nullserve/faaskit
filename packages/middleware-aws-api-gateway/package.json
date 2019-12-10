@@ -1,19 +1,25 @@
 {
-  "name": "@faaskit/middleware-aws-api-gateway",
-  "version": "1.0.0",
-  "author": "David J. Felix <felix.davidj@gmail.com>",
-  "homepage": "https://github.com/nullserve/faaskit",
-  "license": "Apache-2.0",
-  "main": "dist/index.js",
-  "types": "dist/index.d.ts",
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/nullserve/faaskit.git"
+  "author": {
+    "email": "david@nullserve.com",
+    "name": "David J Felix",
+    "url": "https://github.com/DavidJFelix"
   },
   "bugs": {
-    "url": "https://github.com/nullserve/faaskit/issues"
+    "url": "https://github.com/nullserve/faaskit/issues/new"
   },
+  "contributors": [
+    {
+      "email": "david@nullserve.com",
+      "name": "David J Felix",
+      "url": "https://github.com/DavidJFelix"
+    }
+  ],
+  "dependencies": {
+    "@faaskit/core": "^0.0.0"
+  },
+  "description": "Middlewares designed to make working with AWS API Gateway easier for FaaSKit",
   "devDependencies": {
+    "@nullserve/prettierrc": "^1.1.2",
     "@types/aws-lambda": "^8.10.19",
     "@types/jest": "^24.0.23",
     "@types/mockdate": "^2.0.0",
@@ -23,8 +29,40 @@
     "ts-jest": "^24.1.0",
     "typescript": "^3.1.5"
   },
+  "engines": {
+    "node": ">=8.0.0"
+  },
+  "homepage": "https://github.com/nullserve/faaskit#readme",
   "jest": {
     "preset": "ts-jest"
   },
-  "scripts": {}
+  "keywords": [
+    "amazon",
+    "amazon web services",
+    "api",
+    "api gateway",
+    "aws",
+    "aws lambda",
+    "faaskit",
+    "graphql",
+    "http",
+    "https",
+    "lambda",
+    "middleware",
+    "nullserve",
+    "rest",
+    "serverless"
+  ],
+  "license": "Apache-2.0",
+  "main": "dist/index.js",
+  "name": "@faaskit/middleware-aws-api-gateway",
+  "prettier": "@nullserve/prettierrc",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/nullserve/faaskit.git",
+    "directory": "packages/middleware-aws-api-gateway"
+  },
+  "scripts": {},
+  "types": "dist/index.d.ts",
+  "version": "0.0.0"
 }

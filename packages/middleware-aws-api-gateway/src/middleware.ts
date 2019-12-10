@@ -1,6 +1,6 @@
 import {APIGatewayProxyEvent, APIGatewayProxyResult} from 'aws-lambda'
 import {createMappingMiddleware, Middleware} from '@faaskit/core'
-import {toHeaderCase, remapKeys} from './utils'
+import {toHeaderCase, remapKeys} from '../../http/src/utils'
 import {NotAcceptable} from './http-errors'
 
 export const APIGatewayProxyLogMiddleware: Middleware<

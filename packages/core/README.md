@@ -1,5 +1,6 @@
-[![npm version](https://img.shields.io/npm/v/serverless-compose.svg?logo=npm&style=popout-square)](https://www.npmjs.com/package/serverless-compose)
-[![codecov coverage](https://img.shields.io/codecov/c/github/davidjfelix/serverless-compose.svg?logo=codecov&style=popout-square)](https://codecov.io/gh/DavidJFelix/serverless-compose)
+# FaaSKit Core
+
+[![npm version](https://img.shields.io/npm/v/faaskit/core.svg?logo=npm&style=popout-square)](https://www.npmjs.com/package/@faaskit/core)
 
 _A lightweight functional middleware framework for AWS lambda that stays out of your way and lets you build kick-ass, composable middleware for your lambdas._
 
@@ -16,19 +17,19 @@ Zero dependencies. Functional interface. Reusable code.
 
 ## Installation
 
-To use `serverless-compose` in your nodejs project,
+To use `@faaskit/core` in your nodejs project,
 
 ```bash
-yarn add serverless-compose
+yarn add @faaskit/core
 ```
 
 or
 
 ```bash
-npm i serverless-compose
+npm i @faaskit/core
 ```
 
-`serverless-compose` has no dependencies itself (peer or otherwise), so that's it!
+`@faaskit/core` has no dependencies itself (peer or otherwise), so that's it!
 
 ## Project Purpose
 

@@ -1,12 +1,50 @@
 {
-  "name": "@faaskit/adapter-aws-lambda",
-  "version": "0.0.0",
-  "main": "index.js",
-  "license": "Apache-2.0",
-  "devDependencies": {
-    "@types/aws-lambda": "^8.10.34"
+  "author": {
+    "email": "david@nullserve.com",
+    "name": "David J Felix",
+    "url": "https://github.com/DavidJFelix"
   },
+  "bugs": {
+    "url": "https://github.com/nullserve/faaskit/issues/new"
+  },
+  "contributors": [
+    {
+      "email": "david@nullserve.com",
+      "name": "David J Felix",
+      "url": "https://github.com/DavidJFelix"
+    }
+  ],
   "dependencies": {
-    "codecov": "^3.1.0"
-  }
+    "@faaskit/core": "^0.0.0"
+  },
+  "description": "An adapter for FaaSKit that allows easy use with AWS Lambda for compute",
+  "devDependencies": {
+    "@nullserve/prettierrc": "^1.1.2",
+    "@types/aws-lambda": "^10.0.0"
+  },
+  "engines": {
+    "node": ">=8.0.0"
+  },
+  "homepage": "https://github.com/nullserve/faaskit#readme",
+  "keywords": [
+    "amazon",
+    "amazon web services",
+    "aws",
+    "aws lambda",
+    "faaskit",
+    "lambda",
+    "nullserve",
+    "serverless"
+  ],
+  "license": "Apache-2.0",
+  "main": "dist/index.js",
+  "name": "@faaskit/adapter-aws-lambda",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/nullserve/faaskit.git",
+    "directory": "packages/adapter-aws-lambda"
+  },
+  "scripts": {},
+  "types": "dist/index.d.ts",
+  "version": "0.0.0"
 }

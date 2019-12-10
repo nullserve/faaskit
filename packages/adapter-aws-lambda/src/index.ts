@@ -21,12 +21,15 @@ export function adaptLambdaHandlerForFaasKit<
 ): FaasKitHandler<TEvent, TContext, TResult> {
   return async (event, context) =>
     new Promise((resolve, reject) => {
-      handler(event, context.AWSLambda, (error, result) => {
+      const result = handler(event, context.AWSLambda, (error, result) => {
         if (!error) {
           resolve(result)
         } else {
           reject(error)
         }
       })
+      if (result) {
+        result.then(result => resolve(result)).catch(error => reject(error))
+      }
     })
 }

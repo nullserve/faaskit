@@ -15,7 +15,7 @@
     }
   ],
   "dependencies": {},
-  "description": "The core portion of FaaSKit Middleware",
+  "description": "Utilities for FaaSKit focused on HTTP interaction",
   "devDependencies": {
     "@nullserve/prettierrc": "^1.1.2",
     "@types/jest": "^24.0.23",
@@ -32,32 +32,25 @@
     "preset": "ts-jest"
   },
   "keywords": [
-    "amazon",
-    "amazon web services",
-    "aws",
     "aws lambda",
-    "azure",
     "azure functions",
-    "cloudflare",
-    "cloudflare workers",
     "faaskit",
-    "google",
-    "google cloud",
     "google cloud functions",
-    "gcp",
     "gcp functions",
+    "http",
+    "https",
     "lambda",
     "nullserve",
     "serverless"
   ],
   "license": "Apache-2.0",
   "main": "dist/index.js",
-  "name": "@faaskit/core",
+  "name": "@faaskit/http",
   "prettier": "@nullserve/prettierrc",
   "repository": {
     "type": "git",
     "url": "https://github.com/nullserve/faaskit.git",
-    "directory": "packages/core"
+    "directory": "packages/http"
   },
   "scripts": {
     "build": "tsc",
