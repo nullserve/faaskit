@@ -44,7 +44,9 @@
     "url": "https://github.com/nullserve/faaskit.git",
     "directory": "packages/adapter-aws-lambda"
   },
-  "scripts": {},
+  "scripts": {
+    "build": "tsc"
+  },
   "types": "dist/index.d.ts",
   "version": "0.0.0"
 }
