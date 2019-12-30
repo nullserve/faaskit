@@ -37,23 +37,19 @@ The goal of this project is to provide a very thin middleware framework for AWS 
 Without a well-established middleware pattern, too many bad habits can fossilize from one-off functions into bad middleware.
 This library provides a `compose` function for wrapping middleware around a handler without having deeply nested code.
 This function wrapping pattern allows explicitly definied, functional and onion-style (a well-established style) middleware.
-`serverless-compose` also builds on the basic compose function, offering a few patterns that the author(s) have seen in the wild for rapid customization.
+`faaskit` also builds on the basic compose function, offering a few patterns that the author(s) have seen in the wild for rapid customization.
 
 Too many middlework frameworks enforce bad designs and opinions onto their users.
-`serverless-compose` doesn't impose much at all and it stays out of your way once you define your stack.
+`faaskit` doesn't impose much at all and it stays out of your way once you define your stack.
 
 ## Basic Usage
 
-The most basic use of `serverless-compose` is to add timing and error middleware to your handlers.
+The most basic use of `faaskit` is to add timing and error middleware to your handlers.
 `recoveryMiddleware` adds code for rejected promises (or thrown `async` functions) in your handlers.
 The following example wraps a rejection with an actual response so AWS API Gateway can handle and pass to clients, rather than sending its own 503 error with no information.
 
 ```javascript
-import {
-  compose,
-  recoveryMiddleware,
-  timingLogMiddleware,
-} from 'serverless-compose'
+import {compose, createRecoveryMiddleware} from '@faaskit/core'
 
 // Suppose this is a client that fetches the weather from some external API
 import {WeatherClient} from 'made-up-weather-library'
@@ -65,13 +61,9 @@ async function getWeather(request, context) {
   response = await WeatherClient.askBadAPIForWeather()
 }
 
-// Your own custom logging function
-async function logDuration(duration) {
-  console.log(`It took: ${duration}ms to return the weather`)
-}
 
 // Your own custom error handler
-async function sendError(error) {
+async function sendError(error, _event, _context) {
   return {
     statusCode: 500,
     body: JSON.stringify({
@@ -81,8 +73,17 @@ async function sendError(error) {
   }
 }
 
-const TimingMiddleware = timingLogMiddleware(logDuration)
-const RecoveryMiddleware = recoveryMiddleware(sendError)
+// Your own custom timing log Middleware
+const TimingMiddleware = (next) => async (event, context) => {
+    const startTime = new Date()
+    const result = await next(event, context)
+    const endTime = new Date()
+    const duration = endTime - startTime
+    console.log(`It took: ${duration}ms to return the weather`)
+    return result
+  }
+}
+const RecoveryMiddleware = createRecoveryMiddleware(sendError)
 const MyMiddlewareStack = compose(TimingMiddleware, RecoveryMiddleware)
 
 export const lambdaHandler = MyMiddlewareStack(getWeather)
@@ -90,20 +91,11 @@ export const lambdaHandler = MyMiddlewareStack(getWeather)
 
 ## Customizing Existing Middleware
 
-`serverless-compose` provides a number of middleware patterns for users to customize and create their own middleware.
+`faaskit` provides a number of middleware patterns for users to customize and create their own middleware.
 These patterns aren't extensive, but do provide a large variety of options.
 The current API contains the following middleware options:
 
-### timingLogMiddleware
-
-```javascript
-import {timingLogMiddleware} from 'serverless-compose'
-```
-
-`timinglogMiddlware` takes in a logging function of the signature `(duration, {event, result}) => void` and calls this function after the `next` handler has returned.
-
-This middleware is useful for recording the time taken by a lambda in other means than the existing AWS lambda logging.
-The function passed in can log a formatted message to console or remotely as it chooses.
+### TODO
 
 ## Creating Partial Middleware
 
@@ -114,7 +106,7 @@ Implementing multiple middleware stacks looks like:
 
 ```javascript
 // middleware.js
-import {compose} from 'serverless-compose'
+import {compose} from '@faaskit/core'
 
 // ... OMITTED MIDDLEWARE IMPLEMENTATIONS ...
 
@@ -157,7 +149,7 @@ export const handleCloudwatchEvents = RegularMiddleware(myRegularHandler)
 ## Building New Middleware
 
 While `compose` is a strong function for assembling middleware, the value it provides is as a starting point as a framework for your own unique requirements.
-The only requirement of a middleware is that it accept a `Handler` as its only argument and return a `Handler`, which means that as long as you follow this rule, you can easily create custom, composable middleware, or assemble middleware out of well known patterns provided by `serverless-compose` via its convenience functions.
+The only requirement of a middleware is that it accept a `Handler` as its only argument and return a `Handler`, which means that as long as you follow this rule, you can easily create custom, composable middleware, or assemble middleware out of well known patterns provided by `@faaskit/core` via its convenience functions.
 
 Below is an example for creating your own side effect middleware:
 
@@ -185,7 +177,7 @@ Using the middleware looks like:
 
 ```javascript
 // handler.js
-import { compose, recoveryMiddleware } from 'serverless-compose'
+import { compose, recoveryMiddleware } from '@faaskit/core'
 
 import { MyMiddleware } from './middleware'
 import { OtherMadeupMiddleware, SupposeThisExistsMiddleware } from 'shared-lib'
@@ -195,7 +187,7 @@ async function handler(event, context) {
 }
 
 export lambdaHandler = compose(
-  recoveryMiddleware(async (error) => {console.log(error)})
+  recoveryMiddleware(async (error, _event, _context) => {console.log(error)})
   SupposeThisExistsMiddleware,
   MyMiddleware,
   OtherMadeupMiddleware,
@@ -213,7 +205,7 @@ Check `src/middleware.ts` for some examples of translating events and responses 
 Note that `middleware.ts` contains middleware generators or functions that produce `Middleware`.
 As an author, you can decide to generate it based on user-defined parameters or hard-code a middleware.
 
-Suppose you want to convert a ping/pong handler into a pong only handler. You could implement a pattern similar to `responseMiddleware` from `middleware.ts` but hardcode the mapping function:
+Suppose you want to convert a ping/pong handler into a pong only handler. You could implement a pattern similar to `createMappingMiddlleware` from `middleware.ts` but hardcode the mapping function:
 
 ```javascript
 export function PongOnlyMiddleware(next) {
