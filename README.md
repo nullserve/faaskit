@@ -1,6 +1,6 @@
 # FaaSKit
 
-[![npm version](https://img.shields.io/npm/v/faaskit/core.svg?logo=npm&style=popout-square)](https://www.npmjs.com/package/faaskit/core)
+[![npm version](https://img.shields.io/npm/v/@faaskit/core.svg?logo=npm&style=popout-square)](https://www.npmjs.com/package/@faaskit/core)
 
 _A lightweight functional middleware framework for AWS lambda that stays out of your way and lets you build kick-ass, composable middleware for your lambdas._
 
