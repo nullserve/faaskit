@@ -3,9 +3,11 @@ import {
   createMappingMiddleware,
   createRecoveryMiddleware,
   PreMappingFnResult,
+  preMapIdentity,
+  postMapIdentity,
 } from './middleware'
 
-describe('validationMiddleware', () => {
+describe('createEffectMiddleware', () => {
   const inputEvent = 'input event'
   const inputContext = 'input context'
   const expectedResult = 'expected result'
@@ -38,7 +40,7 @@ describe('validationMiddleware', () => {
     expect(middleware).toBeInstanceOf(Function)
   })
 
-  test('calls validator function with input event', async () => {
+  test('calls effect function with input event', async () => {
     // Given
     const middleware = createEffectMiddleware({pre: mockPassesValidationFn})
     const wrappedHandler = middleware(mockHandler)
@@ -47,7 +49,7 @@ describe('validationMiddleware', () => {
     await wrappedHandler(inputEvent, inputContext)
 
     // Then
-    expect(mockPassesValidationFn).toBeCalledWith(inputEvent)
+    expect(mockPassesValidationFn).toBeCalledWith(inputEvent, inputContext)
   })
 
   test('calls handler function with input event', async () => {
@@ -59,7 +61,7 @@ describe('validationMiddleware', () => {
     await wrappedHandler(inputEvent, inputContext)
 
     // Then
-    expect(mockHandler).toBeCalledWith(inputEvent)
+    expect(mockHandler).toBeCalledWith(inputEvent, inputContext)
   })
 
   test('throws expected exception when validation fails', async () => {
@@ -75,12 +77,27 @@ describe('validationMiddleware', () => {
   })
 })
 
-describe('responseMappingMiddleware', () => {
+describe('createMappingMiddleware', () => {
   const inputEvent = 'input event'
   const inputContext = 'input context'
   const expectedResult = 'expected result'
+  const expectedMappedEvent = `mapped ${inputEvent}`
+  const expectedMappedContext = `mapped ${inputContext}`
+  const expectedPostInput = {
+    context: inputContext,
+    event: inputEvent,
+    mappedEvent: inputEvent,
+    mappedContext: inputContext,
+    result: expectedResult,
+  }
   const mockHandler = jest.fn().mockResolvedValue(expectedResult)
-  const mockMappingFn = jest.fn(
+  const mockPreMappingFn = jest.fn(
+    (event: string, context: string) =>
+      new Promise<PreMappingFnResult<string, string>>(resolve => {
+        resolve({event: expectedMappedEvent, context: expectedMappedContext})
+      }),
+  )
+  const mockPostMappingFn = jest.fn(
     ({result}) =>
       new Promise(resolve => {
         resolve(`mapped ${result}`)
@@ -89,16 +106,16 @@ describe('responseMappingMiddleware', () => {
 
   beforeEach(() => {
     mockHandler.mockClear()
-    mockMappingFn.mockClear()
+    mockPreMappingFn.mockClear()
+
+    mockPostMappingFn.mockClear()
   })
 
   test('returns middleware function', () => {
     // When
     const middleware = createMappingMiddleware({
-      pre: async ({event}) => {
-        return event
-      },
-      post: mockMappingFn,
+      pre: preMapIdentity,
+      post: mockPostMappingFn,
     })
 
     // Then
@@ -108,10 +125,8 @@ describe('responseMappingMiddleware', () => {
   test('calls mapper function with handler response', async () => {
     // Given
     const middleware = createMappingMiddleware({
-      pre: async ({event}) => {
-        return event
-      },
-      post: mockMappingFn,
+      pre: preMapIdentity,
+      post: mockPostMappingFn,
     })
     const wrappedHandler = middleware(mockHandler)
 
@@ -119,16 +134,14 @@ describe('responseMappingMiddleware', () => {
     await wrappedHandler(inputEvent, inputContext)
 
     // Then
-    expect(mockMappingFn).toBeCalledWith(expectedResult)
+    expect(mockPostMappingFn).toBeCalledWith(expectedPostInput)
   })
 
   test('calls handler function with input event', async () => {
     // Given
     const middleware = createMappingMiddleware({
-      pre: async ({event}) => {
-        return event
-      },
-      post: mockMappingFn,
+      pre: preMapIdentity,
+      post: mockPostMappingFn,
     })
     const wrappedHandler = middleware(mockHandler)
 
@@ -136,16 +149,14 @@ describe('responseMappingMiddleware', () => {
     await wrappedHandler(inputEvent, inputContext)
 
     // Then
-    expect(mockHandler).toBeCalledWith(inputEvent)
+    expect(mockHandler).toBeCalledWith(inputEvent, inputContext)
   })
 
   test('returns mapped handler response', async () => {
     // Given
     const middleware = createMappingMiddleware({
-      pre: async ({event}) => {
-        return event
-      },
-      post: mockMappingFn,
+      pre: preMapIdentity,
+      post: mockPostMappingFn,
     })
     const wrappedHandler = middleware(mockHandler)
 
@@ -155,32 +166,12 @@ describe('responseMappingMiddleware', () => {
     // Then
     expect(result).toBe(`mapped ${expectedResult}`)
   })
-})
-
-describe('requestMappingMiddleware', () => {
-  const inputEvent = 'input event'
-  const inputContext = 'input context'
-  const expectedResult = 'expected result'
-  const mockHandler = jest.fn().mockResolvedValue(expectedResult)
-  const mockMappingFn = jest.fn(
-    (event: string, context: string) =>
-      new Promise<PreMappingFnResult<string, string>>(resolve => {
-        resolve({event: `mapped ${event}`, context: `mapped ${context}`})
-      }),
-  )
-
-  beforeEach(() => {
-    mockHandler.mockClear()
-    mockMappingFn.mockClear()
-  })
 
   test('returns middleware function', () => {
     // When
     const middleware = createMappingMiddleware({
-      pre: mockMappingFn,
-      post: async ({result}) => {
-        return result
-      },
+      pre: mockPreMappingFn,
+      post: postMapIdentity,
     })
 
     // Then
@@ -190,10 +181,8 @@ describe('requestMappingMiddleware', () => {
   test('calls handler function with mapped event', async () => {
     // Given
     const middleware = createMappingMiddleware({
-      pre: mockMappingFn,
-      post: async ({result}) => {
-        return result
-      },
+      pre: mockPreMappingFn,
+      post: postMapIdentity,
     })
     const wrappedHandler = middleware(mockHandler)
 
@@ -201,16 +190,17 @@ describe('requestMappingMiddleware', () => {
     await wrappedHandler(inputEvent, inputContext)
 
     // Then
-    expect(mockHandler).toBeCalledWith(`mapped ${inputEvent}`)
+    expect(mockHandler).toBeCalledWith(
+      `mapped ${inputEvent}`,
+      `mapped ${inputContext}`,
+    )
   })
 
   test('calls mapper function with input event', async () => {
     // Given
     const middleware = createMappingMiddleware({
-      pre: mockMappingFn,
-      post: async ({result}) => {
-        return result
-      },
+      pre: mockPreMappingFn,
+      post: postMapIdentity,
     })
     const wrappedHandler = middleware(mockHandler)
 
@@ -218,16 +208,14 @@ describe('requestMappingMiddleware', () => {
     await wrappedHandler(inputEvent, inputContext)
 
     // Then
-    expect(mockMappingFn).toBeCalledWith(inputEvent)
+    expect(mockPreMappingFn).toBeCalledWith(inputEvent, inputContext)
   })
 
   test('returns value that handler returns', async () => {
     // Given
     const middleware = createMappingMiddleware({
-      pre: mockMappingFn,
-      post: async ({result}) => {
-        return result
-      },
+      pre: mockPreMappingFn,
+      post: postMapIdentity,
     })
     const wrappedHandler = middleware(mockHandler)
 
@@ -239,7 +227,7 @@ describe('requestMappingMiddleware', () => {
   })
 })
 
-describe('recoveryHandler', () => {
+describe('createRecoveryMiddleware', () => {
   const inputEvent = 'input event'
   const inputContext = 'input context'
   const expectedResolve = 'expected resolve'

@@ -183,6 +183,19 @@ export function createMappingMiddleware<
   }
 }
 
+export async function preMapIdentity<TEvent, TContext>(
+  event: TEvent,
+  context: TContext,
+): Promise<PreMappingFnResult<TEvent, TContext>> {
+  return {event, context}
+}
+
+export async function postMapIdentity<TResult>({
+  result,
+}: PostMappingFnParams<any, any, TResult, any, any>): Promise<TResult> {
+  return result
+}
+
 /**
  * A helper function for creating middlewares that recover from thrown errors.
  * The helper takes a recovery function which can also optionally re-throw.
