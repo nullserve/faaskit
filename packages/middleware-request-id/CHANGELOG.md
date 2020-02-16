@@ -3,6 +3,25 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.2.1](https://github.com/NullServe/faaskit/compare/v0.2.0...v0.2.1) (2020-02-16)
+
+**Note:** Version bump only for package @faaskit/middleware-request-id
+
+
+
+
+
+# [0.2.0](https://github.com/NullServe/faaskit/compare/v0.0.0...v0.2.0) (2020-02-16)
+
+
+### Bug Fixes
+
+* add missing publish config ([1fe8b2a](https://github.com/NullServe/faaskit/commit/1fe8b2aa3f1b28a96b83f4d100c5a54b83dbeca5))
+
+
+
+
+
 # [0.1.0](https://github.com/NullServe/faaskit/compare/v2.1.10...v0.1.0) (2019-12-10)
 
 

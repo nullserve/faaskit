@@ -15,7 +15,7 @@
     }
   ],
   "dependencies": {
-    "@faaskit/core": "^0.1.0"
+    "@faaskit/core": "^0.2.1"
   },
   "description": "An adapter for FaaSKit that allows easy use with AWS Lambda for compute",
   "devDependencies": {
@@ -51,5 +51,5 @@
     "build": "tsc"
   },
   "types": "dist/index.d.ts",
-  "version": "0.1.0"
+  "version": "0.2.1"
 }

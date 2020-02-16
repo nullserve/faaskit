@@ -115,11 +115,11 @@ export interface CreateMappingMiddlewareParams<
   TContextTo,
   TResultTo
 > {
-  pre: (
+  pre?: (
     event: TEventFrom,
     context: TContextFrom,
   ) => Promise<PreMappingFnResult<TEventTo, TContextTo>>
-  post: (
+  post?: (
     params: PostMappingFnParams<
       TEventFrom,
       TContextFrom,
@@ -149,8 +149,11 @@ export function createMappingMiddleware<
   TContextTo,
   TResultTo
 >({
-  pre,
-  post,
+  pre = async (event, context) => ({
+    event: (event as unknown) as TEventTo,
+    context: (context as unknown) as TContextTo,
+  }),
+  post = async ({result}) => (result as unknown) as TResultTo,
 }: CreateMappingMiddlewareParams<
   TEventFrom,
   TContextFrom,
