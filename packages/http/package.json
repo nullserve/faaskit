@@ -4,6 +4,7 @@
     "name": "David J Felix",
     "url": "https://github.com/DavidJFelix"
   },
+  "browser": "dist/main.browser.js",
   "bugs": {
     "url": "https://github.com/nullserve/faaskit/issues/new"
   },
@@ -43,7 +44,7 @@
     "serverless"
   ],
   "license": "Apache-2.0",
-  "main": "dist/index.js",
+  "main": "dist/index.node.js",
   "name": "@faaskit/http",
   "prettier": "@nullserve/prettierrc",
   "publishConfig": {
@@ -59,5 +60,5 @@
     "test": "jest"
   },
   "types": "dist/index.d.ts",
-  "version": "0.2.1"
+  "version": "0.2.2"
 }
