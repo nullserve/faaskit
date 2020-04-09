@@ -1,0 +1,54 @@
+{
+  "author": {
+    "email": "david@nullserve.com",
+    "name": "David J Felix",
+    "url": "https://github.com/DavidJFelix"
+  },
+  "bugs": {
+    "url": "https://github.com/nullserve/faaskit/issues/new"
+  },
+  "contributors": [
+    {
+      "email": "david@nullserve.com",
+      "name": "David J Felix",
+      "url": "https://github.com/DavidJFelix"
+    }
+  ],
+  "dependencies": {
+    "@faaskit/core": "^0.2.2"
+  },
+  "description": "An adapter for FaaSKit that allows easy use with Azure Functions for compute",
+  "devDependencies": {
+    "@nullserve/prettierrc": "^1.1.2",
+    "@azure/functions": "^1.2.0"
+  },
+  "engines": {
+    "node": ">=8.0.0"
+  },
+  "homepage": "https://github.com/nullserve/faaskit#readme",
+  "keywords": [
+    "azure",
+    "azure functions",
+    "cloud functions",
+    "faaskit",
+    "lambda",
+    "nullserve",
+    "serverless"
+  ],
+  "license": "Apache-2.0",
+  "main": "dist/index.js",
+  "name": "@faaskit/adapter-azure-functions",
+  "publishConfig": {
+    "access": "public"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/nullserve/faaskit.git",
+    "directory": "packages/adapter-azure-functions"
+  },
+  "scripts": {
+    "build": "tsc"
+  },
+  "types": "dist/index.d.ts",
+  "version": "0.2.2"
+}
