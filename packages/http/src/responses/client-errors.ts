@@ -1,24 +1,4 @@
-export class HttpError extends Error {
-  public statusCode: number
-  public details?: ErrorDetails
-  public name: string
-
-  constructor(
-    message: string,
-    name: string,
-    statusCode: number,
-    details?: ErrorDetails,
-  ) {
-    super(message)
-    this.name = name
-    this.statusCode = statusCode
-    this.details = details
-  }
-}
-
-export interface ErrorDetails {
-  fields: {[key: string]: string}
-}
+import {HttpError, ErrorDetails} from './error'
 
 // 400
 export class BadRequest extends HttpError {
@@ -199,40 +179,5 @@ export class RequestHeaderFieldsTooLarge extends HttpError {
 export class UnavailableForLegalReasons extends HttpError {
   constructor(message: string, details?: ErrorDetails) {
     super(message, 'UnavailableForLegalReasons', 451, details)
-  }
-}
-
-// 500
-export class InternalServerError extends HttpError {
-  constructor(message: string, details?: ErrorDetails) {
-    super(message, 'InternalServerError', 500, details)
-  }
-}
-
-// 501
-export class NotImplemented extends HttpError {
-  constructor(message: string, details?: ErrorDetails) {
-    super(message, 'NotImplemented', 501, details)
-  }
-}
-
-// 502
-export class BadGateway extends HttpError {
-  constructor(message: string, details?: ErrorDetails) {
-    super(message, 'BadGateway', 502, details)
-  }
-}
-
-// 503
-export class ServiceUnavailable extends HttpError {
-  constructor(message: string, details?: ErrorDetails) {
-    super(message, 'ServiceUnavailable', 503, details)
-  }
-}
-
-// 504
-export class GatewayTimeout extends HttpError {
-  constructor(message: string, details?: ErrorDetails) {
-    super(message, 'GatewayTimeout', 504, details)
   }
 }
