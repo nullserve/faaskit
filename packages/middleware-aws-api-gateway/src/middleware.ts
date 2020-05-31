@@ -1,18 +1,21 @@
 import {APIGatewayProxyEvent, APIGatewayProxyResult} from 'aws-lambda'
 import {createMappingMiddleware, Middleware} from '@faaskit/core'
+import {NotAcceptable} from '@faaskit/http'
+
 import {toHeaderCase, remapKeys} from '../../http/src/utils'
-import {NotAcceptable} from './http-errors'
 
 export const APIGatewayProxyLogMiddleware: Middleware<
   APIGatewayProxyEvent,
   APIGatewayProxyResult,
+  any,
   APIGatewayProxyEvent,
-  APIGatewayProxyResult
+  APIGatewayProxyResult,
+  any
 > = next => {
-  return async event => {
+  return async (event, context) => {
     const t0 = new Date()
     try {
-      const response = await next(event)
+      const response = await next(event, context)
       const t1 = new Date()
 
       return response
@@ -26,24 +29,31 @@ export const APIGatewayProxyLogMiddleware: Middleware<
 export const HeaderNormalizingMiddleware: Middleware<
   APIGatewayProxyEvent,
   APIGatewayProxyResult,
+  any,
   APIGatewayProxyEvent,
-  APIGatewayProxyResult
+  APIGatewayProxyResult,
+  any
 > = createMappingMiddleware<
   APIGatewayProxyEvent,
   APIGatewayProxyResult,
+  any,
   APIGatewayProxyEvent,
-  APIGatewayProxyResult
->(
-  async event => {
+  APIGatewayProxyResult,
+  any
+>({
+  pre: async (event, context) => {
     return {
-      ...event,
-      headers: remapKeys(event.headers, key => key.toLowerCase()),
-      multiValueHeaders: remapKeys(event.multiValueHeaders, key =>
-        key.toLowerCase(),
-      ),
+      event: {
+        ...event,
+        headers: remapKeys(event.headers, key => key.toLowerCase()),
+        multiValueHeaders: remapKeys(event.multiValueHeaders, key =>
+          key.toLowerCase(),
+        ),
+      },
+      context,
     }
   },
-  async result => {
+  post: async ({result}) => {
     return {
       ...result,
       headers: result.headers
@@ -54,7 +64,7 @@ export const HeaderNormalizingMiddleware: Middleware<
         : {},
     }
   },
-)
+})
 
 function negotiateAccept(
   contentTypes: string[],
@@ -85,8 +95,8 @@ export interface JSONResponseMiddlewareOptions {
 
 export function createJSONResponseMiddleware(
   options?: JSONResponseMiddlewareOptions,
-): Middleware<APIGatewayProxyEvent, APIGatewayProxyResult> {
-  return next => async event => {
+): Middleware<APIGatewayProxyEvent, any, APIGatewayProxyResult> {
+  return next => async (event, context) => {
     const contentTypes =
       options && options.contentTypes
         ? options.contentTypes
@@ -106,13 +116,13 @@ export function createJSONResponseMiddleware(
         },
       )
     }
-    const result = await next(event)
+    const result = await next(event, context)
     return {
       statusCode: 200,
       ...result,
       body: JSON.stringify(result.body),
       headers: {
-        ...Headers,
+        ...event.headers,
         'content-type': acceptedContentType
           ? acceptedContentType
           : 'application/json',

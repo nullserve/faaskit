@@ -10,7 +10,7 @@ describe('adaptFaasKitHandlerForLambda', () => {
       functionName: 'testFunction',
       functionVersion: 'LATEST',
       invokedFunctionArn: 'arn:testFunction',
-      memoryLimitInMB: 128,
+      memoryLimitInMB: '128',
       awsRequestId: '1',
       logGroupName: 'testFunctionLogGroupName',
       logStreamName: 'testFunctionLogGroupName1',
