@@ -16,9 +16,9 @@
   ],
   "dependencies": {
     "@faaskit/core": "^0.2.2",
-    "@faaskit/http": "^0.2.2"
+    "date-fns": "^2.14.0"
   },
-  "description": "Middlewares designed to make working with AWS API Gateway easier for FaaSKit",
+  "description": "Middlewares designed to make working with AWS EventBridge easier for FaaSKit",
   "devDependencies": {
     "@nullserve/prettierrc": "^1.1.2",
     "@types/aws-lambda": "^8.10.51",
@@ -40,8 +40,10 @@
   "keywords": [
     "amazon",
     "amazon web services",
-    "api",
-    "api gateway",
+    "cloudwatch",
+    "cloudwatch events",
+    "event",
+    "eventbridge",
     "aws",
     "aws lambda",
     "faaskit",
@@ -56,7 +58,7 @@
   ],
   "license": "Apache-2.0",
   "main": "dist/index.js",
-  "name": "@faaskit/middleware-aws-api-gateway",
+  "name": "@faaskit/middleware-aws-eventbridge-events",
   "prettier": "@nullserve/prettierrc",
   "publishConfig": {
     "access": "public"
@@ -64,7 +66,7 @@
   "repository": {
     "type": "git",
     "url": "https://github.com/nullserve/faaskit.git",
-    "directory": "packages/middleware-aws-api-gateway"
+    "directory": "packages/middleware-aws-eventbridge-events"
   },
   "scripts": {},
   "types": "dist/index.d.ts",
