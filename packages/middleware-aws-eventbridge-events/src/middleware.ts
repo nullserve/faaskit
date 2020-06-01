@@ -1,7 +1,7 @@
 import {EventBridgeEvent} from 'aws-lambda'
-import {createMappingMiddleware, Middleware} from '@faaskit/core'
-
 import parseISO from 'date-fns/parseISO'
+
+import {createMappingMiddleware, Middleware} from '@faaskit/core'
 
 export interface EventBridgeContext<TDetailType> {
   AWSEventBridge: {

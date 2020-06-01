@@ -1,4 +1,4 @@
-import {MiddlewareStack, Middleware, Handler} from './types'
+import {Middleware, Handler, Func} from './types'
 
 /**
  * Composes middleware from right to left. The rightmost
@@ -9,7 +9,7 @@ import {MiddlewareStack, Middleware, Handler} from './types'
  *   to left. For example, `compose(f, g, h)(handler)` is identical to doing
  *   `(...args) => f(g(h(...args)))(handler)`.
  */
-export function compose<TEvent, TContext, TResult>(): <
+export function composeMiddleware<TEvent, TContext, TResult>(): <
   TEvent,
   TContext,
   TResult
@@ -27,7 +27,7 @@ export function compose<TEvent, TContext, TResult>(): <
  *   to left. For example, `compose(f, g, h)(handler)` is identical to doing
  *   `(...args) => f(g(h(...args)))(handler)`.
  */
-export function compose<
+export function composeMiddleware<
   TEvent,
   TContext,
   TResult,
@@ -46,7 +46,7 @@ export function compose<
 ): Middleware<TEvent, TContext, TResult, TNextEvent, TNextContext, TNextResult>
 
 /* two functions */
-export function compose<
+export function composeMiddleware<
   TEvent,
   TContext,
   TResult,
@@ -73,17 +73,10 @@ export function compose<
     TNextContext,
     TNextResult
   >,
-): MiddlewareStack<
-  TEvent,
-  TContext,
-  TResult,
-  TNextEvent,
-  TNextContext,
-  TNextResult
->
+): Middleware<TEvent, TContext, TResult, TNextEvent, TNextContext, TNextResult>
 
 /* three functions */
-export function compose<
+export function composeMiddleware<
   TEvent,
   TContext,
   TResult,
@@ -121,17 +114,10 @@ export function compose<
     TNextContext,
     TNextResult
   >,
-): MiddlewareStack<
-  TEvent,
-  TContext,
-  TResult,
-  TNextEvent,
-  TNextContext,
-  TNextResult
->
+): Middleware<TEvent, TContext, TResult, TNextEvent, TNextContext, TNextResult>
 
 /* four functions */
-export function compose<
+export function composeMiddleware<
   TEvent,
   TContext,
   TResult,
@@ -180,17 +166,10 @@ export function compose<
     TNextContext,
     TNextResult
   >,
-): MiddlewareStack<
-  TEvent,
-  TContext,
-  TResult,
-  TNextEvent,
-  TNextContext,
-  TNextResult
->
+): Middleware<TEvent, TContext, TResult, TNextEvent, TNextContext, TNextResult>
 
 /* five functions */
-export function compose<
+export function composeMiddleware<
   TEvent,
   TContext,
   TResult,
@@ -250,17 +229,10 @@ export function compose<
     TNextContext,
     TNextResult
   >,
-): MiddlewareStack<
-  TEvent,
-  TContext,
-  TResult,
-  TNextEvent,
-  TNextContext,
-  TNextResult
->
+): Middleware<TEvent, TContext, TResult, TNextEvent, TNextContext, TNextResult>
 
 /* six functions */
-export function compose<
+export function composeMiddleware<
   TEvent,
   TContext,
   TResult,
@@ -331,17 +303,10 @@ export function compose<
     TNextContext,
     TNextResult
   >,
-): MiddlewareStack<
-  TEvent,
-  TContext,
-  TResult,
-  TNextEvent,
-  TNextContext,
-  TNextResult
->
+): Middleware<TEvent, TContext, TResult, TNextEvent, TNextContext, TNextResult>
 
 /* seven functions */
-export function compose<
+export function composeMiddleware<
   TEvent,
   TContext,
   TResult,
@@ -423,30 +388,129 @@ export function compose<
     TNextContext,
     TNextResult
   >,
-): MiddlewareStack<
-  TEvent,
-  TContext,
-  TResult,
-  TNextEvent,
-  TNextContext,
-  TNextResult
->
+): Middleware<TEvent, TContext, TResult, TNextEvent, TNextContext, TNextResult>
 
 /* rest */
-export function compose<TEvent, TContext, TResult>(
+export function composeMiddleware<TEvent, TContext, TResult>(
   middleware1: Middleware<TEvent, TContext, TResult, any, any, any>,
   ...restMiddlewares: Middleware<any, any, any>[]
 ): Middleware<TEvent, TContext, TResult, any, any>
 
-export function compose<TEvent, TContext, TResult>(
+export function composeMiddleware<TEvent, TContext, TResult>(
   ...middlewares: Middleware<any, any, any>[]
 ): Middleware<TEvent, TResult, any, any>
 
-export function compose<TEvent, TContext, TResult>(
+export function composeMiddleware<TEvent, TContext, TResult>(
   ...middlewares: Middleware<any, any, any>[]
-): MiddlewareStack<TEvent, TResult, any, any> {
+): Middleware<TEvent, TResult, any, any> {
   return middlewares.reduce(
     (a: Middleware<TEvent, TContext, TResult>, b) => next => a(b(next)),
     (next: Handler<TEvent, TContext, TResult>) => next,
   )
+}
+
+export function compose(): <T>(a: T) => T
+
+export function compose<TFunc extends Function>(f: TFunc): TFunc
+
+export function compose<TIntermediate, TArgs extends any[], TReturn>(
+  func1: (input: TIntermediate) => TReturn,
+  func2: Func<TArgs, TReturn>,
+): Func<TArgs, TReturn>
+
+export function compose<
+  TIntermediate1,
+  TIntermediate2,
+  TArgs extends any[],
+  TReturn
+>(
+  func1: (input: TIntermediate1) => TReturn,
+  func2: (input: TIntermediate2) => TIntermediate1,
+  func3: Func<TArgs, TIntermediate2>,
+): Func<TArgs, TReturn>
+
+export function compose<
+  TIntermediate1,
+  TIntermediate2,
+  TIntermediate3,
+  TArgs extends any[],
+  TReturn
+>(
+  func1: (input: TIntermediate1) => TReturn,
+  func2: (input: TIntermediate2) => TIntermediate1,
+  func3: (input: TIntermediate3) => TIntermediate2,
+  func4: Func<TArgs, TIntermediate3>,
+): Func<TArgs, TReturn>
+
+export function compose<
+  TIntermediate1,
+  TIntermediate2,
+  TIntermediate3,
+  TIntermediate4,
+  TIntermediate5,
+  TIntermediate6,
+  TArgs extends any[],
+  TReturn
+>(
+  func1: (input: TIntermediate1) => TReturn,
+  func2: (input: TIntermediate2) => TIntermediate1,
+  func3: (input: TIntermediate3) => TIntermediate2,
+  func4: (input: TIntermediate4) => TIntermediate3,
+  func5: Func<TArgs, TIntermediate4>,
+): Func<TArgs, TReturn>
+
+export function compose<
+  TIntermediate1,
+  TIntermediate2,
+  TIntermediate3,
+  TIntermediate4,
+  TIntermediate5,
+  TArgs extends any[],
+  TReturn
+>(
+  func1: (input: TIntermediate1) => TReturn,
+  func2: (input: TIntermediate2) => TIntermediate1,
+  func3: (input: TIntermediate3) => TIntermediate2,
+  func4: (input: TIntermediate4) => TIntermediate3,
+  func5: (input: TIntermediate5) => TIntermediate4,
+  func6: Func<TArgs, TIntermediate5>,
+): Func<TArgs, TReturn>
+
+export function compose<
+  TIntermediate1,
+  TIntermediate2,
+  TIntermediate3,
+  TIntermediate4,
+  TIntermediate5,
+  TIntermediate6,
+  TArgs extends any[],
+  TReturn
+>(
+  func1: (input: TIntermediate1) => TReturn,
+  func2: (input: TIntermediate2) => TIntermediate1,
+  func3: (input: TIntermediate3) => TIntermediate2,
+  func4: (input: TIntermediate4) => TIntermediate3,
+  func5: (input: TIntermediate5) => TIntermediate4,
+  func6: (input: TIntermediate6) => TIntermediate5,
+  func7: Func<TArgs, TIntermediate6>,
+): Func<TArgs, TReturn>
+
+export function compose<T>(
+  func1: (a: any) => T,
+  ...funcs: Function[]
+): (...args: any[]) => T
+
+export function compose<T>(...funcs: Function[]): (...args: any[]) => T
+
+export function compose(...funcs: Function[]) {
+  if (funcs.length === 0) {
+    // infer the argument type so it is usable in inference down the line
+    return <T>(arg: T) => arg
+  }
+
+  if (funcs.length === 1) {
+    return funcs[0]
+  }
+
+  return funcs.reduce((a, b) => (...args: any) => a(b(...args)))
 }

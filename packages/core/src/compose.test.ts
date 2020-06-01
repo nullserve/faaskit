@@ -1,4 +1,4 @@
-import {compose, Middleware} from '../src'
+import {composeMiddleware as compose, Middleware} from '../src'
 
 describe('compose', () => {
   const expectedEvent = 'expected event'

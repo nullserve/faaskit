@@ -1,3 +1,5 @@
+export type Func<TArgs extends any[], TReturn> = (...args: TArgs) => TReturn
+
 /**
  * A Handler is a function which response transactionally (by `Promise`) to some event.
  * This is the base building block for FaaS -- All invoked functions must be `Handler`s.
@@ -43,16 +45,3 @@ export type Middleware<
 > = (
   next: Handler<TNextEvent, TNextContext, TNextResult>,
 ) => Handler<TEvent, TContext, TResult>
-
-/**
- * A type alias for {@link Middleware | Middleware}
- * See the documentation there for type parameter definitions and parameter definitions
- */
-export type MiddlewareStack<
-  TEvent,
-  TContext,
-  TResult,
-  TNextEvent = TEvent,
-  TNextContext = TContext,
-  TNextResult = TResult
-> = Middleware<TEvent, TContext, TResult, TNextEvent, TNextContext, TNextResult>
