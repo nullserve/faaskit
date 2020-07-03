@@ -1,6 +1,6 @@
-import {composeMiddleware as compose, Middleware} from '../src'
+import {composeMiddleware, Middleware} from '../src'
 
-describe('compose', () => {
+describe('composeMiddleware', () => {
   const expectedEvent = 'expected event'
   const expectedContext = 'expected context'
   const expectedResult = 'expected result'
@@ -10,7 +10,7 @@ describe('compose', () => {
 
   test('returns a middleware function', () => {
     // When
-    const output = compose()
+    const output = composeMiddleware()
 
     // Then
     expect(output).toBeInstanceOf(Function)
@@ -18,7 +18,7 @@ describe('compose', () => {
 
   test('returns identity on empty', () => {
     // Given
-    const emptyMiddlewares = compose()
+    const emptyMiddlewares = composeMiddleware()
 
     // When
     const result = emptyMiddlewares(mockHandler)
@@ -29,7 +29,7 @@ describe('compose', () => {
 
   test('returns middleware when unary', () => {
     // Given
-    const unaryMiddlewares = compose(mockMiddleware)
+    const unaryMiddlewares = composeMiddleware(mockMiddleware)
     const expectedReturn = mockMiddleware(mockHandler)
 
     // When
@@ -55,7 +55,7 @@ describe('compose', () => {
       const result = await next(event, context)
       return 'second ' + result
     }
-    const middlewares = compose(firstMiddleware, secondMiddleware)
+    const middlewares = composeMiddleware(firstMiddleware, secondMiddleware)
     const wrappedHandler = middlewares(
       () =>
         new Promise(resolve => {

@@ -92,7 +92,7 @@ describe('createMappingMiddleware', () => {
   }
   const mockHandler = jest.fn().mockResolvedValue(expectedResult)
   const mockPreMappingFn = jest.fn(
-    (event: string, context: string) =>
+    _params =>
       new Promise<PreMappingFnResult<string, string>>(resolve => {
         resolve({event: expectedMappedEvent, context: expectedMappedContext})
       }),
@@ -208,7 +208,10 @@ describe('createMappingMiddleware', () => {
     await wrappedHandler(inputEvent, inputContext)
 
     // Then
-    expect(mockPreMappingFn).toBeCalledWith(inputEvent, inputContext)
+    expect(mockPreMappingFn).toBeCalledWith({
+      event: inputEvent,
+      context: inputContext,
+    })
   })
 
   test('returns value that handler returns', async () => {

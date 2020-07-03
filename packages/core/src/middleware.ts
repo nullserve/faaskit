@@ -65,12 +65,45 @@ export function createEffectMiddleware<TEvent, TContext, TResult>({
 }
 
 /**
+ * An interface for the parameter of a pre mapping function as defined in
+ * the type {@link PreMappingFn | PreMappingFn}
  *
+ * @member event - the event to be mapped by the pre mapping function
+ * @member context - the context to be mapped by the pre mapping function
+ */
+export interface PreMappingFnParams<TEvent, TContext> {
+  event: TEvent
+  context: TContext
+}
+
+/**
+ * An interface for the return type of a pre mapping function as defined in
+ * the type {@link PreMappingFn | PreMappingFn}
+ *
+ * @member event - the event after being mapped
+ * @member context - the context after being mapped
  */
 export interface PreMappingFnResult<TEvent, TContext> {
   event: TEvent
   context: TContext
 }
+
+/**
+ * A type for pre mapping functions.
+ * A pre mapping function is executed before the next middleware and is designed to
+ * map incoming values to new values that are expected by the next middleware.
+ * It is used by the interface
+ * {@link CreateMappingMiddlewareParams | CreateMappingMiddlewareParams}
+ *
+ * @param params - the pre mapping parameters as defined in the interface
+ * {@link PreMappingFnParams | PreMappingFnParams}
+ *
+ * @returns a promise of the mapped parameters as defined in
+ * {@link PreMappingFnResult | PreMappingFnResult}
+ */
+export type PreMappingFn<TEventFrom, TContextFrom, TEventTo, TContextTo> = (
+  params: PreMappingFnParams<TEventFrom, TContextFrom>,
+) => Promise<PreMappingFnResult<TEventTo, TContextTo>>
 
 /**
  * An interface for the parameter of a post mapping function as defined in
@@ -97,6 +130,36 @@ export interface PostMappingFnParams<
 }
 
 /**
+ * A type for post mapping functions
+ * A post mapping function is executed after the next middleware and is designed to
+ * map result values to new values that are expected higher in the middleware chain.
+ * It is used by the interface
+ * {@link CreateMappingMiddlewareParams | CreateMappingMiddlewareParams}
+ *
+ * @param params - the post mapping parameters as defined in the interface
+ * {@link PostMappingFnParams | PostMappingFnParams}
+ *
+ * @returns a promise of the mapped parameters as defined in
+ * {@link PostMappingFnResult | PostMappingFnResult}
+ */
+export type PostMappingFn<
+  TEventFrom,
+  TContextFrom,
+  TResultFrom,
+  TEventTo,
+  TContextTo,
+  TResultTo
+> = (
+  params: PostMappingFnParams<
+    TEventFrom,
+    TContextFrom,
+    TResultFrom,
+    TEventTo,
+    TContextTo
+  >,
+) => Promise<TResultTo>
+
+/**
  * An interface for the lone parameter of the
  * {@link createMappingMiddleware | createMappingMiddleware} middleware helper
  * function.
@@ -115,19 +178,15 @@ export interface CreateMappingMiddlewareParams<
   TContextTo,
   TResultTo
 > {
-  pre?: (
-    event: TEventFrom,
-    context: TContextFrom,
-  ) => Promise<PreMappingFnResult<TEventTo, TContextTo>>
-  post?: (
-    params: PostMappingFnParams<
-      TEventFrom,
-      TContextFrom,
-      TResultFrom,
-      TEventTo,
-      TContextTo
-    >,
-  ) => Promise<TResultTo>
+  pre: PreMappingFn<TEventFrom, TContextFrom, TEventTo, TContextTo>
+  post: PostMappingFn<
+    TEventFrom,
+    TContextFrom,
+    TResultFrom,
+    TEventTo,
+    TContextTo,
+    TResultTo
+  >
 }
 
 /**
@@ -149,11 +208,8 @@ export function createMappingMiddleware<
   TContextTo,
   TResultTo
 >({
-  pre = async (event, context) => ({
-    event: (event as unknown) as TEventTo,
-    context: (context as unknown) as TContextTo,
-  }),
-  post = async ({result}) => (result as unknown) as TResultTo,
+  pre,
+  post,
 }: CreateMappingMiddlewareParams<
   TEventFrom,
   TContextFrom,
@@ -170,10 +226,10 @@ export function createMappingMiddleware<
   TResultFrom
 > {
   return next => async (event, context) => {
-    const {event: mappedEvent, context: mappedContext} = await pre(
+    const {event: mappedEvent, context: mappedContext} = await pre({
       event,
       context,
-    )
+    })
     const result = await next(mappedEvent, mappedContext)
     const mappedResult = await post({
       event,
@@ -186,10 +242,49 @@ export function createMappingMiddleware<
   }
 }
 
-export async function preMapIdentity<TEvent, TContext>(
-  event: TEvent,
-  context: TContext,
-): Promise<PreMappingFnResult<TEvent, TContext>> {
+export function createEventMappingMiddleware<
+  TEventFrom,
+  TContextFrom,
+  TEventTo,
+  TContextTo,
+  TResult
+>(
+  preMappingFn: PreMappingFn<TEventFrom, TContextFrom, TEventTo, TContextTo>,
+): Middleware<
+  TEventFrom,
+  TContextFrom,
+  TResult,
+  TEventTo,
+  TContextTo,
+  TResult
+> {
+  return createMappingMiddleware({pre: preMappingFn, post: postMapIdentity})
+}
+
+export function createResultMappingMiddleware<
+  TEvent,
+  TContext,
+  TResultFrom,
+  TResultTo
+>(
+  postMappingFn: PostMappingFn<
+    TEvent,
+    TContext,
+    TResultFrom,
+    TEvent,
+    TContext,
+    TResultTo
+  >,
+): Middleware<TEvent, TContext, TResultTo, TEvent, TContext, TResultFrom> {
+  return createMappingMiddleware({pre: preMapIdentity, post: postMappingFn})
+}
+
+export async function preMapIdentity<TEvent, TContext>({
+  event,
+  context,
+}: PreMappingFnParams<TEvent, TContext>): Promise<
+  PreMappingFnResult<TEvent, TContext>
+> {
   return {event, context}
 }
 
