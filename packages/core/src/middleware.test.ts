@@ -15,14 +15,27 @@ describe('createEffectMiddleware', () => {
   const expectedResult = 'expected result'
   const expectedError = 'expected error'
   const mockHandler = jest.fn().mockResolvedValue(expectedResult)
-  const mockPassesValidationFn = jest.fn(
-    (event: any, context: any) =>
+  const mockPassesPreValidationFn = jest.fn(
+    _params =>
       new Promise<void>(resolve => {
         resolve()
       }),
   )
-  const mockFailsValidationFn = jest.fn(
-    (event: any) =>
+  const mockFailsPreValidationFn = jest.fn(
+    _params =>
+      new Promise<void>((_, reject) => {
+        reject(expectedError)
+      }),
+  )
+
+  const mockPassesPostValidationFn = jest.fn(
+    _params =>
+      new Promise<void>(resolve => {
+        resolve()
+      }),
+  )
+  const mockFailsPostValidationFn = jest.fn(
+    _params =>
       new Promise<void>((_, reject) => {
         reject(expectedError)
       }),
@@ -30,13 +43,25 @@ describe('createEffectMiddleware', () => {
 
   beforeEach(() => {
     mockHandler.mockClear()
-    mockPassesValidationFn.mockClear()
-    mockFailsValidationFn.mockClear()
+    mockPassesPreValidationFn.mockClear()
+    mockFailsPreValidationFn.mockClear()
+    mockPassesPostValidationFn.mockClear()
+    mockFailsPostValidationFn.mockClear()
   })
 
-  test('returns a middleware function', () => {
+  test('returns a middleware function for pre only validation', () => {
     // When
-    const middleware = createEffectMiddleware({pre: mockPassesValidationFn})
+    const middleware = createEffectMiddleware({pre: mockPassesPreValidationFn})
+
+    // Then
+    expect(middleware).toBeInstanceOf(Function)
+  })
+
+  test('returns a middleware function for post only validation', () => {
+    // When
+    const middleware = createEffectMiddleware({
+      post: mockPassesPostValidationFn,
+    })
 
     // Then
     expect(middleware).toBeInstanceOf(Function)
@@ -44,19 +69,22 @@ describe('createEffectMiddleware', () => {
 
   test('calls effect function with input event', async () => {
     // Given
-    const middleware = createEffectMiddleware({pre: mockPassesValidationFn})
+    const middleware = createEffectMiddleware({pre: mockPassesPreValidationFn})
     const wrappedHandler = middleware(mockHandler)
 
     // When
     await wrappedHandler(inputEvent, inputContext)
 
     // Then
-    expect(mockPassesValidationFn).toBeCalledWith(inputEvent, inputContext)
+    expect(mockPassesPreValidationFn).toBeCalledWith({
+      event: inputEvent,
+      context: inputContext,
+    })
   })
 
   test('calls handler function with input event', async () => {
     // Given
-    const middleware = createEffectMiddleware({pre: mockPassesValidationFn})
+    const middleware = createEffectMiddleware({pre: mockPassesPreValidationFn})
     const wrappedHandler = middleware(mockHandler)
 
     // When
@@ -66,9 +94,9 @@ describe('createEffectMiddleware', () => {
     expect(mockHandler).toBeCalledWith(inputEvent, inputContext)
   })
 
-  test('throws expected exception when validation fails', async () => {
+  test('throws expected exception when pre validation fails', async () => {
     // Given
-    const middleware = createEffectMiddleware({pre: mockFailsValidationFn})
+    const middleware = createEffectMiddleware({pre: mockFailsPreValidationFn})
     const wrappedHandler = middleware(mockHandler)
 
     // Then
@@ -76,6 +104,18 @@ describe('createEffectMiddleware', () => {
       expectedError,
     )
     expect(mockHandler).not.toBeCalled()
+  })
+
+  test('throws expected exception when validation fails', async () => {
+    // Given
+    const middleware = createEffectMiddleware({post: mockFailsPostValidationFn})
+    const wrappedHandler = middleware(mockHandler)
+
+    // Then
+    await expect(wrappedHandler(inputEvent, inputContext)).rejects.toBe(
+      expectedError,
+    )
+    expect(mockHandler).toBeCalled()
   })
 })
 

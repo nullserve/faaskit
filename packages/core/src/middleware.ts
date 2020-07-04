@@ -1,5 +1,10 @@
 import {Middleware} from './types'
 
+export interface PreEffectFnParams<TEvent, TContext> {
+  event: TEvent
+  context: TContext
+}
+
 /**
  * An interface for the parameter of a post effect function as defined in
  * the interface
@@ -31,7 +36,7 @@ export interface PostEffectFnParams<TEvent, TContext, TResult> {
  * but before this middleware has returned.
  */
 export interface CreateEffectMiddlewareParams<TEvent, TContext, TResult> {
-  pre?: (event: TEvent, context: TContext) => Promise<void>
+  pre?: (params: PreEffectFnParams<TEvent, TContext>) => Promise<void>
   post?: (
     params: PostEffectFnParams<TEvent, TContext, TResult>,
   ) => Promise<void>
@@ -57,7 +62,7 @@ export function createEffectMiddleware<TEvent, TContext, TResult>({
   TResult
 > {
   return next => async (event, context) => {
-    await pre(event, context)
+    await pre({event, context})
     const result = await next(event, context)
     await post({event, context, result})
     return result
