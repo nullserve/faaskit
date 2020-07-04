@@ -1,4 +1,7 @@
-export function combineContext<TInitialContext, TAdditionalContext>(
+export function combineContext<
+  TInitialContext extends Object,
+  TAdditionalContext extends Object
+>(
   initialContext: TInitialContext,
   additionalContext: TAdditionalContext,
 ): TInitialContext & TAdditionalContext {

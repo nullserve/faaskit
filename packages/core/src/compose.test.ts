@@ -1,4 +1,5 @@
 import {composeMiddleware, Middleware} from '../src'
+import {compose} from './compose'
 
 describe('composeMiddleware', () => {
   const expectedEvent = 'expected event'
@@ -68,5 +69,56 @@ describe('composeMiddleware', () => {
 
     // Then
     expect(result).toBe('first second expected')
+  })
+})
+
+describe('compose', () => {
+  const expectedResult = 'expected result'
+
+  const mockFn = jest.fn().mockReturnValue(expectedResult)
+
+  test('returns a function', () => {
+    // When
+    const output = compose()
+
+    // Then
+    expect(output).toBeInstanceOf(Function)
+  })
+  test('returns identity on empty', () => {
+    // Given
+    const input = 'test'
+    const emptyMiddlewares = compose()
+
+    // When
+    const result = emptyMiddlewares(input)
+
+    // Then
+    expect(result).toBe(input)
+  })
+  test('returns the same function when unary', () => {
+    // Given
+    const input = 'test'
+    const unaryFns = compose(mockFn)
+    const expectedReturn = mockFn(input)
+
+    // When
+    const actualReturn = unaryFns(input)
+
+    // Then
+    expect(actualReturn).toBe(expectedReturn)
+  })
+  test('wraps functions in correct order', () => {
+    // Given
+    const input = 'test'
+    const firstFn = (input: string) => `first ${input}`
+    const secondFn = (input: string) => `second ${input}`
+    const fns = compose(firstFn, secondFn)
+    const expected = 'first second test'
+
+    // When
+    const actual = fns(input)
+
+    // Then
+    expect(actual).toEqual(expected)
   })
 })

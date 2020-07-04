@@ -333,13 +333,6 @@ describe('createEventMappingMiddleware', () => {
   const expectedResult = 'expected result'
   const expectedMappedEvent = `mapped ${inputEvent}`
   const expectedMappedContext = `mapped ${inputContext}`
-  const expectedPostInput = {
-    context: inputContext,
-    event: inputEvent,
-    mappedEvent: inputEvent,
-    mappedContext: inputContext,
-    result: expectedResult,
-  }
   const mockHandler = jest.fn().mockResolvedValue(expectedResult)
   const mockPreMappingFn = jest.fn(
     _params =>
