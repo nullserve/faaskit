@@ -3,9 +3,9 @@
 
 
 "@azure/functions@^1.2.0":
-  version "1.2.0"
-  resolved "https://registry.yarnpkg.com/@azure/functions/-/functions-1.2.0.tgz#e668c3811c6effee93e4553e69de017e2f48acd3"
-  integrity sha512-qkaQqTnr56xUnYNkKBM/2wsnf6imAJ3NF6Nbpk691Y6JYliA1YdZngsZsrpHS9tQ9/71MqARl8m50+EmEfLG3g==
+  version "1.2.2"
+  resolved "https://registry.yarnpkg.com/@azure/functions/-/functions-1.2.2.tgz#8fcb6aa3a879d3be0dc3d68919f969b054bbe3f3"
+  integrity sha512-p/dDHq1sG/iAib+eDY4NxskWHoHW1WFzD85s0SfWxc2wVjJbxB0xz/zBF4s7ymjVgTu+0ceipeBk+tmpnt98oA==
 
 "@babel/code-frame@^7.0.0", "@babel/code-frame@^7.8.3":
   version "7.8.3"
@@ -399,11 +399,6 @@
     tar "^4.4.10"
     unique-filename "^1.1.1"
     which "^1.3.1"
-
-"@faaskit/core@^0.2.2":
-  version "0.2.1"
-  resolved "https://registry.yarnpkg.com/@faaskit/core/-/core-0.2.1.tgz#94320b44871ff1ea4228f4d27b27e41cbf31aa50"
-  integrity sha512-J/D/vbuAvpPRKyjYp39pFs+JbJ3I6e6KRtIaL7/dy2ytfEjRyDPWBzlWoD8MO1sB9WZd7HTi3Ezk3wkvpEmdUQ==
 
 "@istanbuljs/load-nyc-config@^1.0.0":
   version "1.0.0"
