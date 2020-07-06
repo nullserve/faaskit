@@ -77,7 +77,7 @@ export const myNewHandler = compose(
 Alternatively, if you have some existing AWS middleware stack and want to wrap around a FaaSKit Stack or just want to use FaaSKit directly with AWS Lambda:
 
 ```typescript
-import {compose, Handler} from '@faaskit/core'
+import {compose, composeMiddleware, Handler} from '@faaskit/core'
 import {adaptFaasKitHandlerForLambda} from '@faaskit/adapter-aws-lambda'
 
 // These are made up
