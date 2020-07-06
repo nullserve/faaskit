@@ -15,7 +15,7 @@
     }
   ],
   "dependencies": {
-    "@faaskit/core": "^0.2.2",
+    "@faaskit/core": "^1.0.0",
     "date-fns": "^2.14.0"
   },
   "description": "Middlewares designed to make working with AWS EventBridge easier for FaaSKit",
@@ -70,5 +70,5 @@
   },
   "scripts": {},
   "types": "dist/index.d.ts",
-  "version": "0.2.2"
+  "version": "1.0.0"
 }

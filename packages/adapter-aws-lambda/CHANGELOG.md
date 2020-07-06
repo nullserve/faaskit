@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.0.0](https://github.com/nullserve/faaskit/compare/v0.2.1...v1.0.0) (2020-07-06)
+
+
+### Features
+
+* add eventbridge middleware ([1a9201b](https://github.com/nullserve/faaskit/commit/1a9201b9b03994f899cd8f64b94bc1859a749d45))
+* start making http work ([10cdd50](https://github.com/nullserve/faaskit/commit/10cdd50efd40f11114de2fe15a3135c98f4068fc))
+
+
+
+
+
 ## [0.2.2](https://github.com/nullserve/faaskit/compare/v0.2.1...v0.2.2) (2020-04-06)
 
 **Note:** Version bump only for package @faaskit/adapter-aws-lambda

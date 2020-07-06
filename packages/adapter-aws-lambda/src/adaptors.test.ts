@@ -1,5 +1,9 @@
 import {Context} from 'aws-lambda'
-import {adaptFaasKitHandlerForLambda} from './adaptors'
+import {
+  adaptFaasKitHandlerForLambda,
+  adaptLambdaHandlerForFaasKit,
+  AWSLambdaContext,
+} from './adaptors'
 
 describe('adaptFaasKitHandlerForLambda', () => {
   test('nests lambda-provided context', async () => {
@@ -40,4 +44,40 @@ describe('adaptFaasKitHandlerForLambda', () => {
   })
 })
 
-describe('adaptLambdaHandlerForFaasKit', () => {})
+describe('adaptLambdaHandlerForFaasKit', () => {
+  test('', async () => {
+    // Given
+    const mockEvent = {testKey: 'testValue'}
+    const expectedContext: Context = {
+      callbackWaitsForEmptyEventLoop: false,
+      functionName: 'testFunction',
+      functionVersion: 'LATEST',
+      invokedFunctionArn: 'arn:testFunction',
+      memoryLimitInMB: '128',
+      awsRequestId: '1',
+      logGroupName: 'testFunctionLogGroupName',
+      logStreamName: 'testFunctionLogGroupName1',
+      getRemainingTimeInMillis: () => {
+        return 1
+      },
+      done: (_error, _result) => {},
+      fail: _error => {},
+      succeed: (_result: any) => {},
+    }
+    const mockContext: AWSLambdaContext = {
+      AWSLambda: expectedContext,
+    }
+    const mockResult = 'test result'
+
+    const mockHandler = jest.fn().mockResolvedValue(mockResult)
+    const mockWrappedHandler = adaptLambdaHandlerForFaasKit(mockHandler)
+
+    // When
+    const result = await mockWrappedHandler(mockEvent, mockContext)
+
+    // Then
+    expect(mockHandler.mock.calls[0][0]).toBe(mockEvent)
+    expect(mockHandler.mock.calls[0][1]).toEqual(expectedContext)
+    expect(result).toEqual(mockResult)
+  })
+})

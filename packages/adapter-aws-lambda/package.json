@@ -15,17 +15,21 @@
     }
   ],
   "dependencies": {
-    "@faaskit/core": "^0.2.2"
+    "@faaskit/core": "^1.0.0"
   },
   "description": "An adapter for FaaSKit that allows easy use with AWS Lambda for compute",
   "devDependencies": {
     "@nullserve/prettierrc": "^1.1.2",
-    "@types/aws-lambda": "^8.10.56"
+    "@types/aws-lambda": "^8.10.56",
+    "jest": "^26.1.0"
   },
   "engines": {
     "node": ">=8.0.0"
   },
   "homepage": "https://github.com/nullserve/faaskit#readme",
+  "jest": {
+    "preset": "ts-jest"
+  },
   "keywords": [
     "amazon",
     "amazon web services",
@@ -48,8 +52,9 @@
     "directory": "packages/adapter-aws-lambda"
   },
   "scripts": {
-    "build": "tsc"
+    "build": "tsc",
+    "test": "jest"
   },
   "types": "dist/index.d.ts",
-  "version": "0.2.2"
+  "version": "1.0.0"
 }

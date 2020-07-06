@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.0.0](https://github.com/nullserve/faaskit/compare/v0.2.1...v1.0.0) (2020-07-06)
+
+
+### Features
+
+* add eventbridge middleware ([1a9201b](https://github.com/nullserve/faaskit/commit/1a9201b9b03994f899cd8f64b94bc1859a749d45))
+* add new compose and update old compose ([f1234d4](https://github.com/nullserve/faaskit/commit/f1234d406a51612ceffafe8f3b4c67a2776dbc39))
+
+
+
+
+
 ## [0.2.2](https://github.com/nullserve/faaskit/compare/v0.2.1...v0.2.2) (2020-04-06)
 
 **Note:** Version bump only for package @faaskit/middleware-aws-api-gateway

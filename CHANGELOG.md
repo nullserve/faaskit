@@ -3,6 +3,30 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.0.0](https://github.com/nullserve/faaskit/compare/v0.2.1...v1.0.0) (2020-07-06)
+
+
+### Features
+
+* add azure adapter ([17c0483](https://github.com/nullserve/faaskit/commit/17c04830e6392df141527d11563c7883bf24956b))
+* add eventbridge middleware ([1a9201b](https://github.com/nullserve/faaskit/commit/1a9201b9b03994f899cd8f64b94bc1859a749d45))
+* add new compose and update old compose ([f1234d4](https://github.com/nullserve/faaskit/commit/f1234d406a51612ceffafe8f3b4c67a2776dbc39))
+* add the rest of http statuses ([3ca3d26](https://github.com/nullserve/faaskit/commit/3ca3d264d2b9eacbda160c2ea713474c8928a176))
+* split files out in http ([c6f5942](https://github.com/nullserve/faaskit/commit/c6f5942ad8a40d079e198440cd406f00f0d24775))
+* start making http work ([10cdd50](https://github.com/nullserve/faaskit/commit/10cdd50efd40f11114de2fe15a3135c98f4068fc))
+* start updating deps in core ([81f71a3](https://github.com/nullserve/faaskit/commit/81f71a366f11240b75267cc62ca1410f40d5cffd))
+* update types on context a bit ([1761555](https://github.com/nullserve/faaskit/commit/176155599b2b323032feacc48e8dcc62300d4f32))
+
+
+### BREAKING CHANGES
+
+* compose and composeMiddleware and
+createMappingMiddleware types are changed from previous commits
+
+
+
+
+
 ## [0.2.2](https://github.com/nullserve/faaskit/compare/v0.2.1...v0.2.2) (2020-04-06)
 
 **Note:** Version bump only for package root

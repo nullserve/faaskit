@@ -3,6 +3,25 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.0.0](https://github.com/nullserve/faaskit/compare/v0.2.1...v1.0.0) (2020-07-06)
+
+
+### Features
+
+* add new compose and update old compose ([f1234d4](https://github.com/nullserve/faaskit/commit/f1234d406a51612ceffafe8f3b4c67a2776dbc39))
+* start updating deps in core ([81f71a3](https://github.com/nullserve/faaskit/commit/81f71a366f11240b75267cc62ca1410f40d5cffd))
+* update types on context a bit ([1761555](https://github.com/nullserve/faaskit/commit/176155599b2b323032feacc48e8dcc62300d4f32))
+
+
+### BREAKING CHANGES
+
+* compose and composeMiddleware and
+createMappingMiddleware types are changed from previous commits
+
+
+
+
+
 ## [0.2.2](https://github.com/nullserve/faaskit/compare/v0.2.1...v0.2.2) (2020-04-06)
 
 **Note:** Version bump only for package @faaskit/core
