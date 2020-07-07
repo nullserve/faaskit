@@ -17,7 +17,7 @@
   "description": "The core portion of FaaSKit Middleware",
   "devDependencies": {
     "@nullserve/prettierrc": "^1.1.2",
-    "@types/jest": "^25.1.4",
+    "@types/jest": "^26.0.4",
     "jest": "^26",
     "prettier": "^1.19.1",
     "ts-jest": "^26.1.1",
