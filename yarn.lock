@@ -400,11 +400,6 @@
     unique-filename "^1.1.1"
     which "^1.3.1"
 
-"@faaskit/core@^0.2.2":
-  version "0.2.1"
-  resolved "https://registry.yarnpkg.com/@faaskit/core/-/core-0.2.1.tgz#94320b44871ff1ea4228f4d27b27e41cbf31aa50"
-  integrity sha512-J/D/vbuAvpPRKyjYp39pFs+JbJ3I6e6KRtIaL7/dy2ytfEjRyDPWBzlWoD8MO1sB9WZd7HTi3Ezk3wkvpEmdUQ==
-
 "@istanbuljs/load-nyc-config@^1.0.0":
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/@istanbuljs/load-nyc-config/-/load-nyc-config-1.0.0.tgz#10602de5570baea82f8afbfa2630b24e7a8cfe5b"
@@ -1661,10 +1656,10 @@
     "@types/istanbul-lib-coverage" "*"
     "@types/istanbul-lib-report" "*"
 
-"@types/jest@^25.1.4":
-  version "25.2.1"
-  resolved "https://registry.yarnpkg.com/@types/jest/-/jest-25.2.1.tgz#9544cd438607955381c1bdbdb97767a249297db5"
-  integrity sha512-msra1bCaAeEdkSyA0CZ6gW1ukMIvZ5YoJkdXw/qhQdsuuDlFTcEUrUw8CLCPt2rVRUfXlClVvK2gvPs9IokZaA==
+"@types/jest@^26.0.8":
+  version "26.0.8"
+  resolved "https://registry.yarnpkg.com/@types/jest/-/jest-26.0.8.tgz#f5c5559cf25911ce227f7ce30f1f160f24966369"
+  integrity sha512-eo3VX9jGASSuv680D4VQ89UmuLZneNxv2MCZjfwlInav05zXVJTzfc//lavdV0GPwSxsXJTy2jALscB7Acqg0g==
   dependencies:
     jest-diff "^25.2.1"
     pretty-format "^25.2.1"
