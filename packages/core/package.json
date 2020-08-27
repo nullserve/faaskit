@@ -19,7 +19,7 @@
     "@nullserve/prettierrc": "^1.1.2",
     "@types/jest": "^26.0.9",
     "jest": "^26",
-    "prettier": "^1.19.1",
+    "prettier": "^2.1.1",
     "ts-jest": "^26.1.1",
     "typescript": "^3.8"
   },
