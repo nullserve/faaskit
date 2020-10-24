@@ -19,7 +19,7 @@
   "devDependencies": {
     "@nullserve/prettierrc": "^1.1.2",
     "@types/jest": "^26.0.9",
-    "jest": "^25.0.0",
+    "jest": "^26.6.1",
     "prettier": "^1.19.1",
     "ts-jest": "^25.0.0",
     "typescript": "^3.1.5"
