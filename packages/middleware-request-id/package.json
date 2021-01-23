@@ -1,6 +1,6 @@
 {
   "name": "@faaskit/middleware-request-id",
-  "version": "1.0.0",
+  "version": "1.0.2",
   "author": "David J. Felix <felix.davidj@gmail.com>",
   "homepage": "https://github.com/NullServe/faaskit#readme",
   "license": "Apache-2.0",
@@ -14,7 +14,7 @@
     "url": "https://github.com/NullServe/faaskit/issues"
   },
   "dependencies": {
-    "@faaskit/core": "^1.0.0"
+    "@faaskit/core": "^1.0.2"
   },
   "devDependencies": {
     "@types/aws-lambda": "^8.10.51",

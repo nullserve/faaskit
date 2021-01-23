@@ -15,7 +15,7 @@
     }
   ],
   "dependencies": {
-    "@faaskit/core": "^1.0.0"
+    "@faaskit/core": "^1.0.2"
   },
   "description": "An adapter for FaaSKit that allows easy use with AWS Lambda for compute",
   "devDependencies": {
@@ -56,5 +56,5 @@
     "test": "jest"
   },
   "types": "dist/index.d.ts",
-  "version": "1.0.0"
+  "version": "1.0.2"
 }

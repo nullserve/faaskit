@@ -15,8 +15,8 @@
     }
   ],
   "dependencies": {
-    "@faaskit/core": "^1.0.0",
-    "@faaskit/http": "^1.0.0"
+    "@faaskit/core": "^1.0.2",
+    "@faaskit/http": "^1.0.2"
   },
   "description": "Middlewares designed to make working with AWS API Gateway easier for FaaSKit",
   "devDependencies": {
@@ -68,5 +68,5 @@
   },
   "scripts": {},
   "types": "dist/index.d.ts",
-  "version": "1.0.0"
+  "version": "1.0.2"
 }
