@@ -1,8 +1,7 @@
 import {APIGatewayProxyEvent, APIGatewayProxyResult} from 'aws-lambda'
 import {createMappingMiddleware, Middleware} from '@faaskit/core'
 import {NotAcceptable} from '@faaskit/http'
-
-import {toHeaderCase, remapKeys} from '../../http/src/utils'
+import {toHeaderCase, remapKeys} from '@faaskit/http/dist/utils'
 
 export const APIGatewayProxyLogMiddleware: Middleware<
   APIGatewayProxyEvent,
@@ -11,7 +10,7 @@ export const APIGatewayProxyLogMiddleware: Middleware<
   APIGatewayProxyEvent,
   APIGatewayProxyResult,
   any
-> = next => {
+> = (next) => {
   return async (event, context) => {
     const t0 = new Date()
     try {
@@ -41,12 +40,12 @@ export const HeaderNormalizingMiddleware: Middleware<
   APIGatewayProxyResult,
   any
 >({
-  pre: async (event, context) => {
+  pre: async ({event, context}) => {
     return {
       event: {
         ...event,
-        headers: remapKeys(event.headers, key => key.toLowerCase()),
-        multiValueHeaders: remapKeys(event.multiValueHeaders, key =>
+        headers: remapKeys(event.headers, (key) => key.toLowerCase()),
+        multiValueHeaders: remapKeys(event.multiValueHeaders, (key) =>
           key.toLowerCase(),
         ),
       },
@@ -57,10 +56,10 @@ export const HeaderNormalizingMiddleware: Middleware<
     return {
       ...result,
       headers: result.headers
-        ? remapKeys(result.headers, key => toHeaderCase(key))
+        ? remapKeys(result.headers, (key) => toHeaderCase(key))
         : {},
       multiValueHeaders: result.multiValueHeaders
-        ? remapKeys(result.multiValueHeaders, key => toHeaderCase(key))
+        ? remapKeys(result.multiValueHeaders, (key) => toHeaderCase(key))
         : {},
     }
   },
@@ -72,9 +71,9 @@ function negotiateAccept(
   multiValueHeader: string[],
 ): string | null {
   const acceptHeaders = [header, ...multiValueHeader]
-  acceptHeaders.forEach(header => {
+  acceptHeaders.forEach((header) => {
     let maybeAcceptedType = contentTypes.find(
-      contentType => contentType === header,
+      (contentType) => contentType === header,
     )
     if (maybeAcceptedType) {
       return maybeAcceptedType
@@ -96,7 +95,7 @@ export interface JSONResponseMiddlewareOptions {
 export function createJSONResponseMiddleware(
   options?: JSONResponseMiddlewareOptions,
 ): Middleware<APIGatewayProxyEvent, any, APIGatewayProxyResult> {
-  return next => async (event, context) => {
+  return (next) => async (event, context) => {
     const contentTypes =
       options && options.contentTypes
         ? options.contentTypes

@@ -1,4 +1,4 @@
-type JSONError = {
+export interface JSONError {
   error: {
     code: number
     message: string

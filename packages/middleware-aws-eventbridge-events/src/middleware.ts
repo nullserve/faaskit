@@ -1,7 +1,11 @@
 import {EventBridgeEvent} from 'aws-lambda'
 import parseISO from 'date-fns/parseISO'
 
-import {createMappingMiddleware, Middleware} from '@faaskit/core'
+import {
+  createMappingMiddleware,
+  Middleware,
+  postMapIdentity,
+} from '@faaskit/core'
 
 export interface EventBridgeContext<TDetailType> {
   AWSEventBridge: {
@@ -29,7 +33,7 @@ export function createEventBridgeMiddleware<
   TContext & EventBridgeContext<TDetailType>
 > {
   return createMappingMiddleware({
-    pre: async (event, context) => {
+    pre: async ({event, context}) => {
       const {id, version, account, time, region, resources, source} = event
       return {
         event: event.detail,
@@ -48,5 +52,6 @@ export function createEventBridgeMiddleware<
         },
       }
     },
+    post: postMapIdentity,
   })
 }

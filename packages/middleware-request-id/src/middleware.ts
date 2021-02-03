@@ -1,4 +1,4 @@
-import uuidv4 from 'uuid/v4'
+import {v4 as uuidv4} from 'uuid'
 
 // A Mixin for Lambda Context.
 // Using Typescript Intersection types you can define a handler context as `Context & RequestIdentifierContextMixin`
@@ -24,7 +24,7 @@ export function bytesToUuid(bytes: Array<number>): string {
 }
 
 export function bytesToHexString(bytes: Array<number>): string {
-  return bytes.map(byte => byteToHex[byte]).join('')
+  return bytes.map((byte) => byteToHex[byte]).join('')
 }
 
 export function formatHexAsUUID(hexString: string): string {
