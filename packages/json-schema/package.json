@@ -1,0 +1,38 @@
+{
+  "name": "@faaskit/json-schema",
+  "version": "1.0.2",
+  "author": "David J. Felix <felix.davidj@gmail.com>",
+  "homepage": "https://github.com/NullServe/faaskit#readme",
+  "license": "Apache-2.0",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/NullServe/faaskit.git"
+  },
+  "bugs": {
+    "url": "https://github.com/NullServe/faaskit/issues"
+  },
+  "dependencies": {
+    "@faaskit/core": "^1.0.2",
+    "ajv": "^7.0.4",
+    "json-schema-to-ts": "^1.5.0"
+  },
+  "devDependencies": {
+    "@types/aws-lambda": "^8.10.51",
+    "@types/jest": "^26.0.9",
+    "@types/mockdate": "^2.0.0",
+    "@types/uuid": "^8.3.0",
+    "jest": "^26.0.0",
+    "mockdate": "^3.0.2",
+    "ts-jest": "^26.0.0",
+    "typescript": "^4.1.3"
+  },
+  "jest": {
+    "preset": "ts-jest"
+  },
+  "scripts": {},
+  "publishConfig": {
+    "access": "public"
+  }
+}
