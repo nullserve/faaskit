@@ -1,5 +1,5 @@
 {
-  "name": "@faaskit/middleware-request-id",
+  "name": "@faaskit/request-id",
   "version": "1.0.2",
   "author": "David J. Felix <felix.davidj@gmail.com>",
   "homepage": "https://github.com/NullServe/faaskit#readme",
