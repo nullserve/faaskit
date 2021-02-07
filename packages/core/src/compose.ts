@@ -1,5 +1,43 @@
 import {Middleware, Handler, Func} from './types'
 
+export function middlewareReducer<
+  TEvent,
+  TContext,
+  TResult,
+  TIntermediateEvent,
+  TIntermediateContext,
+  TIntermediateResult,
+  TNextEvent,
+  TNextContext,
+  TNextResult
+>(
+  previous: Middleware<
+    TEvent,
+    TContext,
+    TResult,
+    TIntermediateEvent,
+    TIntermediateContext,
+    TIntermediateResult
+  >,
+  current: Middleware<
+    TIntermediateEvent,
+    TIntermediateContext,
+    TIntermediateResult,
+    TNextEvent,
+    TNextContext,
+    TNextResult
+  >,
+): Middleware<
+  TEvent,
+  TContext,
+  TResult,
+  TNextEvent,
+  TNextContext,
+  TNextResult
+> {
+  return (next) => previous(current(next))
+}
+
 /**
  * Composes middleware from right to left. The rightmost
  * function can take multiple arguments as it provides the signature for the
@@ -392,19 +430,33 @@ export function composeMiddleware<
 
 /* rest */
 export function composeMiddleware<TEvent, TContext, TResult>(
-  middleware1: Middleware<TEvent, TContext, TResult, any, any, any>,
-  ...restMiddlewares: Middleware<any, any, any>[]
-): Middleware<TEvent, TContext, TResult, any, any>
+  middleware1: Middleware<TEvent, TContext, TResult, unknown, unknown, unknown>,
+  ...restMiddlewares: Middleware<
+    unknown,
+    unknown,
+    unknown,
+    unknown,
+    unknown,
+    unknown
+  >[]
+): Middleware<TEvent, TContext, TResult, unknown, unknown, unknown>
+
+export function composeMiddleware<TEvent, TContext, TResult>(
+  ...middlewares: Middleware<
+    unknown,
+    unknown,
+    unknown,
+    unknown,
+    unknown,
+    unknown
+  >[]
+): Middleware<TEvent, TContext, TResult, unknown, unknown, unknown>
 
 export function composeMiddleware<TEvent, TContext, TResult>(
   ...middlewares: Middleware<any, any, any>[]
-): Middleware<TEvent, TResult, any, any>
-
-export function composeMiddleware<TEvent, TContext, TResult>(
-  ...middlewares: Middleware<any, any, any>[]
-): Middleware<TEvent, TResult, any, any> {
+): Middleware<TEvent, TContext, TResult, unknown, unknown, unknown> {
   return middlewares.reduce(
-    (a: Middleware<TEvent, TContext, TResult>, b) => next => a(b(next)),
+    middlewareReducer,
     (next: Handler<TEvent, TContext, TResult>) => next,
   )
 }
@@ -413,7 +465,7 @@ export function compose(): <T>(a: T) => T
 
 export function compose<TFunc extends Function>(f: TFunc): TFunc
 
-export function compose<TIntermediate, TArgs extends any[], TReturn>(
+export function compose<TIntermediate, TArgs extends unknown[], TReturn>(
   func1: (input: TIntermediate) => TReturn,
   func2: Func<TArgs, TReturn>,
 ): Func<TArgs, TReturn>
@@ -421,7 +473,7 @@ export function compose<TIntermediate, TArgs extends any[], TReturn>(
 export function compose<
   TIntermediate1,
   TIntermediate2,
-  TArgs extends any[],
+  TArgs extends unknown[],
   TReturn
 >(
   func1: (input: TIntermediate1) => TReturn,
@@ -433,7 +485,7 @@ export function compose<
   TIntermediate1,
   TIntermediate2,
   TIntermediate3,
-  TArgs extends any[],
+  TArgs extends unknown[],
   TReturn
 >(
   func1: (input: TIntermediate1) => TReturn,
@@ -449,7 +501,7 @@ export function compose<
   TIntermediate4,
   TIntermediate5,
   TIntermediate6,
-  TArgs extends any[],
+  TArgs extends unknown[],
   TReturn
 >(
   func1: (input: TIntermediate1) => TReturn,
@@ -465,7 +517,7 @@ export function compose<
   TIntermediate3,
   TIntermediate4,
   TIntermediate5,
-  TArgs extends any[],
+  TArgs extends unknown[],
   TReturn
 >(
   func1: (input: TIntermediate1) => TReturn,
@@ -483,7 +535,7 @@ export function compose<
   TIntermediate4,
   TIntermediate5,
   TIntermediate6,
-  TArgs extends any[],
+  TArgs extends unknown[],
   TReturn
 >(
   func1: (input: TIntermediate1) => TReturn,
@@ -496,11 +548,11 @@ export function compose<
 ): Func<TArgs, TReturn>
 
 export function compose<T>(
-  func1: (a: any) => T,
+  func1: (a: unknown) => T,
   ...funcs: Function[]
-): (...args: any[]) => T
+): (...args: unknown[]) => T
 
-export function compose<T>(...funcs: Function[]): (...args: any[]) => T
+export function compose<T>(...funcs: Function[]): (...args: unknown[]) => T
 
 export function compose(...funcs: Function[]) {
   if (funcs.length === 0) {
@@ -512,5 +564,5 @@ export function compose(...funcs: Function[]) {
     return funcs[0]
   }
 
-  return funcs.reduce((a, b) => (...args: any) => a(b(...args)))
+  return funcs.reduce((a, b) => (...args: unknown[]) => a(b(...args)))
 }

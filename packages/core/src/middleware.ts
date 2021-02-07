@@ -53,19 +53,32 @@ export interface CreateEffectMiddlewareParams<TEvent, TContext, TResult> {
  * effects to perform. The members of params are not required and if they are
  * undefined, they each default to `async () => {}`
  */
-export function createEffectMiddleware<TEvent, TContext, TResult>({
-  pre = async () => {},
-  post = async () => {},
-}: CreateEffectMiddlewareParams<TEvent, TContext, TResult>): Middleware<
+export function createEffectMiddleware<
   TEvent,
   TContext,
-  TResult
+  TResult,
+  TNextEvent = TEvent,
+  TNextContext = TContext,
+  TNextResult = TResult
+>({
+  pre = async () => {},
+  post = async () => {},
+}: CreateEffectMiddlewareParams<TEvent, TContext, TNextResult>): Middleware<
+  TEvent,
+  TContext,
+  TResult,
+  TNextEvent,
+  TNextContext,
+  TNextResult
 > {
-  return next => async (event, context) => {
+  return (next) => async (event, context) => {
     await pre({event, context})
-    const result = await next(event, context)
+    const result = await next(
+      (event as unknown) as TNextEvent,
+      (context as unknown) as TNextContext,
+    )
     await post({event, context, result})
-    return result
+    return (result as unknown) as TResult
   }
 }
 
@@ -230,7 +243,7 @@ export function createMappingMiddleware<
   TContextTo,
   TResultFrom
 > {
-  return next => async (event, context) => {
+  return (next) => async (event, context) => {
     const {event: mappedEvent, context: mappedContext} = await pre({
       event,
       context,
@@ -295,7 +308,13 @@ export async function preMapIdentity<TEvent, TContext>({
 
 export async function postMapIdentity<TResult>({
   result,
-}: PostMappingFnParams<any, any, TResult, any, any>): Promise<TResult> {
+}: PostMappingFnParams<
+  unknown,
+  unknown,
+  TResult,
+  unknown,
+  unknown
+>): Promise<TResult> {
   return result
 }
 
@@ -315,7 +334,7 @@ export function createRecoveryMiddleware<TEvent, TContext, TResult>(
     context: TContext,
   ) => Promise<TResult>,
 ): Middleware<TEvent, TContext, TResult> {
-  return next => async (event, context) => {
+  return (next) => async (event, context) => {
     let response
     try {
       response = await next(event, context)
