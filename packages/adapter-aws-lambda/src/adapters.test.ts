@@ -1,15 +1,15 @@
-import {Context} from 'aws-lambda'
+import {Context as LambdaContext} from 'aws-lambda'
 import {
   adaptFaasKitHandlerForLambda,
   adaptLambdaHandlerForFaasKit,
-  AWSLambdaContext,
-} from './adaptors'
+  Context,
+} from './adapters'
 
 describe('adaptFaasKitHandlerForLambda', () => {
   test('nests lambda-provided context', async () => {
     // Given
     const mockEvent = {testKey: 'testValue'}
-    const mockContext: Context = {
+    const mockContext: LambdaContext = {
       callbackWaitsForEmptyEventLoop: false,
       functionName: 'testFunction',
       functionVersion: 'LATEST',
@@ -22,7 +22,7 @@ describe('adaptFaasKitHandlerForLambda', () => {
         return 1
       },
       done: (_error, _result) => {},
-      fail: _error => {},
+      fail: (_error) => {},
       succeed: (_result: any) => {},
     }
     const mockResult = 'test result'
@@ -48,7 +48,7 @@ describe('adaptLambdaHandlerForFaasKit', () => {
   test('', async () => {
     // Given
     const mockEvent = {testKey: 'testValue'}
-    const expectedContext: Context = {
+    const expectedContext: LambdaContext = {
       callbackWaitsForEmptyEventLoop: false,
       functionName: 'testFunction',
       functionVersion: 'LATEST',
@@ -61,10 +61,10 @@ describe('adaptLambdaHandlerForFaasKit', () => {
         return 1
       },
       done: (_error, _result) => {},
-      fail: _error => {},
+      fail: (_error) => {},
       succeed: (_result: any) => {},
     }
-    const mockContext: AWSLambdaContext = {
+    const mockContext: Context = {
       AWSLambda: expectedContext,
     }
     const mockResult = 'test result'

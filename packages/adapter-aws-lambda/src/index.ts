@@ -1,1 +1,1 @@
-export * from './adaptors'
+export * from './adapters'

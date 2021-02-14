@@ -57,3 +57,31 @@ export class DefaultMultiValueObject {
     return new Proxy(this, defaultMultiValueHandler)
   }
 }
+
+const caseInsensitiveDefaultMultiValueHandler: ProxyHandler<CaseInsensitiveDefaultMultiValueObject> = {
+  get: (
+    target: DefaultMultiValueObject,
+    attribute: symbol | string,
+  ): string[] => {
+    return target.hasOwnProperty(attribute) ? target[attribute.toString()] : []
+  },
+  set: (
+    target: CaseInsensitiveDefaultMultiValueObject,
+    attribute: symbol | string,
+    value: string | string[],
+  ): boolean => {
+    if (typeof value === 'string') {
+      const newValue = [...target[attribute.toString().toLowerCase()], value]
+    } else {
+      target[attribute.toString().toLowerCase()] = value
+    }
+    return true
+  },
+}
+
+export class CaseInsensitiveDefaultMultiValueObject {
+  [attribute: string]: string[]
+  constructor() {
+    return new Proxy(this, defaultMultiValueHandler)
+  }
+}

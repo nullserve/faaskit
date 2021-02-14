@@ -1,7 +1,40 @@
-import {APIGatewayProxyEvent, APIGatewayProxyResult} from 'aws-lambda'
+import {
+  APIGatewayProxyEvent,
+  Context,
+  APIGatewayProxyResult,
+  APIGatewayProxyEventV2,
+  APIGatewayProxyResultV2,
+} from 'aws-lambda'
+
 import {createMappingMiddleware, Middleware} from '@faaskit/core'
 import {NotAcceptable} from '@faaskit/http'
 import {toHeaderCase, remapKeys} from '@faaskit/http/dist/utils'
+
+export interface APIGatewayV1ProxyRESTContext {
+  APIGatewayV1ProxyREST: APIGatewayProxyEvent
+}
+export interface APIGatewayV2ProxyHTTPContext {
+  APIGatewayV2ProxyHTTP: APIGatewayProxyEventV2
+}
+export interface APIGatewayV2ProxyWebSocketContext {
+  APIGatewayV2ProxyWebSocket: APIGatewayProxyEvent // FIXME: this event isn't a perfect fit, just better than the V2
+}
+
+export const APIGatewayV1ProxyRESTMiddleware: Middleware<
+  APIGatewayProxyEvent,
+  Context,
+  APIGatewayProxyResult
+> = null
+export const APIGatewayV2ProxyHTTPMiddleware: Middleware<
+  APIGatewayProxyEventV2,
+  Context,
+  APIGatewayProxyResultV2
+> = null
+export const APIGatewayV2ProxyWebSocketMiddleware: Middleware<
+  APIGatewayProxyEvent, // FIXME: this event isn't a perfect fit, just better than the V2
+  Context,
+  APIGatewayProxyResult
+> = null
 
 export const APIGatewayProxyLogMiddleware: Middleware<
   APIGatewayProxyEvent,

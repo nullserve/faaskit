@@ -2,19 +2,19 @@ import {Context as LambdaContext, Handler as LambdaHandler} from 'aws-lambda'
 
 import {Handler as FaasKitHandler} from '@faaskit/core'
 
-export interface AWSLambdaContext {
+export interface Context {
   AWSLambda: LambdaContext
 }
 
 export function adaptFaasKitHandlerForLambda<TEvent, TResult>(
-  handler: FaasKitHandler<TEvent, AWSLambdaContext, TResult>,
+  handler: FaasKitHandler<TEvent, Context, TResult>,
 ): LambdaHandler<TEvent, TResult> {
   return async (event, context) => handler(event, {AWSLambda: context})
 }
 
 export function adaptLambdaHandlerForFaasKit<
   TEvent,
-  TContext extends AWSLambdaContext,
+  TContext extends Context,
   TResult
 >(
   handler: LambdaHandler<TEvent, TResult>,
@@ -29,7 +29,7 @@ export function adaptLambdaHandlerForFaasKit<
         }
       })
       if (result) {
-        result.then(result => resolve(result)).catch(error => reject(error))
+        result.then((result) => resolve(result)).catch((error) => reject(error))
       }
     })
 }
