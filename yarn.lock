@@ -4393,11 +4393,12 @@ json-parse-even-better-errors@^2.3.0:
   integrity sha512-xyFwyhro/JEof6Ghe2iz2NcXoj2sloNsWr/XsERDK/oiPCfaNhl5ONfp+jQdAZRQQ0IJWNzH9zIZF7li91kh2w==
 
 json-schema-to-ts@^1.5.0:
-  version "1.5.0"
-  resolved "https://registry.yarnpkg.com/json-schema-to-ts/-/json-schema-to-ts-1.5.0.tgz#acd201c9e0b9b7f4aea00f146902a490551e576b"
-  integrity sha512-f3iYImyX8wIVQR8e4tsNWbsoSKhq/lO71SjZKl35THbmsN0d3zWyZgvo+wueZQVeTnpL1Df0uu9qoC6IICzdGA==
+  version "1.6.0"
+  resolved "https://registry.yarnpkg.com/json-schema-to-ts/-/json-schema-to-ts-1.6.0.tgz#b0ba7bbcd00730f9a75f56168a1c71a1ddf903fb"
+  integrity sha512-RB1Tig1b6LgB5f8OsGzvAFjoRvxkgjfd9A93kGFrhFhunBjMueMnWe7n28Lys92cwlNmEb4nD4q5YcyLby1t7w==
   dependencies:
     "@types/json-schema" "^7.0.6"
+    ts-toolbelt "^6.15.5"
 
 json-schema-traverse@^0.4.1:
   version "0.4.1"
@@ -6844,6 +6845,11 @@ ts-jest@^26.0.0, ts-jest@^26.1.1:
     mkdirp "1.x"
     semver "7.x"
     yargs-parser "20.x"
+
+ts-toolbelt@^6.15.5:
+  version "6.15.5"
+  resolved "https://registry.yarnpkg.com/ts-toolbelt/-/ts-toolbelt-6.15.5.tgz#cb3b43ed725cb63644782c64fbcad7d8f28c0a83"
+  integrity sha512-FZIXf1ksVyLcfr7M317jbB67XFJhOO1YqdTcuGaq9q5jLUoTikukZ+98TPjKiP2jC5CgmYdWWYs0s2nLSU0/1A==
 
 tslib@^1.9.0:
   version "1.14.1"
