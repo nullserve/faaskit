@@ -36,7 +36,7 @@ npm i -D @types/aws-lambda
 ## Project Purpose
 
 The primary purpose of this and other adaptors is they translate the context and handler typings into the expected FaaSKit generalized typings; this will provide a lot of utility for Typescript and VSCode users.
-Since FaaSKit was designed from an AWS Lambda perspective, not much needs to be adapted -- but the context-passing done by Middleware works better if the root context is mostly empty, which Lambda does not provide.
+Since FaaSKit was designed from an AWS Lambda perspective, not much needs to be adapted -- but the context-passing done by Middleware works better if the root context has fewer top level keys, which Lambda does not provide.
 
 ## Use
 
@@ -113,8 +113,10 @@ When using FaaSKit in Lambda, this adapter should often be your outermost (first
 
 ### adaptLambdaHandlerForFaasKit
 
-This adapter will take an AWS Lambda-compatible handler and wrap it in a FaaSKit-compatible handler so that existing lambdas can utilize FaaSKit middlewares. This adapter should often be yore innermost (last) composed function if you are wrapping an existing handler.
+This adapter will take an AWS Lambda-compatible handler and wrap it in a FaaSKit-compatible handler so that existing lambdas can utilize FaaSKit middlewares. This adapter should be your innermost (last) composed function if you are wrapping an existing handler.
 
-## Endorsement for Experienced Developers
+## Encouragement for Experienced Developers
 
-If you've hand-written an AWS Lambda before and are trying to decide if the adapter overhead is worth the FaaSKit abstraction -- IT IS. Take a look at the code.
+If you've hand-written an AWS Lambda before and are trying to decide if the adapter overhead is worth the FaaSKit abstraction -- IT IS.
+Take a look at the code.
+The adaptation is very simple and provides access to an ecosystem of middleware while also enabling easier cross-cloud support.
