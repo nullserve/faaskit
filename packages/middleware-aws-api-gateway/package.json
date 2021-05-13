@@ -23,7 +23,7 @@
     "@nullserve/prettierrc": "^1.1.2",
     "@types/aws-lambda": "^8.10.56",
     "@types/jest": "^26.0.9",
-    "@types/mockdate": "^2.0.0",
+    "@types/mockdate": "^3.0.0",
     "@types/uuid": "^8.3.0",
     "jest": "^26.0.0",
     "mockdate": "^3.0.2",
