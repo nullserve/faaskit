@@ -20,7 +20,6 @@
   },
   "description": "Middlewares designed to make working with AWS EventBridge easier for FaaSKit",
   "devDependencies": {
-    "@nullserve/prettierrc": "^1.1.2",
     "@types/aws-lambda": "^8.10.51",
     "@types/jest": "^26.0.9",
     "@types/mockdate": "^2.0.0",

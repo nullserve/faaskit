@@ -1,5 +1,5 @@
 {
-  "name": "root",
+  "name": "faaskit",
   "private": true,
   "devDependencies": {
     "prettier": "^2.2.1"
@@ -12,7 +12,7 @@
     "trailingComma": "all"
   },
   "scripts": {
-    "build": "yarn workspaces foreach run build",
+    "build": "yarn workspaces foreach --topological-dev run build",
     "test": "echo 1",
     "publish": "echo 1",
     "version": "echo 1"

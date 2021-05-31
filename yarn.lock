@@ -480,7 +480,6 @@ __metadata:
   dependencies:
     "@faaskit/core": "workspace:*"
     "@faaskit/http": "workspace:*"
-    "@nullserve/prettierrc": ^1.1.2
     "@types/aws-lambda": ^8.10.56
     "@types/jest": ^26.0.9
     "@types/mockdate": ^2.0.0
@@ -497,7 +496,6 @@ __metadata:
   resolution: "@faaskit/middleware-aws-eventbridge-events@workspace:packages/middleware-aws-eventbridge-events"
   dependencies:
     "@faaskit/core": "workspace:*"
-    "@nullserve/prettierrc": ^1.1.2
     "@types/aws-lambda": ^8.10.51
     "@types/jest": ^26.0.9
     "@types/mockdate": ^2.0.0
@@ -2069,6 +2067,14 @@ __metadata:
   checksum: ce23be772ff536976902aa0193a6d167abad229ca40fb4c1de2fd71c0116eeae168a02f6508d41382eb918fcbafb66dba61d498754051964a167c98210c62b28
   languageName: node
   linkType: hard
+
+"faaskit@workspace:.":
+  version: 0.0.0-use.local
+  resolution: "faaskit@workspace:."
+  dependencies:
+    prettier: ^2.2.1
+  languageName: unknown
+  linkType: soft
 
 "fast-deep-equal@npm:^3.1.1":
   version: 3.1.3
@@ -4337,14 +4343,6 @@ fsevents@^2.1.2:
   checksum: f0de3e445581e64a8a077af476cc30708e659f5779ec2ca2a161556d0792aa318a685923798ae22055b4ecd02b9aff444ef619578f7af53cf8e0e248031e3dee
   languageName: node
   linkType: hard
-
-"root@workspace:.":
-  version: 0.0.0-use.local
-  resolution: "root@workspace:."
-  dependencies:
-    prettier: ^2.2.1
-  languageName: unknown
-  linkType: soft
 
 "rsvp@npm:^4.8.4":
   version: 4.8.5
