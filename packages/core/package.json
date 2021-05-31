@@ -16,12 +16,11 @@
   ],
   "description": "The core portion of FaaSKit Middleware",
   "devDependencies": {
-    "@nullserve/prettierrc": "^1.1.2",
     "@types/jest": "^26.0.9",
     "jest": "^26",
     "prettier": "^2.2.1",
     "ts-jest": "^26.1.1",
-    "typescript": "^4.1"
+    "typescript": "~4.1"
   },
   "engines": {
     "node": ">=8.0.0"

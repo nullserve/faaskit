@@ -2,16 +2,20 @@
   "name": "root",
   "private": true,
   "devDependencies": {
-    "@nullserve/prettierrc": "^1.1.2",
-    "lerna": "^4.0.0",
     "prettier": "^2.2.1"
   },
-  "prettier": "@nullserve/prettierrc",
+  "prettier": {
+    "semi": false,
+    "tabWidth": 2,
+    "singleQuote": true,
+    "bracketSpacing": false,
+    "trailingComma": "all"
+  },
   "scripts": {
-    "build": "lerna run build",
-    "test": "lerna run test",
-    "publish": "lerna publish from-package --force-publish --yes",
-    "version": "lerna version --amend --conventional-commits --force-publish --yes"
+    "build": "yarn workspaces foreach run build",
+    "test": "echo 1",
+    "publish": "echo 1",
+    "version": "echo 1"
   },
   "workspaces": [
     "packages/*"
