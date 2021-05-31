@@ -413,8 +413,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@faaskit/adapter-aws-lambda@workspace:packages/adapter-aws-lambda"
   dependencies:
-    "@faaskit/core": ^1.0.2
-    "@nullserve/prettierrc": ^1.1.2
+    "@faaskit/core": "workspace:*"
     "@types/aws-lambda": ^8.10.56
     jest: ^26.1.0
     typescript: ~4.1
@@ -426,12 +425,12 @@ __metadata:
   resolution: "@faaskit/adapter-azure-functions@workspace:packages/adapter-azure-functions"
   dependencies:
     "@azure/functions": ^1.2.0
-    "@faaskit/core": ^1.0.2
+    "@faaskit/core": "workspace:*"
     typescript: 4.1
   languageName: unknown
   linkType: soft
 
-"@faaskit/core@^1.0.2, @faaskit/core@workspace:packages/core":
+"@faaskit/core@workspace:*, @faaskit/core@workspace:packages/core":
   version: 0.0.0-use.local
   resolution: "@faaskit/core@workspace:packages/core"
   dependencies:
@@ -443,7 +442,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@faaskit/http@^1.0.2, @faaskit/http@workspace:packages/http":
+"@faaskit/http@workspace:*, @faaskit/http@workspace:packages/http":
   version: 0.0.0-use.local
   resolution: "@faaskit/http@workspace:packages/http"
   dependencies:
@@ -461,7 +460,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@faaskit/json-schema@workspace:packages/middleware-json-schema-validator"
   dependencies:
-    "@faaskit/core": ^1.0.2
+    "@faaskit/core": "workspace:*"
     "@types/aws-lambda": ^8.10.51
     "@types/jest": ^26.0.9
     "@types/mockdate": ^2.0.0
@@ -479,8 +478,8 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@faaskit/middleware-aws-api-gateway@workspace:packages/middleware-aws-api-gateway"
   dependencies:
-    "@faaskit/core": ^1.0.2
-    "@faaskit/http": ^1.0.2
+    "@faaskit/core": "workspace:*"
+    "@faaskit/http": "workspace:*"
     "@nullserve/prettierrc": ^1.1.2
     "@types/aws-lambda": ^8.10.56
     "@types/jest": ^26.0.9
@@ -497,7 +496,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@faaskit/middleware-aws-eventbridge-events@workspace:packages/middleware-aws-eventbridge-events"
   dependencies:
-    "@faaskit/core": ^1.0.2
+    "@faaskit/core": "workspace:*"
     "@nullserve/prettierrc": ^1.1.2
     "@types/aws-lambda": ^8.10.51
     "@types/jest": ^26.0.9
@@ -515,7 +514,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@faaskit/request-id@workspace:packages/request-id"
   dependencies:
-    "@faaskit/core": ^1.0.2
+    "@faaskit/core": "workspace:*"
     "@types/aws-lambda": ^8.10.51
     "@types/jest": ^26.0.9
     "@types/mockdate": ^2.0.0

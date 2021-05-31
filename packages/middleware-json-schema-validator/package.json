@@ -14,7 +14,7 @@
     "url": "https://github.com/NullServe/faaskit/issues"
   },
   "dependencies": {
-    "@faaskit/core": "^1.0.2",
+    "@faaskit/core": "workspace:*",
     "ajv": "^8.3.0",
     "json-schema-to-ts": "^1.5.0"
   },

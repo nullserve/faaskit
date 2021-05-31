@@ -15,8 +15,8 @@
     }
   ],
   "dependencies": {
-    "@faaskit/core": "^1.0.2",
-    "@faaskit/http": "^1.0.2"
+    "@faaskit/core": "workspace:*",
+    "@faaskit/http": "workspace:*"
   },
   "description": "Middlewares designed to make working with AWS API Gateway easier for FaaSKit",
   "devDependencies": {

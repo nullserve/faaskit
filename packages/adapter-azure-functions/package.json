@@ -15,7 +15,7 @@
     }
   ],
   "dependencies": {
-    "@faaskit/core": "^1.0.2"
+    "@faaskit/core": "workspace:*"
   },
   "description": "An adapter for FaaSKit that allows easy use with Azure Functions for compute",
   "devDependencies": {

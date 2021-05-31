@@ -15,11 +15,10 @@
     }
   ],
   "dependencies": {
-    "@faaskit/core": "^1.0.2"
+    "@faaskit/core": "workspace:*"
   },
   "description": "An adapter for FaaSKit that allows easy use with AWS Lambda for compute",
   "devDependencies": {
-    "@nullserve/prettierrc": "^1.1.2",
     "@types/aws-lambda": "^8.10.56",
     "jest": "^26.1.0",
     "typescript": "~4.1"
