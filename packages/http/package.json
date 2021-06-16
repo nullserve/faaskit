@@ -52,7 +52,6 @@
   },
   "scripts": {
     "build": "tsc",
-    "test": "jest",
     "clean": "rimraf dist"
   },
   "types": "dist/index.d.ts",
