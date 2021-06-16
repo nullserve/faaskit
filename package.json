@@ -2,7 +2,10 @@
   "name": "faaskit",
   "private": true,
   "devDependencies": {
-    "prettier": "^2.2.1"
+    "lerna": "^4.0.0",
+    "prettier": "^2.2.1",
+    "tslib": "^2.2.0",
+    "typescript": "4.1"
   },
   "prettier": {
     "semi": false,
@@ -12,13 +15,16 @@
     "trailingComma": "all"
   },
   "scripts": {
-    "build": "yarn workspaces foreach --topological-dev run build",
-    "test": "echo 1",
+    "bootstrap": "yarn lerna bootstrap --use-workspaces",
+    "build": "yarn lerna run build",
+    "test": "yarn lerna run test",
+    "clean": "yarn lerna clean -y && yarn lerna run clean",
     "publish": "echo 1",
     "version": "echo 1"
   },
-  "workspaces": [
-    "packages/*"
-  ],
-  "version": "0.0.0"
+  "workspaces": {
+    "packages": [
+      "packages/*"
+    ]
+  }
 }

@@ -15,11 +15,12 @@
     }
   ],
   "dependencies": {
-    "@faaskit/core": "workspace:*"
+    "@faaskit/core": "~1.1.0"
   },
   "description": "An adapter for FaaSKit that allows easy use with Azure Functions for compute",
   "devDependencies": {
     "@azure/functions": "^1.2.0",
+    "rimraf": "^3.0.2",
     "typescript": "4.1"
   },
   "engines": {
@@ -47,7 +48,9 @@
     "directory": "packages/adapter-azure-functions"
   },
   "scripts": {
-    "build": "tsc"
+    "build": "tsc",
+    "test": "jest",
+    "clean": "rimraf dist"
   },
   "types": "dist/index.d.ts",
   "version": "1.0.2"

@@ -15,8 +15,8 @@
     }
   ],
   "dependencies": {
-    "@faaskit/core": "workspace:*",
-    "@faaskit/http": "workspace:*"
+    "@faaskit/core": "~1.1.0",
+    "@faaskit/http": "~1.1.0"
   },
   "description": "Middlewares designed to make working with AWS API Gateway easier for FaaSKit",
   "devDependencies": {
@@ -26,6 +26,7 @@
     "@types/uuid": "^8.3.0",
     "jest": "^26.0.0",
     "mockdate": "^3.0.2",
+    "rimraf": "^3.0.2",
     "ts-jest": "^26.0.0",
     "typescript": "~4.1"
   },
@@ -65,7 +66,10 @@
     "url": "https://github.com/nullserve/faaskit.git",
     "directory": "packages/middleware-aws-api-gateway"
   },
-  "scripts": {},
+  "scripts": {
+    "build": "echo 1",
+    "clean": "rimraf dist"
+  },
   "types": "dist/index.d.ts",
-  "version": "1.0.2"
+  "version": "1.1.0"
 }
