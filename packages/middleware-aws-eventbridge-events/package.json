@@ -69,7 +69,7 @@
     "directory": "packages/middleware-aws-eventbridge-events"
   },
   "scripts": {
-    "build": "echo 1",
+    "build": "tsc",
     "clean": "rimraf dist"
   },
   "types": "dist/index.d.ts",

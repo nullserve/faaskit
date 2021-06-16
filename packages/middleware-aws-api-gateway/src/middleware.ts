@@ -8,7 +8,7 @@ import {
 
 import {createMappingMiddleware, Middleware} from '@faaskit/core'
 import {NotAcceptable} from '@faaskit/http'
-import {toHeaderCase, remapKeys} from '@faaskit/http/dist/utils'
+import {toHeaderCase, remapKeys} from '@faaskit/http'
 
 export interface APIGatewayV1ProxyRESTContext {
   APIGatewayV1ProxyREST: APIGatewayProxyEvent
@@ -20,21 +20,21 @@ export interface APIGatewayV2ProxyWebSocketContext {
   APIGatewayV2ProxyWebSocket: APIGatewayProxyEvent // FIXME: this event isn't a perfect fit, just better than the V2
 }
 
-export const APIGatewayV1ProxyRESTMiddleware: Middleware<
-  APIGatewayProxyEvent,
-  Context,
-  APIGatewayProxyResult
-> = null
-export const APIGatewayV2ProxyHTTPMiddleware: Middleware<
-  APIGatewayProxyEventV2,
-  Context,
-  APIGatewayProxyResultV2
-> = null
-export const APIGatewayV2ProxyWebSocketMiddleware: Middleware<
-  APIGatewayProxyEvent, // FIXME: this event isn't a perfect fit, just better than the V2
-  Context,
-  APIGatewayProxyResult
-> = null
+// export const APIGatewayV1ProxyRESTMiddleware: Middleware<
+//   APIGatewayProxyEvent,
+//   Context,
+//   APIGatewayProxyResult
+// > = null
+// export const APIGatewayV2ProxyHTTPMiddleware: Middleware<
+//   APIGatewayProxyEventV2,
+//   Context,
+//   APIGatewayProxyResultV2
+// > = null
+// export const APIGatewayV2ProxyWebSocketMiddleware: Middleware<
+//   APIGatewayProxyEvent, // FIXME: this event isn't a perfect fit, just better than the V2
+//   Context,
+//   APIGatewayProxyResult
+// > = null
 
 export const APIGatewayProxyLogMiddleware: Middleware<
   APIGatewayProxyEvent,
@@ -150,8 +150,8 @@ export function createJSONResponseMiddleware(
     }
     const result = await next(event, context)
     return {
-      statusCode: 200,
       ...result,
+      statusCode: 200,
       body: JSON.stringify(result.body),
       headers: {
         ...event.headers,

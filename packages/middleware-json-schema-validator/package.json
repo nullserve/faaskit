@@ -33,7 +33,7 @@
     "preset": "ts-jest"
   },
   "scripts": {
-    "build": "echo 1",
+    "build": "tsc",
     "clean": "rimraf dist"
   },
   "publishConfig": {

@@ -67,7 +67,7 @@
     "directory": "packages/middleware-aws-api-gateway"
   },
   "scripts": {
-    "build": "echo 1",
+    "build": "tsc",
     "clean": "rimraf dist"
   },
   "types": "dist/index.d.ts",
