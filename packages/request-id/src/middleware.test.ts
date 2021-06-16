@@ -175,3 +175,8 @@
 //   })
 //   test('handles permutations of headers', () => {})
 // })
+
+test('empty test', () => {
+  // Expect nothing
+  expect(true).toBe(true)
+})

@@ -20,18 +20,13 @@
     "@faaskit/core": "~1.1.0"
   },
   "devDependencies": {
-    "@types/jest": "^26.0.9",
     "@types/node": "^15.6.1",
-    "jest": "^26.0.0",
     "rimraf": "^3.0.2"
   },
   "engines": {
     "node": ">=8.0.0"
   },
   "homepage": "https://github.com/nullserve/faaskit#readme",
-  "jest": {
-    "preset": "ts-jest"
-  },
   "keywords": [
     "aws lambda",
     "azure functions",

@@ -2,10 +2,13 @@
   "name": "faaskit",
   "private": true,
   "devDependencies": {
+    "jest": "^27.0.4",
+    "jest-watch-typeahead": "^0.6.4",
     "lerna": "^4.0.0",
     "prettier": "^2.2.1",
+    "ts-jest": "^27.0.3",
     "tslib": "^2.2.0",
-    "typescript": "4.1"
+    "typescript": "^4.3"
   },
   "prettier": {
     "semi": false,
@@ -16,6 +19,7 @@
   },
   "scripts": {
     "bootstrap": "yarn lerna bootstrap --use-workspaces",
+    "prebuild": "yarn run bootstrap",
     "build": "yarn lerna run build",
     "test": "yarn lerna run test",
     "clean": "yarn lerna clean -y && yarn lerna run clean",

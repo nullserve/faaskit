@@ -21,22 +21,15 @@
   "description": "Middlewares designed to make working with AWS EventBridge easier for FaaSKit",
   "devDependencies": {
     "@types/aws-lambda": "^8.10.51",
-    "@types/jest": "^26.0.9",
-    "@types/mockdate": "^2.0.0",
+    "@types/mockdate": "^3.0.0",
     "@types/uuid": "^8.3.0",
-    "jest": "^26.0.0",
     "mockdate": "^3.0.2",
-    "rimraf": "^3.0.2",
-    "ts-jest": "^26.0.0",
-    "typescript": "~4.1"
+    "rimraf": "^3.0.2"
   },
   "engines": {
     "node": ">=8.0.0"
   },
   "homepage": "https://github.com/nullserve/faaskit#readme",
-  "jest": {
-    "preset": "ts-jest"
-  },
   "keywords": [
     "amazon",
     "amazon web services",

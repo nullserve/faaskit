@@ -20,16 +20,12 @@
   "description": "An adapter for FaaSKit that allows easy use with AWS Lambda for compute",
   "devDependencies": {
     "@types/aws-lambda": "^8.10.56",
-    "jest": "^26.1.0",
     "rimraf": "^3.0.2"
   },
   "engines": {
     "node": ">=8.0.0"
   },
   "homepage": "https://github.com/nullserve/faaskit#readme",
-  "jest": {
-    "preset": "ts-jest"
-  },
   "keywords": [
     "amazon",
     "amazon web services",

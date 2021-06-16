@@ -39,7 +39,7 @@ describe('adaptFaasKitHandlerForFunctions', () => {
     const result = await mockWrappedHandler(mockContext, mockEvent)
 
     // Then
-    expect(mockHandler).toBeCalledWith(mockEvent, {AWSLambda: mockContext})
+    expect(mockHandler).toBeCalledWith(mockEvent, {AzureFunction: mockContext})
     expect(result).toEqual(mockResult)
   })
 })
