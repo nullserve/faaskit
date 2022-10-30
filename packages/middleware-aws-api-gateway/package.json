@@ -15,15 +15,15 @@
     }
   ],
   "dependencies": {
-    "@faaskit/core": "~1.1.0",
-    "@faaskit/http": "~1.1.0"
+    "@faaskit/core": "workspace:~1.1.0",
+    "@faaskit/http": "workspace:~1.1.0"
   },
   "description": "Middlewares designed to make working with AWS API Gateway easier for FaaSKit",
   "devDependencies": {
-    "@types/aws-lambda": "^8.10.56",
+    "@types/aws-lambda": "^8.10.108",
     "@types/mockdate": "^3.0.0",
-    "@types/uuid": "^8.3.0",
-    "mockdate": "^3.0.2",
+    "@types/uuid": "^8.3.4",
+    "mockdate": "^3.0.5",
     "rimraf": "^3.0.2"
   },
   "engines": {
