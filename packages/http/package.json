@@ -17,10 +17,10 @@
   ],
   "description": "Utilities for FaaSKit focused on HTTP interaction",
   "dependencies": {
-    "@faaskit/core": "~1.1.0"
+    "@faaskit/core": "workspace:~1.1.0"
   },
   "devDependencies": {
-    "@types/node": "^15.6.1",
+    "@types/node": "^18.11.7",
     "rimraf": "^3.0.2"
   },
   "engines": {

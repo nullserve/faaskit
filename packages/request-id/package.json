@@ -14,14 +14,14 @@
     "url": "https://github.com/NullServe/faaskit/issues"
   },
   "dependencies": {
-    "@faaskit/core": "~1.1.0",
-    "uuid": "^8.3.2"
+    "@faaskit/core": "workspace:~1.1.0",
+    "uuid": "^9.0.0"
   },
   "devDependencies": {
-    "@types/aws-lambda": "^8.10.51",
+    "@types/aws-lambda": "^8.10.108",
     "@types/mockdate": "^3.0.0",
-    "@types/uuid": "^8.3.0",
-    "mockdate": "^3.0.2",
+    "@types/uuid": "^8.3.4",
+    "mockdate": "^3.0.5",
     "rimraf": "^3.0.2"
   },
   "scripts": {

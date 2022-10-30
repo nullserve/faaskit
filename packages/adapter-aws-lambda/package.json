@@ -15,11 +15,11 @@
     }
   ],
   "dependencies": {
-    "@faaskit/core": "~1.1.0"
+    "@faaskit/core": "workspace:~1.1.0"
   },
   "description": "An adapter for FaaSKit that allows easy use with AWS Lambda for compute",
   "devDependencies": {
-    "@types/aws-lambda": "^8.10.56",
+    "@types/aws-lambda": "^8.10.108",
     "rimraf": "^3.0.2"
   },
   "engines": {
